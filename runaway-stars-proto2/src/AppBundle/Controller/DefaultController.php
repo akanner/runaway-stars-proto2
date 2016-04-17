@@ -19,6 +19,18 @@ class DefaultController extends Controller
 {
 
     /**
+     * session key that holds the user's session object
+     */
+    const USER_SESSION_SESSION_KEY  = "user-session";
+
+    const USER_RESPONSE_SESSION_KEY = "user-response";
+
+    /**
+     * TODO inject it into a variable
+     */
+    const IMAGES_REPO               = "imagesRepository";
+
+    /**
      * gets gets the URL of an image
      *
      * @param string    $imageName     image's name
@@ -74,8 +86,24 @@ class DefaultController extends Controller
         //get the images
         //it would be better if this controller is defined as a service as well
         //gets the image repository from the IoC container
-        $imageRepository = $this->get("imagesRepository");
+        $imageRepository = $this->get(static::IMAGES_REPO);
         $randomImages = $imageRepository->getRandomImages();
+        //creates and saves the user response in the session, when the user answer us, it will be save in the db
+        $session = $request->getSession();
+        //this should be injected, to do this, this controller should be declared as a service
+        $em = $this->get("doctrine.orm.default_entity_manager");
+
+        $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
+        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$randomImages);
+        $this->serializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em,$participantResponse);
+
+
+
+
+
+
+
+
         //builds view's parameters
         $viewParams = array();
         //gets the images's paths and passes them to the view
@@ -92,8 +120,25 @@ class DefaultController extends Controller
      */
     public function processResponse(Request $request)
     {
+        //TODO server-side validations
+        
         $userSubmission = $request->request->get("answer");
-        var_dump($userSubmission);exit;
+        $imageRepository =$this->get(static::IMAGES_REPO);
+        //this should be injected, to do this, this controller should be declared as a service
+        $em = $this->get("doctrine.orm.default_entity_manager");
+        $imageSelected = $imageRepository->findOneById($userSubmission);
+
+        //gets the user response previously stored in the session, remember, this user response was not really answered yet
+        $session = $request->getSession();
+        $userResponse = $this->deserializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em);
+        //sets the user's actual response and saves it in the database
+        $userResponse->setSelectedImage($imageSelected);
+        
+        $em->persist($userResponse);
+        $em->flush($userResponse);
+
+        //redirects the user to another question
+        return $this->redirect("/");
     }
 
     /**
@@ -131,7 +176,7 @@ class DefaultController extends Controller
             $em->persist($participantSession);
             $em->flush();
 
-            $session->set("user-session",$participantSession);
+            $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$participantSession);
         }
         //-------------------------------------------------------------------
 
@@ -139,5 +184,19 @@ class DefaultController extends Controller
 
         //redirects to the home
         return $this->redirect("/");
+    }
+
+    //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
+    private function serializeEntityIntoTheSession($session,$key,$em,$entity)
+    {
+        $em->detach($entity);
+        $session->set($key,$entity);
+    }
+    //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
+    private function deserializeEntityIntoTheSession($session,$key,$em)
+    {
+        $entity = $session->get($key);
+        $entity = $em->merge($entity);
+        return $entity;
     }
 }

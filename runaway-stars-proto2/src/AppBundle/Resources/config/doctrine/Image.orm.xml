@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AppBundle\Entity\Image" table="image">
+  <entity name="AppBundle\Entity\Image" table="image" repository-class="AppBundle\Repositories\ImageRepository">
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="filePath" type="string" column="file-path" length="255" nullable="false"/>
-    <field name="isCorrect" type="boolean" column="is-correct" nullable="false"/>
+    <field name="filePath" type="string" column="file_path" length="255" nullable="false"/>
+    <field name="isCorrect" type="boolean" column="is_correct" nullable="false"/>
   </entity>
 </doctrine-mapping>

@@ -8,21 +8,21 @@ use Doctrine\ORM\Mapping as ORM;
  * Image
  *
  * @ORM\Table(name="image")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repositories\ImageRepository")
  */
 class Image
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="file-path", type="string", length=255, nullable=false)
+     * @ORM\Column(name="file_path", type="string", length=255, nullable=false)
      */
     private $filePath;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is-correct", type="boolean", nullable=false)
+     * @ORM\Column(name="is_correct", type="boolean", nullable=false)
      */
     private $isCorrect;
 

@@ -7,29 +7,29 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ParticipantSession
  *
- * @ORM\Table(name="participant-session", indexes={@ORM\Index(name="fk_session-participant_participant_idx", columns={"participant-id"})})
- * @ORM\Entity
+ * @ORM\Table(name="participant_session", indexes={@ORM\Index(name="fk_session_participant_participant_idx", columns={"participant_id"})})
+ * @ORM\Entity(repositoryClass="AppBundle\Repositories\ParticipantSessionRepository")
  */
 class ParticipantSession
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="http-session", type="string", length=1024, nullable=false)
+     * @ORM\Column(name="http_session", type="string", length=1024, nullable=false)
      */
     private $httpSession;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="started-at", type="datetime", nullable=false)
+     * @ORM\Column(name="started_at", type="datetime", nullable=false)
      */
     private $startedAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="ended-at", type="datetime", nullable=false)
+     * @ORM\Column(name="ended_at", type="datetime", nullable=true)
      */
     private $endedAt;
 
@@ -43,15 +43,29 @@ class ParticipantSession
     private $id;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ParticipantResponse", mappedBy="session")
+     */
+    private $responses;
+
+    /**
      * @var \AppBundle\Entity\Participant
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant", inversedBy="session")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="participant-id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="participant_id", referencedColumnName="id")
      * })
      */
-    private $participantId;
+    private $participant;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->responses = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -131,46 +145,6 @@ class ParticipantSession
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set participantId
-     *
-     * @param \AppBundle\Entity\Participant $participantId
-     * @return ParticipantSession
-     */
-    public function setParticipantId(\AppBundle\Entity\Participant $participantId = null)
-    {
-        $this->participantId = $participantId;
-
-        return $this;
-    }
-
-    /**
-     * Get participantId
-     *
-     * @return \AppBundle\Entity\Participant 
-     */
-    public function getParticipantId()
-    {
-        return $this->participantId;
-    }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $responses;
-
-    /**
-     * @var \AppBundle\Entity\Participant
-     */
-    private $participant;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->responses = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

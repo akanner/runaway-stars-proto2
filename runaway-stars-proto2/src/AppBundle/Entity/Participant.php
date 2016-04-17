@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Participant
  *
  * @ORM\Table(name="participant")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repositories\ParticipantRepository")
  */
 class Participant
 {
@@ -27,6 +27,13 @@ class Participant
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @var \AppBundle\Entity\ParticipantSession
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ParticipantSession", mappedBy="participant")
+     */
+    private $session;
 
 
 
@@ -62,11 +69,6 @@ class Participant
     {
         return $this->id;
     }
-    /**
-     * @var \AppBundle\Entity\ParticipantSession
-     */
-    private $session;
-
 
     /**
      * Set session

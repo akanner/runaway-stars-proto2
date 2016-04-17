@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ParticipantSession" table="participant-session">
+    <indexes>
+      <index name="fk_session-participant_participant_idx" columns="participant-id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="httpSession" type="string" column="http-session" length="1024" nullable="false"/>
+    <field name="startedAt" type="datetime" column="started-at" nullable="false"/>
+    <field name="endedAt" type="datetime" column="ended-at" nullable="true"/>
+    <many-to-one field="participant" target-entity="Participant" inversed-by="session">
+      <join-columns>
+        <join-column name="participant-id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-many field="responses" target-entity="ParticipantResponse" mapped-by="session" />
+  </entity>
+</doctrine-mapping>

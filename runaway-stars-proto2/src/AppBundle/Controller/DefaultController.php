@@ -25,6 +25,18 @@ class DefaultController extends Controller
         ->getPath();
     }
 
+    private function getImagesPaths($images)
+    {
+        $that = $this;
+        $imagesPaths = 
+            array_map(
+                function($image) use ($that) { return $that->getImageUrl($image->getFilePath()); },
+                $images
+                );
+
+        return $imagesPaths;
+    }
+
     /**
      * checks if the participant is logged
      */
@@ -51,12 +63,14 @@ class DefaultController extends Controller
         }
 
         //get the images
-        $firstImage  = $this->getImageUrl("1.jpg");
-        $secondImage = $this->getImageUrl("2.jpg");
-        $thirdImage  = $this->getImageUrl("3.jpg");
+        //it would be better if this controller is defined as a service as well
+        //gets the image repository from the IoC container
+        $imageRepository = $this->get("imagesRepository");
+        $randomImages = $imageRepository->getRandomImages();
         //builds view's parameters
         $viewParams = array();
-        $viewParams["images"] = array($firstImage,$secondImage,$thirdImage);
+        //gets the images's paths and passes them to the view
+        $viewParams["images"] = $this->getImagesPaths($randomImages);
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', $viewParams);
     }

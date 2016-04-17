@@ -62,6 +62,18 @@ class ParticipantSession
     /**
      * Constructor
      */
+    public static function createWith($httpSessionId,$startedAt,$participant)
+    {
+        $session = new ParticipantSession();
+        $session->setHttpSession($httpSessionId);
+        $session->setStartedAt($startedAt);
+        $session->setParticipant($participant);
+
+        return $session;
+    }
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->responses = new \Doctrine\Common\Collections\ArrayCollection();

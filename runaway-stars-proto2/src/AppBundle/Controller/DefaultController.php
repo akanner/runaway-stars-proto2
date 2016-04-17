@@ -6,6 +6,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+//entities
+
+use AppBundle\Entity\Participant;
+use AppBundle\Entity\ParticipantResponse;
+use AppBundle\Entity\ParticipantSession;
+
+//view objects 
+use AppBundle\ViewObjects\ViewImage;
+
 class DefaultController extends Controller
 {
 
@@ -25,26 +34,26 @@ class DefaultController extends Controller
         ->getPath();
     }
 
-    private function getImagesPaths($images)
+    private function getViewImages($images)
     {
-        $that = $this;
-        $imagesPaths = 
-            array_map(
-                function($image) use ($that) { return $that->getImageUrl($image->getFilePath()); },
-                $images
-                );
+        $viewImages = array();
+        foreach ($images as $img) 
+        {
+            $viewImages[] = new \AppBundle\ViewObjects\ViewImage($img->getId(),$this->getImageUrl($img->getFilePath()));
+        }
 
-        return $imagesPaths;
+
+        return $viewImages;
     }
 
     /**
      * checks if the participant is logged
      */
-    private function isUserLogged()
+    private function isUserLogged($request)
     {
-        $session = $this->getRequest()->getSession();
-        $isUserLogged = $session->get("logged");
 
+        $session = $request->getSession();
+        $isUserLogged = $session->get("logged");
         return $isUserLogged;
     }
 
@@ -56,7 +65,7 @@ class DefaultController extends Controller
         //checks if the user is logged
         //needs to be moved to an interceptor, filter, or use a bundle
         //-------------------------------------------------------------------
-        $isUserLogged = $this->isUserLogged();
+        $isUserLogged = $this->isUserLogged($request);
         if(!$isUserLogged)
         {
             return $this->render('default/login.html.twig');
@@ -70,7 +79,7 @@ class DefaultController extends Controller
         //builds view's parameters
         $viewParams = array();
         //gets the images's paths and passes them to the view
-        $viewParams["images"] = $this->getImagesPaths($randomImages);
+        $viewParams["images"] = $this->getViewImages($randomImages);
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', $viewParams);
     }
@@ -100,18 +109,29 @@ class DefaultController extends Controller
         //-------------------------------------------------------------------
        
         //if the user is already logged, we redirect it to the home page
-        $isUserLogged = $this->isUserLogged();
+        $isUserLogged = $this->isUserLogged($request);
         if(!$isUserLogged)
         {
 
             //stores user's name in the session
-            $session = $this->getRequest()->getSession();
-            $username = $request->request->get("name");
+            $session = $request->getSession();
+            $username = $request->request->get("username");
             $session->set("username",$username);
             $session->set("logged",true);
 
             //creates user and session in the database
-            
+            $participant        = Participant::createWithName($username);
+            $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
+            $participant->setSession($participantSession);
+            //it would be better if this controller is defined as a service as well
+            //gets the em from the IoC container
+            //doctrine.orm.default_entity_manager
+            $em = $this->get("doctrine.orm.default_entity_manager");
+            $em->persist($participant);
+            $em->persist($participantSession);
+            $em->flush();
+
+            $session->set("user-session",$participantSession);
         }
         //-------------------------------------------------------------------
 

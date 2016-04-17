@@ -35,7 +35,13 @@ class Participant
      */
     private $session;
 
+    public static function  createWithName($name)
+    {
+        $user = new Participant();
+        $user->setName($name);
 
+        return $user;
+    }
 
     /**
      * Set name

@@ -82,7 +82,24 @@ class ParticipantResponse
     private $firstImageServed;
 
 
+    public static function createFromSessionAndImages($userSession,$images)
+    {
+        $response = new ParticipantResponse();
 
+        $response->setSession($userSession);
+        $response->setFirstImageServed($images[0]);
+        $response->setSecondImageServed($images[1]);
+        $response->setThirdImageServed($images[2]);
+        //array_filter will filter $images to get the correct one, but it will leave it will the image's original key in the array
+        $correctResponses = array_filter($images,function($img){return $img->getIsCorrect();});
+        //array_values will create a new array with new keys, that means that the correct image will always be in the first position
+        $correctResponses = array_values($correctResponses);
+        $correctResponse = $correctResponses[0];
+
+        $response->setCorrectImage($correctResponse);
+
+        return $response;
+    }
     /**
      * Get id
      *

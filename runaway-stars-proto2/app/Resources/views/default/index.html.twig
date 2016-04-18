@@ -3,6 +3,9 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
+            <div id="points-div">
+                <p>{{points}}</p>
+            </div>
             <form id="runaway-stars-form" action="/processResponse" method="POST">
                 <div id="images-container">
                     {% for img in images %}
@@ -17,4 +20,8 @@
             
         </div>
     </div>
+    <div id="close-div">
+        <form id="runaway-stars-form" action="/logout" method="POST">
+            <input type="submit" value="Teminar!"/>
+        </form>
 {% endblock %}

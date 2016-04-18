@@ -10,6 +10,7 @@
     <field name="httpSession" type="string" column="http_session" length="1024" nullable="false"/>
     <field name="startedAt" type="datetime" column="started_at" nullable="false"/>
     <field name="endedAt" type="datetime" column="ended_at" nullable="true"/>
+    <field name="totalPoints" type="integer" column="total_points" nullable="false"/>
     <many-to-one field="participant" target-entity="Participant" inversed-by="session">
       <join-columns>
         <join-column name="participant_id" referenced-column-name="id"/>

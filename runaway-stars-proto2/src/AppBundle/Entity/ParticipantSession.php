@@ -33,6 +33,13 @@ class ParticipantSession
      */
     private $endedAt;
 
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="total_points", type="integer", nullable=false)
+     */
+    private $totalPoints;
+
     /**
      * @var integer
      *
@@ -68,6 +75,7 @@ class ParticipantSession
         $session->setHttpSession($httpSessionId);
         $session->setStartedAt($startedAt);
         $session->setParticipant($participant);
+        $session->setTotalPoints(0);
 
         return $session;
     }
@@ -124,6 +132,27 @@ class ParticipantSession
     public function getStartedAt()
     {
         return $this->startedAt;
+    }
+     /**
+     * Set totalPoints
+     *
+     * @param integer $points
+     * @return ParticipantSession
+     */
+    public function setTotalPoints($points)
+    {
+        $this->totalPoints = $points;
+
+        return $this;
+    }
+     /**
+     * Get totalPoints
+     *
+     * @return integer 
+     */
+    public function getTotalPoints()
+    {
+        return $this->totalPoints;
     }
 
     /**
@@ -213,5 +242,10 @@ class ParticipantSession
     public function getParticipant()
     {
         return $this->participant;
+    }
+
+    public function sumPoints($points)
+    {
+        $this->totalPoints= $this->totalPoints + $points;
     }
 }

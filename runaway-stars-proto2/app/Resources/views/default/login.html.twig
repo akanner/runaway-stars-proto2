@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-	<form method="POST" action="logInUser">
-		<label for="username">Ingrese su nombre</label><input type="text" name="username" required="required"/>
-		<input type="submit" value="Comenzar!" />
-	</form>
+	<div class=container>
+		<h2>Prototipo Runaway Stars</h2>
+		<form method="POST" action="logInUser" class="form-inline">
+			<div class="from-group">
+				<label class="sr-only" for="username">Ingrese su nombre</label>
+				<div class="input-group">
+      				<input type="text" class="form-control" name="username" id="username" placeholder="Ingrese su nombre" required="required">
+    			</div>
+				<button type="submit" class="btn btn-primary">Comenzar!</button>
+			</div>
+		</form>
+	</div>
+	
 {% endblock %}

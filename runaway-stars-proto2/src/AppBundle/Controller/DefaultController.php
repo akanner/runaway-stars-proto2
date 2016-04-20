@@ -70,6 +70,10 @@ class DefaultController extends Controller
 
         //builds view's parameters
         $viewParams = array();
+        //answer points
+        $pointsRepository = $this->get(static::POINTS_REPO);
+        $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
+        $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
         //gets the images's paths and passes them to the view
         $viewParams["images"] = $this->getViewImages($randomImages);
         $viewParams["points"] = $userSession->getTotalPoints();

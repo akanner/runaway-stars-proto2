@@ -8,18 +8,22 @@ class ViewImage
 {
 	public $id;
 	public $path;
+	public $correctText;
 	public $correct;
+
 	function __construct($id,$path,$correct)
 	{
 		$this->id 		= $id;
 		$this->path 	= $path;
 		if($correct)
 		{
-			$this->correct	= "Correcta";
+			$this->correctText	= "Correcta";
+			$this->correct		= "true";
 		}
 		else
 		{
-			$this->correct = "Incorrecta";
+			$this->correctText 	= "Incorrecta";
+			$this->correct		= "false";
 		}
 		
 	}

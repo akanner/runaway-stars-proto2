@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
+<script src="js/lib.js"></script>
 <script type="text/javascript">
-    
 
-    //adds points
 
     //enables submit button
     $( "#answer-button" ).on( "click", function( event ) {
@@ -30,6 +29,8 @@
       $("#submit-button").prop('disabled', false);
       $(this).prop('disabled',true);
       $(" input:radio").addClass('hidden');
+      //adds points
+      addPointsFor(starContainer);
     });
 </script>
 
@@ -41,10 +42,10 @@
                 <h2>Prototipo Runaway Stars</h2>
             </div>
         </div>
-        <div class="row" id="points-div">
+        <div class="row" id="score-div">
             <div class="col-md-10"></div>
             <div class="col-md-2">
-                <h3>PUNTOS: {{points}}</h3>
+                <h3>PUNTOS: <span id="score">{{points}}</span></h3>
             </div>
         </div>
         <form id="runaway-stars-form" class="well" action="/processResponse" method="POST">
@@ -60,7 +61,8 @@
                             </div>
                         </div>
                         <div class="row answer hidden">
-                            {{img.correct}}
+                           <p class="answerText">{{img.correctText}}</p>
+                           <p class="answerValue hidden">{{img.correct}}</p>
                         </div>
                         <div class="row">
                             <div class="col-md-1 col-md-offset-5">
@@ -91,5 +93,9 @@
         </div>  
     </div>  
 
-
+    <!-- points -->
+    <div class="hidden" id="div-points">
+        <p id="correct-points">{{correct_points}}</p>
+        <p id="inorrect-points">{{incorrect_points}}</p>
+    </div>
 {% endblock %}

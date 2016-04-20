@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `db_runaway_proto` /*!40100 DEFAULT CHARACTER SET big5 */;
-USE `db_runaway_proto`;
 -- MySQL dump 10.13  Distrib 5.7.9, for linux-glibc2.5 (x86_64)
 --
 -- Host: localhost    Database: db_runaway_proto
@@ -78,7 +76,7 @@ CREATE TABLE `participant` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +107,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,9 +127,42 @@ CREATE TABLE `participant_session` (
   PRIMARY KEY (`id`),
   KEY `fk_session_participant_participant_idx` (`participant_id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `training_task`
+--
+
+DROP TABLE IF EXISTS `training_task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `training_task` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `training_step` int(11) NOT NULL,
+  `help_text` text,
+  `first_image` int(11) NOT NULL,
+  `second_image` int(11) NOT NULL,
+  `third_image` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_training_task_image1_idx` (`first_image`),
+  KEY `fk_training_task_image2_idx` (`second_image`),
+  KEY `fk_training_task_image3_idx` (`third_image`),
+  CONSTRAINT `fk_training_task_image1` FOREIGN KEY (`first_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_training_task_image2` FOREIGN KEY (`second_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_training_task_image3` FOREIGN KEY (`third_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=big5;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `training_task`
+--
+
+LOCK TABLES `training_task` WRITE;
+/*!40000 ALTER TABLE `training_task` DISABLE KEYS */;
+INSERT INTO `training_task` VALUES (1,1,'PASO 1 AYUDA',5,3,4),(2,2,'PASO 2 AYUDA',3,5,1),(3,3,'PASO 3 AYUDA',1,2,5);
+/*!40000 ALTER TABLE `training_task` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -142,4 +173,4 @@ CREATE TABLE `participant_session` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-18  1:30:01
+-- Dump completed on 2016-04-20  3:06:52

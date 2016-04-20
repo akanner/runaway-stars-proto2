@@ -257,7 +257,8 @@ class DefaultController extends Controller
         $viewImages = array();
         foreach ($images as $img) 
         {
-            $viewImages[] = new \AppBundle\ViewObjects\ViewImage($img->getId(),$this->getImageUrl($img->getFilePath()));
+            $viewImages[] = new \AppBundle\ViewObjects\ViewImage($img->getId(),
+                $this->getImageUrl($img->getFilePath()),$img->getIsCorrect());
         }
 
 

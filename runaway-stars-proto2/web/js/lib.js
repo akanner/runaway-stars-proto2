@@ -43,7 +43,7 @@
     function getPointsForStarImage(starContainer)
     {
         answerContainer = $(starContainer).children(".answer")[0];
-        isCorrect = $(answerContainer).children(".answerValue").text();
+        isCorrect = $($(answerContainer).find(".answerValue")[0]).text();
         if(isCorrect)
         {
             return getPointsForValidResponse();
@@ -52,4 +52,25 @@
         {
             return getPointsForInvalidResponse();
         }
+    }
+
+    function showResponse(starContainer,trainingMode)
+    {
+	  
+      //will show all the answers texts
+      if(trainingMode)
+      {
+      	starContainer = starContainer.parent();
+      }
+      answerDiv        =starContainer.find(".answer");
+      answerDiv.each(
+      	function(i,answer)
+      		{
+      			$(answer).removeClass("hidden");
+      		});
+    }
+
+    function isInTrainingMode()
+    {
+    	return $("#tmode").text();
     }

@@ -10,6 +10,7 @@ class ViewImage
 	public $path;
 	public $correctText;
 	public $correct;
+	public $cssClass;
 
 	function __construct($id,$path,$correct)
 	{
@@ -19,11 +20,13 @@ class ViewImage
 		{
 			$this->correctText	= "Correcta";
 			$this->correct		= "true";
+			$this->cssClass		= "bg-success";
 		}
 		else
 		{
 			$this->correctText 	= "Incorrecta";
 			$this->correct		= "false";
+			$this->cssClass		= "bg-danger";
 		}
 		
 	}

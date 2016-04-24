@@ -46,7 +46,7 @@ class DefaultController extends Controller
         $isUserLogged = $this->isUserLogged($request);
         if(!$isUserLogged)
         {
-            return $this->render('default/login.html.twig');
+            return $this->redirect('logInUser');
         }
 
         //get the images
@@ -78,6 +78,9 @@ class DefaultController extends Controller
         $viewParams["points"] = $userSession->getTotalPoints();
         $viewParams["training_mode"] = $this->isInTrainingMode($request);
         $viewParams["help_text"]     = $session->get("help-msj");
+
+        $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
+        $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', $viewParams);
     }
@@ -137,6 +140,7 @@ class DefaultController extends Controller
         return $this->redirect("/");
     }
 
+
     /**
      * registers user's information
      *
@@ -145,6 +149,21 @@ class DefaultController extends Controller
      * @Route("/logInUser", name="logInUser")
      */
     public function logInUser(Request $request)
+    {
+        $postUrl = $this->generateUrl('logInUserResponse', array(), true);
+        $viewParams = array();
+        $viewParams["post_url"] = $postUrl;
+         return $this->render('default/login.html.twig',$viewParams);
+    }
+
+    /**
+     * registers user's information
+     *
+     */
+     /**
+     * @Route("/logInUserResponse", name="logInUserResponse")
+     */
+    public function logInUserResponse(Request $request)
     {
         //TODO use a interceptor,filter or something to check session ending
         //-------------------------------------------------------------------

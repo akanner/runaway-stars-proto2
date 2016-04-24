@@ -52,7 +52,7 @@
                 <h3>PUNTOS: <span id="score">{{points}}</span></h3>
             </div>
         </div>
-        <form id="runaway-stars-form" class="well" action="/processResponse" method="POST">
+        <form id="runaway-stars-form" class="well" action="{{post_url}}" method="POST">
             <div class="row">
                 <h3 class="centered">Podes Indicar la 'Runaway Star'?</h3>
             </div>
@@ -96,7 +96,7 @@
         </form>
         <div id="close-div" class="row">
             <div class="col-md-2 col-md-offset-5">
-                <form id="runaway-stars-form"  action="/logout" method="POST">
+                <form id="runaway-stars-form"  action="{{end_url}}" method="POST">
                     <input class="btn btn-lg btn-danger" type="submit" value="Teminar!"/>
                 </form>
             </div>

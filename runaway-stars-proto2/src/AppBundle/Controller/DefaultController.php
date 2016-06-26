@@ -76,7 +76,7 @@ class DefaultController extends Controller
         //gets the images's paths and passes them to the view
         $viewParams["images"] = $this->getViewImages($randomImages);
         $viewParams["points"] = $userSession->getTotalPoints();
-        $viewParams["training_mode"] = $this->isInTrainingMode($request);
+        $viewParams["training_mode"] = false;
         $viewParams["help_text"]     = $session->get("help-msj");
 
         $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
@@ -127,7 +127,6 @@ class DefaultController extends Controller
         //although it was fun dealing with entities and the session, this experiment has to stop! haha
         $this->sumPoints($em,$session,$points);
         //handles the training mode
-        $this->handlesTrainingMode($session);
         //gets the user response previously stored in the session, remember, this user response was not really answered yet
         $userResponse = $this->deserializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em);
         //sets the user's actual response and saves it in the database
@@ -178,8 +177,8 @@ class DefaultController extends Controller
             $username = $request->request->get("username");
             $session->set("username",$username);
             $session->set("logged",true);
-            $session->set("training-mode",true);
-            $session->set("training-step",1);
+            //$session->set("training-mode",true);
+            //$session->set("training-step",1);
             //creates user and session in the database
             $participant        = Participant::createWithName($username);
             $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
@@ -233,19 +232,6 @@ class DefaultController extends Controller
     }
 
 
-    private function handlesTrainingMode($session)
-    {
-        $trainingStep = $session->get("training-step");
-        $trainingStep++;
-        //move forward one step in training
-        $session->set("training-step",$trainingStep);
-
-        if($trainingStep > 3)
-        {
-            $session->set("training-mode",false);
-            $session->set("help-msj",null);
-        }
-    }
 
     //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
     //TODO save only the entity's ID
@@ -320,54 +306,12 @@ class DefaultController extends Controller
     }
 
 
-    private function getTasksForQuestion($request)
+     private function getTasksForQuestion($request)
     {
-
-        //checks if the participant is not in training
-        $isInTraining = $this->isInTrainingMode($request);
-
-        if(!$isInTraining)
-        {
-            //if the participant is not in training, then we show it 3 random images;
-
-            //it would be better if this controller is defined as a service as well
-            //gets the image repository from the IoC container
-            $imageRepository = $this->get(static::IMAGES_REPO);
-            return $imageRepository->getRandomImages();
-        }
-        else
-        {
-            $session = $request->getSession();
-            $trainingStep = $session->get("training-step");
-            $trainingTask = $this->getTrainingStep($trainingStep);
-            $session->set("help-msj",$trainingTask->getHelpText());
-            return $this->getImagesForTrainingTask($trainingTask);
-        }
+        //it would be better if this controller is defined as a service as well
+        //gets the image repository from the IoC container
+        $imageRepository = $this->get(static::IMAGES_REPO);
+        return $imageRepository->getRandomImages();
     }
 
-    private function getTrainingStep($trainingStep)
-    {
-        $trainingRepository = $this->get(static::TRAINING_REPO);
-        $trainingTask = $trainingRepository->findOneByTrainingStep($trainingStep);
-        return $trainingTask;
-    }
-
-
-    private function getImagesForTrainingTask($trainingTask)
-    {
-       
-
-        $firstImage     = $trainingTask->getFirstImage();
-        $secondImage    = $trainingTask->getSecondImage();
-        $thirdImage     = $trainingTask->getThirdImage();
-        return array($firstImage,$secondImage,$thirdImage);
-    }
-
-    private function isInTrainingMode($request)
-    {
-        $session = $request->getSession();
-        $isInTraining = $session->get("training-mode");
-
-        return $isInTraining;
-    }
 }

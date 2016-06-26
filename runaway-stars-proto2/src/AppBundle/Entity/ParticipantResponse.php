@@ -247,4 +247,10 @@ class ParticipantResponse
     {
         return $this->firstImageServed;
     }
+
+
+    public function isCorrect()
+    {
+        return $this->getCorrectImage() == $this->getSelectedImage();
+    }
 }

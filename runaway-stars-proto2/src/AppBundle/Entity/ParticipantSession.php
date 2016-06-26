@@ -248,4 +248,17 @@ class ParticipantSession
     {
         $this->totalPoints= $this->totalPoints + $points;
     }
+
+
+    public function getNumberOfResponses()
+    {
+        return $this->responses->count();
+    }
+
+    public function getNumberOfCorrectResponses()
+    {
+        $correctResponses = $this->responses->filter(function($response){return $response->isCorrect();});
+        \Doctrine\Common\Util\Debug::dump($correctResponses);exit;
+        return count($correctResponses);
+    }
 }

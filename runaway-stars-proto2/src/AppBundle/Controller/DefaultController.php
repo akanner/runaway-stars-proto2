@@ -27,6 +27,8 @@ class DefaultController extends BaseController
 
     const STEP                      = "task-number"; 
 
+    const MAX_STEPS                 = "max-tasks";
+
     /**
      * TODO inject it into a variable
      */
@@ -100,7 +102,7 @@ class DefaultController extends BaseController
 
         if(!$isUserLogged || !$requestIsValid)
         {
-            return $this->redirect("/");
+            return $this->redirectToIndex();
         }
         
         $imageRepository =$this->get(static::IMAGES_REPO);
@@ -122,8 +124,7 @@ class DefaultController extends BaseController
         $em->persist($userResponse);
         $em->flush();
 
-        //redirects the user to another question
-        return $this->redirect("/");
+        return $this->showNextTask($session);
     }
 
 
@@ -156,38 +157,38 @@ class DefaultController extends BaseController
        
         //if the user is already logged, we redirect it to the home page
         $isUserLogged = $this->isUserLogged($request);
-        if(!$isUserLogged)
+        if($isUserLogged)
         {
-
-            //stores user's name in the session
-            $session = $request->getSession();
-            $username = $request->request->get("username");
-            $session->set("username",$username);
-            $session->set("logged",true);
-            //sets the max number of tasks in the session
-            $maxNumberOfTask = $this->getMaxNumberOfQuestions();
-            $session->set(static::STEP,1);
-            $session->set("max-tasks",$maxNumberOfTask);
-            //creates user and session in the database
-            $participant        = Participant::createWithName($username);
-            $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
-            $participant->setSession($participantSession);
-            //it would be better if this controller is defined as a service as well
-            //gets the em from the IoC container
-            //doctrine.orm.default_entity_manager
-            $em = $this->getEntityManager();
-            $em->persist($participant);
-            $em->persist($participantSession);
-            $em->flush();
-
-            $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$participantSession);
+            //redirects to the home
+            return $this->redirectToIndex();
         }
         //-------------------------------------------------------------------
+        //stores user's name in the session
+        $session = $request->getSession();
+        $username = $request->request->get("username");
+        $session->set("username",$username);
+        $session->set("logged",true);
+        //sets the max number of tasks in the session
+        $maxNumberOfTask = $this->getMaxNumberOfQuestions();
+        $session->set(static::STEP,1);
+        $session->set(static::MAX_STEPS,$maxNumberOfTask);
+        //creates user and session in the database
+        $participant        = Participant::createWithName($username);
+        $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
+        $participant->setSession($participantSession);
+        //it would be better if this controller is defined as a service as well
+        //gets the em from the IoC container
+        //doctrine.orm.default_entity_manager
+        $em = $this->getEntityManager();
+        $em->persist($participant);
+        $em->persist($participantSession);
+        $em->flush();
 
+        $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$participantSession);
        
 
         //redirects to the home
-        return $this->redirect("/");
+        return $this->redirectToIndex();
     }
 
     /**
@@ -200,7 +201,7 @@ class DefaultController extends BaseController
 
         if(!$isUserLogged)
         {
-            return $this->redirect("/");
+            return $this->redirectToIndex();
         }
 
         $session = $request->getSession();
@@ -217,6 +218,7 @@ class DefaultController extends BaseController
         return $this->render("default/thanks.html.twig");
 
     }
+
 
     /**
      * adds points to the user
@@ -309,6 +311,32 @@ class DefaultController extends BaseController
         $currentStep = $session->get(static::STEP);
         $nextStep    = $currentStep + 1;
         $session->set(static::STEP,$nextStep);
+    }
+
+
+    /**
+     * shows the next task or ends the questionaire depending of the number of task completed and the max of tasks defined
+     *
+     */
+    private function showNextTask($session)
+    {
+        $tasksCompleted = $session->get(static::STEP);
+        $maxTasks       = $session->get(static::MAX_STEPS);
+
+        $userShouldRespondMoreTasks = $tasksCompleted <= $maxTasks;
+        if($userShouldRespondMoreTasks)
+        {
+            return $this->redirectToIndex();
+        }
+        else
+        {
+            return $this->redirect("/logout");
+        }
+    }
+
+    private function redirectToIndex()
+    {
+        return $this->redirect("/");
     }
 
 }

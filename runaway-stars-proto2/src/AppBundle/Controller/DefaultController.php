@@ -21,10 +21,6 @@ class DefaultController extends BaseController
     /**
      * session key that holds the user's session object
      */
-    const USER_SESSION_SESSION_KEY  = "user-session";
-
-    const USER_RESPONSE_SESSION_KEY = "user-response";
-
     const STEP                      = "task-number"; 
 
     const MAX_STEPS                 = "max-tasks";
@@ -191,34 +187,6 @@ class DefaultController extends BaseController
         return $this->redirectToIndex();
     }
 
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logout(Request $request)
-    {
-          //TODO use a interceptor,filter or something to check session ending
-        $isUserLogged = $this->isUserLogged($request);
-
-        if(!$isUserLogged)
-        {
-            return $this->redirectToIndex();
-        }
-
-        $session = $request->getSession();
-        //this should be injected, to do this, this controller should be declared as a service
-        $em = $this->getEntityManager();
-        $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
-        //sets the user session as finished
-        $userSession->setEndedAt(new \Datetime('now'));
-        $em->persist($userSession);
-        $em->flush();
-        //closes the session
-        $session->clear();
-        //redirects the user to the end
-        return $this->render("default/thanks.html.twig");
-
-    }
-
 
     /**
      * adds points to the user
@@ -261,16 +229,6 @@ class DefaultController extends BaseController
 
 
         return $viewImages;
-    }
-
-    /**
-     * checks if the participant is logged
-     */
-    private function isUserLogged($request)
-    {
-        $session = $request->getSession();
-        $isUserLogged = $session->get("logged");
-        return $isUserLogged;
     }
 
 
@@ -330,7 +288,7 @@ class DefaultController extends BaseController
         }
         else
         {
-            return $this->redirect("/logout");
+            return $this->redirect("logout/");
         }
     }
 

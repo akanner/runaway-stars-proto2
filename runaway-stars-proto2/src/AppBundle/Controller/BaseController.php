@@ -18,10 +18,24 @@ use AppBundle\ViewObjects\ViewImage;
 class BaseController extends Controller
 {
 
+    const USER_SESSION_SESSION_KEY  = "user-session";
+
+    const USER_RESPONSE_SESSION_KEY = "user-response";
+
 	protected function getEntityManager()
 	{
 		return $this->get("doctrine.orm.default_entity_manager");
 	}
+
+     /**
+     * checks if the participant is logged
+     */
+    protected function isUserLogged($request)
+    {
+        $session = $request->getSession();
+        $isUserLogged = $session->get("logged");
+        return $isUserLogged;
+    }
 
     //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
     //TODO save only the entity's ID

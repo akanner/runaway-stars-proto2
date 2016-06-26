@@ -15,7 +15,7 @@ use AppBundle\Entity\ParticipantSession;
 //view objects 
 use AppBundle\ViewObjects\ViewImage;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
 
     /**
@@ -25,6 +25,8 @@ class DefaultController extends Controller
 
     const USER_RESPONSE_SESSION_KEY = "user-response";
 
+    const STEP                      = "task-number"; 
+
     /**
      * TODO inject it into a variable
      */
@@ -32,7 +34,9 @@ class DefaultController extends Controller
 
     const POINTS_REPO               = "pointsRepository";
 
-    const TRAINING_REPO             = "trainingRepository";
+    const PARAM_REPO                = "paramsRepository";
+
+    //const TRAINING_REPO             = "trainingRepository";
     
 
     /**
@@ -54,17 +58,10 @@ class DefaultController extends Controller
         //creates and saves the user response in the session, when the user answer us, it will be save in the db
         $session = $request->getSession();
         //this should be injected, to do this, that controller should be declared as a service
-        $em = $this->get("doctrine.orm.default_entity_manager");
-
+        $em = $this->getEntityManager();
         $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
         $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$randomImages);
         $this->serializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em,$participantResponse);
-
-
-
-
-
-
 
 
         //builds view's parameters
@@ -76,9 +73,7 @@ class DefaultController extends Controller
         //gets the images's paths and passes them to the view
         $viewParams["images"] = $this->getViewImages($randomImages);
         $viewParams["points"] = $userSession->getTotalPoints();
-        $viewParams["training_mode"] = false;
-        $viewParams["help_text"]     = $session->get("help-msj");
-
+        
         $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
         $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
         // replace this example code with whatever you need
@@ -110,20 +105,12 @@ class DefaultController extends Controller
         
         $imageRepository =$this->get(static::IMAGES_REPO);
         $session = $request->getSession();
+        $this->advanceNextStep($session);
         //this should be injected, to do this, this controller should be declared as a service
-        $em = $this->get("doctrine.orm.default_entity_manager");
+        $em = $this->getEntityManager();
         $imageSelected = $imageRepository->findOneById($userSubmission);
         //add points
-        $pointsRepository = $this->get(static::POINTS_REPO);
-
-        if($imageSelected->getIsCorrect())
-        {
-            $points = $pointsRepository->getPointsForCorrectAnswer();
-        }
-        else
-        {
-            $points = $pointsRepository->getPointsForIncorrectAnswer();
-        }
+        $points = $this->assignPoints($imageSelected);
         //although it was fun dealing with entities and the session, this experiment has to stop! haha
         $this->sumPoints($em,$session,$points);
         //handles the training mode
@@ -177,8 +164,10 @@ class DefaultController extends Controller
             $username = $request->request->get("username");
             $session->set("username",$username);
             $session->set("logged",true);
-            //$session->set("training-mode",true);
-            //$session->set("training-step",1);
+            //sets the max number of tasks in the session
+            $maxNumberOfTask = $this->getMaxNumberOfQuestions();
+            $session->set(static::STEP,1);
+            $session->set("max-tasks",$maxNumberOfTask);
             //creates user and session in the database
             $participant        = Participant::createWithName($username);
             $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
@@ -186,7 +175,7 @@ class DefaultController extends Controller
             //it would be better if this controller is defined as a service as well
             //gets the em from the IoC container
             //doctrine.orm.default_entity_manager
-            $em = $this->get("doctrine.orm.default_entity_manager");
+            $em = $this->getEntityManager();
             $em->persist($participant);
             $em->persist($participantSession);
             $em->flush();
@@ -216,12 +205,10 @@ class DefaultController extends Controller
 
         $session = $request->getSession();
         //this should be injected, to do this, this controller should be declared as a service
-        $em = $this->get("doctrine.orm.default_entity_manager");
+        $em = $this->getEntityManager();
         $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
         //sets the user session as finished
         $userSession->setEndedAt(new \Datetime('now'));
-        //this should be injected, to do that, this controller should be declared as a service
-        $em = $this->get("doctrine.orm.default_entity_manager");
         $em->persist($userSession);
         $em->flush();
         //closes the session
@@ -231,26 +218,6 @@ class DefaultController extends Controller
 
     }
 
-
-
-    //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
-    //TODO save only the entity's ID
-    //IF the entity manager would be injected,and this method were on a superclass and if the method were something like 
-    //storeEntityInSession($key,$entity) it could be a good idea, but the problem is that you need the entity manager and that 
-    //would not work with a service layer
-    private function serializeEntityIntoTheSession($session,$key,$em,$entity)
-    {
-        $em->detach($entity);
-        $session->set($key,$entity);
-    }
-    //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
-     //TODO save only the entity's ID
-    private function deserializeEntityIntoTheSession($session,$key,$em)
-    {
-        $entity = $session->get($key);
-        $entity = $em->merge($entity);
-        return $entity;
-    }
     /**
      * adds points to the user
      * The Experiment with the entities in the session has gone too far :P
@@ -299,19 +266,49 @@ class DefaultController extends Controller
      */
     private function isUserLogged($request)
     {
-
         $session = $request->getSession();
         $isUserLogged = $session->get("logged");
         return $isUserLogged;
     }
 
 
-     private function getTasksForQuestion($request)
+    private function getTasksForQuestion($request)
     {
         //it would be better if this controller is defined as a service as well
         //gets the image repository from the IoC container
         $imageRepository = $this->get(static::IMAGES_REPO);
         return $imageRepository->getRandomImages();
+    }
+
+    private function getMaxNumberOfQuestions()
+    {
+        $paramRepository = $this->get(static::PARAM_REPO);
+        return $paramRepository->getMaxNumberOfQuestions();
+    }
+    /**
+     * assigns points to the user's response
+     *
+     * @param 
+     *
+     * @return int points given to the user
+     *
+     */
+    private function assignPoints($imageSelected)
+    {
+        $pointsRepository = $this->get(static::POINTS_REPO);
+        $points = $pointsRepository->getPointsForIncorrectAnswer();
+        if($imageSelected->getIsCorrect())
+        {
+            $points = $pointsRepository->getPointsForCorrectAnswer();
+        }
+        return $points;
+    }
+
+    private function advanceNextStep($session)
+    {
+        $currentStep = $session->get(static::STEP);
+        $nextStep    = $currentStep + 1;
+        $session->set(static::STEP,$nextStep);
     }
 
 }

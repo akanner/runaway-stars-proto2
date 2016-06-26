@@ -80,11 +80,7 @@
                 {% endfor %}
             </div>
             <div class="row"><div class="col-md-12"></div></div>
-            <div class="row">
-                <div class="col-md-12">
-                    <p class="bg-success">{{help_text}}</p>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-md-1 col-md-offset-10">
                     <button type="button" id="answer-button" class="btn btn-lg btn-primary">Contestar!</button>
@@ -109,7 +105,5 @@
         <p id="correct-points">{{correct_points}}</p>
         <p id="inorrect-points">{{incorrect_points}}</p>
     </div>
-    <!-- training-mode -->
-    <p class="hidden" id="tmode">{{training_mode}}</p>
 
 {% endblock %}

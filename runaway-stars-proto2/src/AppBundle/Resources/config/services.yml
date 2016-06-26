@@ -25,3 +25,9 @@ services:
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\TrainingTask
+  paramsRepository:
+    class: Doctrine\ORM\AppParameterRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+      - AppBundle\Entity\AppParameter

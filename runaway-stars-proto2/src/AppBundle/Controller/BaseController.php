@@ -22,6 +22,8 @@ class BaseController extends Controller
 
     const USER_RESPONSE_SESSION_KEY = "user-response";
 
+    const GAMIFICATION_KEY          = "gamification-type"; 
+
 	protected function getEntityManager()
 	{
 		return $this->get("doctrine.orm.default_entity_manager");

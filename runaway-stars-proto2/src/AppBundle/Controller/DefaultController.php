@@ -15,6 +15,8 @@ use AppBundle\Entity\ParticipantSession;
 //view objects 
 use AppBundle\ViewObjects\ViewImage;
 
+use AppBundle\Utils\GamificationTypes;
+
 class DefaultController extends BaseController
 {
 
@@ -136,7 +138,17 @@ class DefaultController extends BaseController
         $postUrl = $this->generateUrl('logInUserResponse', array(), true);
         $viewParams = array();
         $viewParams["post_url"] = $postUrl;
-         return $this->render('default/login.html.twig',$viewParams);
+
+         //sets the type of gamification depending of an initial parameter in the URL
+        $session = $request->getSession();
+        $gamificationType = $request->query->get("gamification");
+        
+        $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_LEVEL);
+        if($gamificationType && $gamificationType == GamificationTypes::GAMIFICATION_BADGES)
+        {
+            $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_BADGES);
+        }
+        return $this->render('default/login.html.twig',$viewParams);
     }
 
     /**
@@ -160,14 +172,8 @@ class DefaultController extends BaseController
         }
         //-------------------------------------------------------------------
         //stores user's name in the session
-        $session = $request->getSession();
-        $username = $request->request->get("username");
-        $session->set("username",$username);
-        $session->set("logged",true);
-        //sets the max number of tasks in the session
-        $maxNumberOfTask = $this->getMaxNumberOfQuestions();
-        $session->set(static::STEP,1);
-        $session->set(static::MAX_STEPS,$maxNumberOfTask);
+        
+        $session = $this->initializeSession($request);
         //creates user and session in the database
         $participant        = Participant::createWithName($username);
         $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
@@ -185,6 +191,28 @@ class DefaultController extends BaseController
 
         //redirects to the home
         return $this->redirectToIndex();
+    }
+
+    private function initializeSession($request)
+    {
+        $session = $request->getSession();
+        $username = $request->request->get("username");
+        $session->set("username",$username);
+        $session->set("logged",true);
+        //sets the max number of tasks in the session
+        $maxNumberOfTask = $this->getMaxNumberOfQuestions();
+        $session->set(static::STEP,1);
+        $session->set(static::MAX_STEPS,$maxNumberOfTask);
+        //sets the type of gamification depending of an initial parameter in the URL
+        $gamificationType = $request->request->get("gamification");
+        var_dump($gamificationType);exit;
+        $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_LEVEL);
+        if($gamificationType && $gamificationType == GamificationTypes::GAMIFICATION_BADGES)
+        {
+            $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_BADGES);
+        }
+
+        return $session;
     }
 
 

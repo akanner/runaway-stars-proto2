@@ -57,4 +57,17 @@ class BaseController extends Controller
         $entity = $em->merge($entity);
         return $entity;
     }
+
+    /**
+     * gets gets the URL of an image
+     *
+     * @param string    $imageName     image's name
+     *
+     * @return string image's URL
+     *
+     */
+    protected function getImageUrl($imageName)
+    {
+        return "images/$imageName";
+    }
 }

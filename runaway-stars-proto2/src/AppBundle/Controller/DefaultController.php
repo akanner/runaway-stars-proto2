@@ -142,12 +142,12 @@ class DefaultController extends BaseController
          //sets the type of gamification depending of an initial parameter in the URL
         $session = $request->getSession();
         $gamificationType = $request->query->get("gamification");
-        
-        $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_LEVEL);
-        if($gamificationType && $gamificationType == GamificationTypes::GAMIFICATION_BADGES)
+        if(!GamificationTypes::isAValidGamificationType($gamificationType))
         {
-            $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_BADGES);
+            $gamificationType = GamificationTypes::GAMIFICATION_LEVEL;
         }
+        $session->set(static::GAMIFICATION_KEY,$gamificationType);
+
         return $this->render('default/login.html.twig',$viewParams);
     }
 
@@ -204,14 +204,6 @@ class DefaultController extends BaseController
         $maxNumberOfTask = $this->getMaxNumberOfQuestions();
         $session->set(static::STEP,1);
         $session->set(static::MAX_STEPS,$maxNumberOfTask);
-        //sets the type of gamification depending of an initial parameter in the URL
-        $gamificationType = $request->request->get("gamification");
-
-        $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_LEVEL);
-        if($gamificationType && $gamificationType == GamificationTypes::GAMIFICATION_BADGES)
-        {
-            $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_BADGES);
-        }
 
         return $session;
     }
@@ -231,21 +223,7 @@ class DefaultController extends BaseController
         $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$userSession);
     }
 
-    /**
-     * gets gets the URL of an image
-     *
-     * @param string    $imageName     image's name
-     *
-     * @return string image's URL
-     *
-     */
-    private function getImageUrl($imageName)
-    {
-     return $this
-        ->get('templating.name_parser')
-        ->parse("images/$imageName")
-        ->getPath();
-    }
+    
 
     private function getViewImages($images)
     {

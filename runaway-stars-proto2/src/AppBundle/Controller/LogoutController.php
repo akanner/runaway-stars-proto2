@@ -53,8 +53,22 @@ class LogoutController extends BaseController
         //closes the session
         $session->clear();
         //redirects the user to the end
-        return $this->render("logout/levels.html.twig",$viewParams);
+        $viewName = $this->getGamificationTypeView($gamificationType);
+        return $this->render($viewName,$viewParams);
 
+    }
+
+    private function getGamificationTypeView($gamificationType)
+    {
+        switch ($gamificationType) 
+        {
+            case GamificationTypes::GAMIFICATION_BADGES:
+                return "logout/badges.html.twig";
+            case GamificationTypes::GAMIFICATION_LEVEL:
+                return "logout/levels.html.twig";
+            default:
+                return "logout/no-gamification.html.twig";
+        }
     }
 
 
@@ -80,7 +94,7 @@ class LogoutController extends BaseController
 
     private function getLevelsResult($percentajeOfCorrectness)
     {
-        //migrate to DATABASE!!!
+        //migrate this to DATABASE!!!
         $gamificationResult = [];
         $gamificationResult["level"] = "Principiante";
         $gamificationResult["legend"]= 'Ten&eacute;s que seguir practicando!';
@@ -92,6 +106,27 @@ class LogoutController extends BaseController
         if($percentajeOfCorrectness >= 66)
         {
             $gamificationResult["level"] = "Experto";
+            $gamificationResult["legend"]= 'Seguro qu&eacute; no sos un astr&oacute;nomo?';
+        }
+
+        return $gamificationResult;
+
+    }
+
+    private function getBadgesResult($percentajeOfCorrectness)
+    {
+        //migrate this to DATABASE!!!
+        $gamificationResult = [];
+        $gamificationResult["level"] = $this->getImageUrl("gb1.jpg");
+        $gamificationResult["legend"]= 'Ganaste la medalla de principiante, &iquest;te anim&aacute;s a ganar la siguiente?';
+        if($percentajeOfCorrectness >= 33)
+        {
+            $gamificationResult["level"] = $this->getImageUrl("gb2.jpg");
+            $gamificationResult["legend"]= 'Buen Trabajo...demostraste que ya podes identificar algunas runaway stars...pero todavia pod$eacute;s mejorar!';
+        }
+        if($percentajeOfCorrectness >= 66)
+        {
+            $gamificationResult["level"] = $this->getImageUrl("gb3.jpg");
             $gamificationResult["legend"]= 'Seguro qu&eacute; no sos un astr&oacute;nomo?';
         }
 

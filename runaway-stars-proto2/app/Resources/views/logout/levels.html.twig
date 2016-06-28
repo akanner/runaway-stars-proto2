@@ -1,0 +1,19 @@
+{% extends 'logout/index.html.twig' %}
+
+{% block result %}
+	 <div class="row">
+		<div class="col-md-12">
+	    	<h3 class="text-center">Tu nivel es:</h3>
+	    </div>
+	</div>
+	 <div class="row">
+		<div class="col-md-12">
+	    	<h2 class="text-center">{{ level|raw }}</h2>
+	    </div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+	    	<p class="text-center">{{ legend|raw }}</p>
+	    </div>
+	</div>
+{% endblock %}

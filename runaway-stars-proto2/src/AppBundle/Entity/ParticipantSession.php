@@ -258,7 +258,11 @@ class ParticipantSession
     public function getNumberOfCorrectResponses()
     {
         $correctResponses = $this->responses->filter(function($response){return $response->isCorrect();});
-        \Doctrine\Common\Util\Debug::dump($correctResponses);exit;
         return count($correctResponses);
+    }
+
+    public function getPercentageOfCorrectTasks()
+    {
+        return $this->getNumberOfCorrectResponses() * 100 / $this->getNumberOfResponses();
     }
 }

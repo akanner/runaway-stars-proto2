@@ -174,6 +174,7 @@ class DefaultController extends BaseController
         //stores user's name in the session
         
         $session = $this->initializeSession($request);
+        $username = $request->request->get("username");
         //creates user and session in the database
         $participant        = Participant::createWithName($username);
         $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
@@ -205,7 +206,7 @@ class DefaultController extends BaseController
         $session->set(static::MAX_STEPS,$maxNumberOfTask);
         //sets the type of gamification depending of an initial parameter in the URL
         $gamificationType = $request->request->get("gamification");
-        var_dump($gamificationType);exit;
+
         $session->set(static::GAMIFICATION_KEY,GamificationTypes::GAMIFICATION_LEVEL);
         if($gamificationType && $gamificationType == GamificationTypes::GAMIFICATION_BADGES)
         {

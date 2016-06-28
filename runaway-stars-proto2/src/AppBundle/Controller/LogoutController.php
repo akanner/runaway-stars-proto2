@@ -15,6 +15,8 @@ use AppBundle\Entity\ParticipantSession;
 //view objects 
 use AppBundle\ViewObjects\ViewImage;
 
+use AppBundle\Utils\GamificationTypes;
+
 class LogoutController extends BaseController
 {
 
@@ -39,10 +41,61 @@ class LogoutController extends BaseController
         $userSession->setEndedAt(new \Datetime('now'));
         $em->persist($userSession);
         $em->flush();
+
+        $viewParams = [];
+        $gamificationType = $this->getGamificationType($session);
+        $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$userSession->getPercentageOfCorrectTasks());
+        $viewParams["back_url"]      = $this->generateUrl('logInUser', array(), true);
+        $viewParams["gamType"]       = $gamificationType;   
+        $viewParams["level"]         = $gamificationResult["level"];
+        $viewParams["legend"]        = $gamificationResult["legend"];
+
         //closes the session
         $session->clear();
         //redirects the user to the end
-        return $this->render("logout/index.html.twig");
+        return $this->render("logout/levels.html.twig",$viewParams);
+
+    }
+
+
+    private function getGamificationType($session)
+    {
+        return $session->get(static::GAMIFICATION_KEY);
+    }
+
+    private function getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$percentajeOfCorrectness)
+    {
+        $gamificationResult = [];
+        if(GamificationTypes::GAMIFICATION_BADGES == $gamificationType)
+        {
+            $gamificationResult = $this->getBadgesResult($percentajeOfCorrectness);
+        }
+        else
+        {
+            $gamificationResult = $this->getLevelsResult($percentajeOfCorrectness);
+        }
+
+        return $gamificationResult;
+    }
+
+    private function getLevelsResult($percentajeOfCorrectness)
+    {
+        //migrate to DATABASE!!!
+        $gamificationResult = [];
+        $gamificationResult["level"] = "Principiante";
+        $gamificationResult["legend"]= 'Ten&eacute;s que seguir practicando!';
+        if($percentajeOfCorrectness >= 33)
+        {
+            $gamificationResult["level"] = "Intermedio";
+            $gamificationResult["legend"]= 'Buen Trabajo...pero pod$eacute;s mejorar!';
+        }
+        if($percentajeOfCorrectness >= 66)
+        {
+            $gamificationResult["level"] = "Experto";
+            $gamificationResult["legend"]= 'Seguro qu&eacute; no sos un astr&oacute;nomo?';
+        }
+
+        return $gamificationResult;
 
     }
 

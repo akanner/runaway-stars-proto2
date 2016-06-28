@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.7.9, for linux-glibc2.5 (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.47, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: db_runaway_proto
 -- ------------------------------------------------------
@@ -36,8 +36,33 @@ CREATE TABLE `answer_points` (
 
 LOCK TABLES `answer_points` WRITE;
 /*!40000 ALTER TABLE `answer_points` DISABLE KEYS */;
-INSERT INTO `answer_points` VALUES (1,5,'correct'),(2,0,'incorrect');
+INSERT INTO `answer_points` VALUES (1,5,'correct'),(2,5,'incorrect');
 /*!40000 ALTER TABLE `answer_points` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_parameter`
+--
+
+DROP TABLE IF EXISTS `app_parameter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_parameter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=big5;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_parameter`
+--
+
+LOCK TABLES `app_parameter` WRITE;
+/*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
+INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','10');
+/*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -52,7 +77,7 @@ CREATE TABLE `image` (
   `file_path` varchar(255) NOT NULL,
   `is_correct` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +86,7 @@ CREATE TABLE `image` (
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (1,'1.jpg',0),(2,'2.jpg',0),(3,'3.jpg',0),(4,'4.jpg',0),(5,'5.jpg',1);
+INSERT INTO `image` VALUES (6,'HIP2036.jpg',1),(7,'HIP22783.jpg',1),(8,'HIP32067.jpg',1),(9,'HIP34536.jpg',1),(10,'HIP82171.jpg',1),(11,'HIP398.jpg',0),(12,'HIP505.jpg',0),(13,'HIP14969.jpg',0),(14,'HIP14969.png',0),(15,'HIP29201.jpg',0),(16,'HIP48730.jpg',0),(17,'HIP61958.jpg',0),(18,'HIP92133.jpg',0),(19,'HIP99303.jpg',0),(20,'HIP110386.jpg',0),(21,'HIP114482.jpg',0);
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,8 +101,17 @@ CREATE TABLE `participant` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `participant`
+--
+
+LOCK TABLES `participant` WRITE;
+/*!40000 ALTER TABLE `participant` DISABLE KEYS */;
+/*!40000 ALTER TABLE `participant` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `participant_response`
@@ -107,8 +141,17 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `participant_response`
+--
+
+LOCK TABLES `participant_response` WRITE;
+/*!40000 ALTER TABLE `participant_response` DISABLE KEYS */;
+/*!40000 ALTER TABLE `participant_response` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `participant_session`
@@ -127,8 +170,17 @@ CREATE TABLE `participant_session` (
   PRIMARY KEY (`id`),
   KEY `fk_session_participant_participant_idx` (`participant_id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `participant_session`
+--
+
+LOCK TABLES `participant_session` WRITE;
+/*!40000 ALTER TABLE `participant_session` DISABLE KEYS */;
+/*!40000 ALTER TABLE `participant_session` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `training_task`
@@ -151,7 +203,7 @@ CREATE TABLE `training_task` (
   CONSTRAINT `fk_training_task_image1` FOREIGN KEY (`first_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_training_task_image2` FOREIGN KEY (`second_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_training_task_image3` FOREIGN KEY (`third_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +212,6 @@ CREATE TABLE `training_task` (
 
 LOCK TABLES `training_task` WRITE;
 /*!40000 ALTER TABLE `training_task` DISABLE KEYS */;
-INSERT INTO `training_task` VALUES (1,1,'PASO 1 AYUDA',5,3,4),(2,2,'PASO 2 AYUDA',3,5,1),(3,3,'PASO 3 AYUDA',1,2,5);
 /*!40000 ALTER TABLE `training_task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -173,4 +224,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-20  3:06:52
+-- Dump completed on 2016-06-28  1:29:44

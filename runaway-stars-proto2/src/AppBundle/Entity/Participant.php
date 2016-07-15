@@ -22,6 +22,20 @@ class Participant
     /**
      * @var integer
      *
+     * @ORM\Column(name="age", type="integer", nullable=true)
+     */
+    private $age;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="string", length=45, nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -35,13 +49,17 @@ class Participant
      */
     private $session;
 
-    public static function  createWithName($name)
-    {
-        $user = new Participant();
-        $user->setName($name);
+    
 
-        return $user;
-    }
+    public static function createWithNameAgeAndGender($username,$age,$gender)
+        {
+            $participant = new Participant();
+            $participant->setName($username);
+            $participant->setAge($age);
+            $participant->setGender($gender);
+
+            return $participant;
+        }
 
     /**
      * Set name
@@ -64,6 +82,52 @@ class Participant
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set age
+     *
+     * @param integer $age
+     * @return Participant
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * Get age
+     *
+     * @return integer 
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     * @return Participant
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string 
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 
     /**

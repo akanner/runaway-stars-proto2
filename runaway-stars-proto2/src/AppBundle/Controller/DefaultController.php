@@ -174,9 +174,12 @@ class DefaultController extends BaseController
         //stores user's name in the session
         
         $session = $this->initializeSession($request);
+        //gets user's data
         $username = $request->request->get("username");
+        $age      = $request->request->get("age");
+        $gender   = $request->request->get("gender");    
         //creates user and session in the database
-        $participant        = Participant::createWithName($username);
+        $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
         $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
         $participant->setSession($participantSession);
         //it would be better if this controller is defined as a service as well

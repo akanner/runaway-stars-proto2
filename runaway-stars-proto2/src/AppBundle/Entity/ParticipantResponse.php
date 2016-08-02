@@ -81,6 +81,12 @@ class ParticipantResponse
      */
     private $firstImageServed;
 
+    /**
+     * @var integer
+     *
+     */
+    private $pointsEarned;
+
 
     public static function createFromSessionAndImages($userSession,$images)
     {
@@ -252,5 +258,27 @@ class ParticipantResponse
     public function isCorrect()
     {
         return $this->getCorrectImage() == $this->getSelectedImage();
+    }
+    /**
+     * Set points
+     *
+     * @param integer $pointsEarned
+     * @return ParticipantResponse
+     */
+    public function setPointsEarned($points)
+    {
+        $this->pointsEarned = $points;
+
+        return $this;
+    }
+
+    /**
+     * Get pointsEarned
+     *
+     * @return integer 
+     */
+    public function getPointsEarned()
+    {
+        return $this->pointsEarned;
     }
 }

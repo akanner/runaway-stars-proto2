@@ -118,6 +118,7 @@ class DefaultController extends BaseController
         $userResponse = $this->deserializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em);
         //sets the user's actual response and saves it in the database
         $userResponse->setSelectedImage($imageSelected);
+        $userResponse->setPointsEarned($points);
         
         $em->persist($userResponse);
         $em->flush();

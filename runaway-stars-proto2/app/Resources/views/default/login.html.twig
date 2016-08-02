@@ -2,11 +2,19 @@
 {% block body %}
 	<div class=container>
 		<h2>Prototipo Runaway Stars</h2>
-		<form method="POST" action="{{post_url}}" class="form-inline">
+		<form method="POST" action="{{post_url}}" class="form">
 			<div class="from-group">
 				<label class="sr-only" for="username">Ingrese su nombre</label>
 				<div class="input-group">
-      				<input type="text" class="form-control" name="username" id="username" placeholder="Ingrese su nombre" required="required">
+      				<input type="text" class="form-control" name="username" id="username" placeholder="Nombre" required="required">
+    			</div>
+    			<label class="sr-only" for="age">Ingrese su edad</label>
+				<div class="input-group">
+      				<input type="number" class="form-control" name="age" id="age" placeholder="Edad" required="required">
+    			</div>
+    			<label class="sr-only" for="gender">Ingrese su genero</label>
+				<div class="input-group">
+      				<input type="text" class="form-control" name="gender" id="gender" placeholder="Genero" required="required">
     			</div>
 				<button type="submit" class="btn btn-primary">Comenzar!</button>
 			</div>

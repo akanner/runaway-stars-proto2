@@ -1,24 +1,135 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<style type="text/css">
+	.odd{
+		background-color: #eee;
+	}
+	</style>
+{% endblock %}
 {% block body %}
-	<div class=container>
-		<h2>Prototipo Runaway Stars</h2>
-		<form method="POST" action="{{post_url}}" class="form">
-			<div class="from-group">
-				<label class="sr-only" for="username">Ingrese su nombre</label>
-				<div class="input-group">
-      				<input type="text" class="form-control" name="username" id="username" placeholder="Nombre" required="required">
-    			</div>
-    			<label class="sr-only" for="age">Ingrese su edad</label>
-				<div class="input-group">
-      				<input type="number" class="form-control" name="age" id="age" placeholder="Edad" required="required">
-    			</div>
-    			<label class="sr-only" for="gender">Ingrese su genero</label>
-				<div class="input-group">
-      				<input type="text" class="form-control" name="gender" id="gender" placeholder="Genero" required="required">
-    			</div>
-				<button type="submit" class="btn btn-primary">Comenzar!</button>
+
+        <div class="jumbotron">
+	      <div class="container">
+	        <h1>Prototipo Runaway Stars</h1>
+	        <h2>&iquest;De Que Se Trata Este Prototipo?</h2>
+	        <p>
+	        	Dadas 3 imagenes, deberas intentar reconocer cual de ellas contiene una <i>runaway star</i>.
+	        </p>
+	        <p>
+	        	Por cada respuesta se te otorgaran puntos con contestar, dichos puntos no dependeran del resultado de la pregunta (correcto o incorrecto).
+	        </p>
+	        <p>
+	        	No tenes que tener miedo de equivocarte, lo importante es participar. 
+	        </p>
+	        
+	      </div>
+	    </div>
+	<div class="container-fluid">
+		<div class="row">
+
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<h2>&iquest;Que es una <i>Runaway Star</i>?</h2>
+				<p class="lead">
+					Las estrellas de alta velocidad, o <i>runaway stars</i>, se mueven a decenas de km/s, perturban el medio
+					por donde se mueven y así producen diferentes tipos de estructuras que podemos
+					ver a simple vista en su entorno.
+				</p>
+				<p class="lead">
+					Estas estructuras pueden estar muy bien definidas y ser tipo arcos y verse
+					claramente separadas de la estrella, pero también pueden ser nebulosas muy
+					irregulares y/o estar mezcladas con las estrellas. Incluso, en algunos casos,
+					pueden confundirse con estructuras más grandes, pero aún así, se pueden
+					identificar.
+				</p>
+				<h2>&iquest;Como reconocerlas?</h2>
+				<p class="lead">Existen infinidad de casos distintos de <i>Runaway stars</i>, sin embargo podemos agruparlas en 2 grandes categorias:</p>
 			</div>
-		</form>
+		</div>
+
+		<div class="row odd">
+			<div class="col-md-3 col-md-offset-2">
+				{% image "@AppBundle/Resources/public/images/bowshock_small.jpg" %}
+					<img class="img-responsive thumbnail" src="{{ asset_url }}" alt="clear bow-shock">
+				{% endimage %}
+			</div>
+			<div class="col-md-5"> 
+				<h3><i>Runaway Star</i> con Arco Definido</h3>
+
+				<p>En la imagen de la izquierda se puede ver claramente un arco de color rojo.</p>
+				<p>Esto podria indicarnos la presencia de una <i>runaway star</i></p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-5 col-md-offset-2">
+				<h3><i>Runaway Star</i> con Arco indefinido o nebuloso</h3>
+				<p>En la imagen de la derecha se puede ver un arco menos definido, muy parecido a una nube, de color rojo.</p>
+				<p>La precencia de este arco indefinido podria indicarnos la presencia de una <i>runaway star</i></p>
+			</div>
+			<div class="col-md-3">
+				{% image '@AppBundle/Resources/public/images/bowshock2_small.jpg' %}
+					<img src="{{ asset_url }}" alt="nebulous bow-shock" class="img-responsive thumbnail">
+				{% endimage %}
+			</div>
+		</div>
+
+		<div class="row odd">
+			<div class="col-md-3 col-md-offset-2">
+				{% image '@AppBundle/Resources/public/images/no_bowshock_small.jpg' %}
+				<img src='{{ asset_url }}' alt="no bow-shock" class="img-responsive thumbnail">
+				{% endimage %}
+			</div>
+			<div class="col-md-5">
+				<h3>&iquest;Como Se que No Hay Una <i>Runaway Star</i>?</h3>
+				<p>En la imagen de la izquierda no vemos una figura parecida a un arco.</p>
+				<p>Sin la precencia de una de estas figuras, no podriamos indicar que, en la imagen, exista una<i>runaway star</i></p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-offset-2">
+				<h3>&iquest;Que hago si no estoy seguro?</h3>
+				<p><span class="lead">No hay problema!</span><span> simplemente seleccion&aacute; la que creas que es correcta!</span></p>
+				<p>Recorda que tu participacion es m&aacute; importante que obtener las mejores respuestas</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-offset-2">
+				<h3>&iquest;Como hago para participar?</h3>
+
+				<p>Simplemente complet&aacute; el siguiente formulario para comenzar!</p>
+			</div>
+		</div>
+		<div class="init-form">
+			<form method="POST" action="{{post_url}}" class="form">
+				 <div class="form-group row">
+				    <label for="username" class="col-form-label col-md-offset-2 col-md-1">Ingrese su nombre:</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="username" id="username" placeholder="Nombre" required="required">
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				    <label for="age" class="col-form-label col-md-offset-2 col-md-1">Ingrese su edad:</label>
+				    <div class="col-md-4">
+				      <input type="number" class="form-control" name="age" id="age" placeholder="Edad" required="required">
+				    </div>
+				  </div>
+				   <div class="form-group row">
+				    <label for="gender" class="col-form-label col-md-offset-2 col-md-1">Ingrese su genero:</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="gender" id="gender" placeholder="Genero" required="required">
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				  	<div class="col-md-offset-3">
+				  		<button type="submit" class="btn btn-primary">Comenzar!</button>
+				  	</div>
+						
+				 </div>
+			</form>
+		</div>
 	</div>
 	
 {% endblock %}

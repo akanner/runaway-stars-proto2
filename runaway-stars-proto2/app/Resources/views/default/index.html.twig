@@ -114,9 +114,9 @@
                                  <label for="answerRadio{{img.id}}"><img class="img-responsive" src="{{ absolute_url(img.path) }}"/></label>
                             </div>
                         </div>
-                        <div class="row answer hidden">
-                            <div class="col-md-4 col-md-offset-4">
-                               <strong class="answerText {{img.cssClass}}">{{img.text}}</strong>
+                        <div class="row">
+                          <div class="col-md-12 hidden answer">
+                               <p class="answerText {{img.cssClass}} text-center">{{img.text}}</p>
                                <p class="answerValue hidden">{{img.correct}}</p>
                            </div>
                         </div>

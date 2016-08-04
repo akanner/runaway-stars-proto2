@@ -52,20 +52,31 @@
         padding-top: 70px;
       }
     </style>
-   
+
 {% endblock %}
 {% block javascripts %}
 <script src="js/lib.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 <script type="text/javascript">
 
-
+    //delay de form submittion for 3 seconds and shows an animation
+    $( "#runaway-stars-form" ).submit(function( event ) {
+        //shows animation
+        $.blockUI({ message: $('#throbber') });
+        //delay for 3 seconds
+        form = this;
+       event.preventDefault();
+       setTimeout( function () {
+           form.submit();
+       }, 1000);
+    });
     //enables submit button
     $( "#answer-button" ).on( "click", function( event ) {
       //validates the form
       formSelector = "#runaway-stars-form";
       form          = $(formSelector);
       //don't ignore the hidden fields please!!
-      $.validator.setDefaults({ 
+      $.validator.setDefaults({
           ignore: [],
       })
       //no messages are displayed
@@ -96,8 +107,10 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row" id="score-div">
-            <div class="col-md-10"></div>
             <div class="col-md-2">
+                <h3>Pregunta <span id="current-task">{{current_step}}</span> de <span id="total-questions">{{max_step}}</span></h3>
+            </div>
+            <div class="col-md-2 col-md-offset-8">
                 <h3>PUNTOS: <span id="score">{{points}}</span></h3>
             </div>
         </div>
@@ -109,7 +122,7 @@
                 {% for img in images %}
                     <div class="star-container col-md-4 col-md-4">
                         <div class="row">
-                            <div class="col-md-12">                                
+                            <div class="col-md-12">
                                  <input class="radio hidden" type="radio" name="answer" id="answerRadio{{img.id}}" required="required" value="{{img.id}}">
                                  <label for="answerRadio{{img.id}}"><img class="img-responsive" src="{{ absolute_url(img.path) }}"/></label>
                             </div>
@@ -124,7 +137,7 @@
                 {% endfor %}
             </div>
             <div class="row"><div class="col-md-12"></div></div>
-            
+
             <div class="row">
                 <div class="col-md-1 col-md-offset-10">
                     <button type="button" id="answer-button" class="btn btn-lg btn-primary">Contestar!</button>
@@ -134,12 +147,17 @@
                 </div>
             </div>
         </form>
-    </div>  
+    </div>
 
     <!-- points -->
     <div class="hidden" id="div-points">
         <p id="correct-points">{{correct_points}}</p>
         <p id="inorrect-points">{{incorrect_points}}</p>
+    </div>
+    <div id="throbber" style="display:none;">
+        {% image "@AppBundle/Resources/public/images/ajax-loader.gif" %}
+            <img  src="{{ asset_url }}" alt="wait">
+        {% endimage %}
     </div>
 
 {% endblock %}

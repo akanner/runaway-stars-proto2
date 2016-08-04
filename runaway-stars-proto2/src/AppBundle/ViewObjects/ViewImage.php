@@ -8,23 +8,23 @@ class ViewImage
 {
 	public $id;
 	public $path;
-	public $correctText;
+	public $text;
 	public $correct;
 	public $cssClass;
 
-	function __construct($id,$path,$correct)
+	function __construct($id,$path,$correct,$correctText="Correcta",$incorrectText="Incorrecta")
 	{
 		$this->id 		= $id;
 		$this->path 	= $path;
 		if($correct)
 		{
-			$this->correctText	= "Correcta";
+			$this->text			= $correctText;
 			$this->correct		= "true";
 			$this->cssClass		= "bg-success";
 		}
 		else
 		{
-			$this->correctText 	= "Incorrecta";
+			$this->text 		= $incorrectText;
 			$this->correct		= "false";
 			$this->cssClass		= "bg-danger";
 		}

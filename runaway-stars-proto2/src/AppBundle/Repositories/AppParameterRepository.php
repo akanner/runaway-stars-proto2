@@ -28,4 +28,16 @@ class AppParameterRepository extends EntityRepository
 		$maxQuestions = $maxQuestionsParam->getValue();
 		return intval($maxQuestions);
 	}
+
+	public function getCorrectAnswerText()
+	{
+		$correctText = $this->findOneByKey("CORRECT_ANSWER_TEXT")->getValue();
+		return $correctText;
+	}
+
+	public function getIncorrectAnswerText()
+	{
+		$incorrectText = $this->findOneByKey("INCORRECT_ANSWER_TEXT")->getValue();
+		return $incorrectText;
+	}
 }

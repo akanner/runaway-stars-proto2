@@ -232,10 +232,18 @@ class DefaultController extends BaseController
     private function getViewImages($images)
     {
         $viewImages = array();
+        $paramRepository    = $this->get(static::PARAM_REPO);
+        $correctText        = $paramRepository->getCorrectAnswerText();
+        $incorrectText      = $paramRepository->getIncorrectAnswerText();
         foreach ($images as $img) 
         {
-            $viewImages[] = new \AppBundle\ViewObjects\ViewImage($img->getId(),
-                $this->getImageUrl($img->getFilePath()),$img->getIsCorrect());
+            $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
+                $img->getId(),
+                $this->getImageUrl($img->getFilePath())
+                ,$img->getIsCorrect()
+                ,$correctText
+                ,$incorrectText
+                );
         }
 
 

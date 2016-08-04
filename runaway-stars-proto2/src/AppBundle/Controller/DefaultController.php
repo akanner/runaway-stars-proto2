@@ -12,7 +12,7 @@ use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
 
-//view objects 
+//view objects
 use AppBundle\ViewObjects\ViewImage;
 
 use AppBundle\Utils\GamificationTypes;
@@ -23,7 +23,7 @@ class DefaultController extends BaseController
     /**
      * session key that holds the user's session object
      */
-    const STEP                      = "task-number"; 
+    const STEP                      = "task-number";
 
     const MAX_STEPS                 = "max-tasks";
 
@@ -37,7 +37,7 @@ class DefaultController extends BaseController
     const PARAM_REPO                = "paramsRepository";
 
     //const TRAINING_REPO             = "trainingRepository";
-    
+
 
     /**
      * @Route("/", name="homepage")
@@ -73,7 +73,10 @@ class DefaultController extends BaseController
         //gets the images's paths and passes them to the view
         $viewParams["images"] = $this->getViewImages($randomImages);
         $viewParams["points"] = $userSession->getTotalPoints();
-        
+        //gets current and max steps
+        $viewParams["current_step"]  = $session->get(static::STEP);
+        $viewParams["max_step"]      = $session->get(static::MAX_STEPS);
+
         $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
         $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
         // replace this example code with whatever you need
@@ -82,7 +85,7 @@ class DefaultController extends BaseController
 
 
 
-    
+
 
 
     /**
@@ -102,7 +105,7 @@ class DefaultController extends BaseController
         {
             return $this->redirectToIndex();
         }
-        
+
         $imageRepository =$this->get(static::IMAGES_REPO);
         $session = $request->getSession();
         $this->advanceNextStep($session);
@@ -119,7 +122,7 @@ class DefaultController extends BaseController
         //sets the user's actual response and saves it in the database
         $userResponse->setSelectedImage($imageSelected);
         $userResponse->setPointsEarned($points);
-        
+
         $em->persist($userResponse);
         $em->flush();
 
@@ -145,7 +148,7 @@ class DefaultController extends BaseController
         $gamificationType = $request->query->get("gamification");
         if(!GamificationTypes::isAValidGamificationType($gamificationType))
         {
-            $gamificationType = GamificationTypes::GAMIFICATION_LEVEL;
+            $gamificationType = GamificationTypes::GAMIFICATION_BADGES;
         }
         $session->set(static::GAMIFICATION_KEY,$gamificationType);
 
@@ -163,7 +166,7 @@ class DefaultController extends BaseController
     {
         //TODO use a interceptor,filter or something to check session ending
         //-------------------------------------------------------------------
-       
+
         //if the user is already logged, we redirect it to the home page
         $isUserLogged = $this->isUserLogged($request);
         if($isUserLogged)
@@ -173,12 +176,12 @@ class DefaultController extends BaseController
         }
         //-------------------------------------------------------------------
         //stores user's name in the session
-        
+
         $session = $this->initializeSession($request);
         //gets user's data
         $username = $request->request->get("username");
         $age      = $request->request->get("age");
-        $gender   = $request->request->get("gender");    
+        $gender   = $request->request->get("gender");
         //creates user and session in the database
         $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
         $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
@@ -192,7 +195,7 @@ class DefaultController extends BaseController
         $em->flush();
 
         $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$participantSession);
-       
+
 
         //redirects to the home
         return $this->redirectToIndex();
@@ -227,12 +230,12 @@ class DefaultController extends BaseController
         $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$userSession);
     }
 
-    
+
 
     private function getViewImages($images)
     {
         $viewImages = array();
-        foreach ($images as $img) 
+        foreach ($images as $img)
         {
             $viewImages[] = new \AppBundle\ViewObjects\ViewImage($img->getId(),
                 $this->getImageUrl($img->getFilePath()),$img->getIsCorrect());
@@ -259,7 +262,7 @@ class DefaultController extends BaseController
     /**
      * assigns points to the user's response
      *
-     * @param 
+     * @param
      *
      * @return int points given to the user
      *

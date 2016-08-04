@@ -124,12 +124,13 @@
                         <div class="row">
                             <div class="col-md-12">
                                  <input class="radio hidden" type="radio" name="answer" id="answerRadio{{img.id}}" required="required" value="{{img.id}}">
-                                 <label for="answerRadio{{img.id}}"><img class="img-responsive" src="{{ absolute_url(img.path) }}"/></label>
+                                 <label for="answerRadio{{img.id}}"><img class="img-responsive star-image" src="{{ absolute_url(img.path) }}"/></label>
                             </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12 hidden answer">
                                <p class="answerText {{img.cssClass}} text-center">{{img.text}}</p>
+                               <img class="hidden marked-image" src="{{ absolute_url(img.markedBowshockImage) }}"/>
                                <p class="answerValue hidden">{{img.correct}}</p>
                            </div>
                         </div>
@@ -152,7 +153,7 @@
     <!-- points -->
     <div class="hidden" id="div-points">
         <p id="correct-points">{{correct_points}}</p>
-        <p id="inorrect-points">{{incorrect_points}}</p>
+        <p id="incorrect-points">{{incorrect_points}}</p>
     </div>
     <div id="throbber" style="display:none;">
         {% image "@AppBundle/Resources/public/images/ajax-loader.gif" %}

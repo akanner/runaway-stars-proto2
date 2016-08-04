@@ -36,6 +36,39 @@ class Image
     private $id;
 
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="marked_bowshock_image", type="string", length=255, nullable=false)
+     */
+     /**
+      * this value holds a reference to an image that has the bowshock marked up, this image will be used to show the bowshock to the user
+      * if this image is a false image (does not contains a bowshock) this will be null
+      */
+    private $markedBowshockImage;
+
+    /**
+     * Set markedBowshockImage
+     *
+     * @param string $markedBowshockImage
+     * @return Image
+     */
+    public function setMarkedBowshockImage($markedBowshockImage)
+    {
+        $this->markedBowshockImage = $markedBowshockImage;
+
+        return $this;
+    }
+
+    /**
+     * Get markedBowshockImage
+     *
+     * @return string 
+     */
+    public function getMarkedBowshockImage()
+    {
+        return $this->markedBowshockImage;
+    }
 
     /**
      * Set filePath

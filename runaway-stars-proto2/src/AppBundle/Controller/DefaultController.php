@@ -231,7 +231,9 @@ class DefaultController extends BaseController
     }
 
 
-
+    /**
+     * transforms all Images Entities to DTO AppBundle\ViewObjects\ViewImage
+     */
     private function getViewImages($images)
     {
         $viewImages = array();
@@ -239,18 +241,26 @@ class DefaultController extends BaseController
         $paramRepository    = $this->get(static::PARAM_REPO);
         $correctText        = $paramRepository->getCorrectAnswerText();
         $incorrectText      = $paramRepository->getIncorrectAnswerText();
+        
+        
         foreach ($images as $img) 
 
         {
+            //in case that $img is correct, we take the path of the "marked" version of the image
+            $markedBowshockImage= null;
+            if($img->getIsCorrect())
+            {
+                $markedBowshockImage = $this->getImageUrl($img->getMarkedBowshockImage());
+            }
             $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
                 $img->getId(),
                 $this->getImageUrl($img->getFilePath())
                 ,$img->getIsCorrect()
                 ,$correctText
                 ,$incorrectText
+                ,$markedBowshockImage
                 );
         }
-
 
         return $viewImages;
     }

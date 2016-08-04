@@ -40,10 +40,18 @@
         return getPointsFor("incorrect-points");
     }
 
+    function isStarContainerCorrect(starContainer)
+    {
+        answerContainer = $(starContainer).find(".answer")[0];
+        isCorrect = $($(answerContainer).find(".answerValue")[0]).text();
+        isCorrect = "true" == isCorrect;
+
+        return isCorrect;
+    }
+
     function getPointsForStarImage(starContainer)
     {
-        answerContainer = $(starContainer).children(".answer")[0];
-        isCorrect = $($(answerContainer).find(".answerValue")[0]).text();
+        isCorrect = isStarContainerCorrect(starContainer)
         if(isCorrect)
         {
             return getPointsForValidResponse();
@@ -60,13 +68,24 @@
       //will show all the answers texts
       if(trainingMode)
       {
+        //this will show the text of the three images
       	starContainer = starContainer.parent();
       }
-      answerDiv        =starContainer.find(".answer");
-      answerDiv.each(
-      	function(i,answer)
+      
+      starContainer.each(
+      	function(i,starContainer)
       		{
-      			$(answer).removeClass("hidden");
+                //shows the text under the image
+      			$(starContainer).find(".answer").removeClass("hidden");
+                //shows the bow in the image
+                isCorrect = isStarContainerCorrect(starContainer);
+                if(isCorrect)
+                {
+                    //chage the src of the image to the marked up one
+                    newSrc = $(starContainer).find(".marked-image").prop("src");
+                    $(starContainer).find(".star-image").prop("src",newSrc)
+                }
+                
       		});
     }
 

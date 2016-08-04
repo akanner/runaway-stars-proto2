@@ -56,9 +56,20 @@
 {% endblock %}
 {% block javascripts %}
 <script src="js/lib.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 <script type="text/javascript">
 
-
+    //delay de form submittion for 3 seconds and shows an animation
+    $( "#runaway-stars-form" ).submit(function( event ) {
+        //shows animation
+        $.blockUI({ message: $('#throbber') });
+        //delay for 3 seconds
+        form = this;
+       event.preventDefault();
+       setTimeout( function () {
+           form.submit();
+       }, 2000);
+    });
     //enables submit button
     $( "#answer-button" ).on( "click", function( event ) {
       //validates the form
@@ -142,6 +153,11 @@
     <div class="hidden" id="div-points">
         <p id="correct-points">{{correct_points}}</p>
         <p id="inorrect-points">{{incorrect_points}}</p>
+    </div>
+    <div id="throbber" style="display:none;">
+        {% image "@AppBundle/Resources/public/images/ajax-loader.gif" %}
+            <img  src="{{ asset_url }}" alt="wait">
+        {% endimage %}
     </div>
 
 {% endblock %}

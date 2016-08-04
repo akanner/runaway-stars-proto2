@@ -47,6 +47,10 @@
         transform: scale(0.9);
         box-shadow: 0 0 5px #333;
       }
+
+       body {
+        padding-top: 70px;
+      }
     </style>
    
 {% endblock %}
@@ -91,11 +95,6 @@
 {% endblock %}
 {% block body %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Prototipo Runaway Stars</h2>
-            </div>
-        </div>
         <div class="row" id="score-div">
             <div class="col-md-10"></div>
             <div class="col-md-2">
@@ -104,7 +103,7 @@
         </div>
         <form id="runaway-stars-form" class="well" action="{{post_url}}" method="POST">
             <div class="row">
-                <h3 class="centered">Podes Indicar la 'Runaway Star'?</h3>
+                <h3 class="centered">&iquest;Podes Indicar la <i>Runaway Star</i>?</h3>
             </div>
             <div class="row">
                 {% for img in images %}

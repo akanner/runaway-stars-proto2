@@ -5,6 +5,7 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="filePath" type="string" column="file_path" length="255" nullable="false"/>
+    <field name="markedBowshockImage" type="string" column="marked_bowshock_image" length="255" nullable="true"/>
     <field name="isCorrect" type="boolean" column="is_correct" nullable="false"/>
   </entity>
 </doctrine-mapping>

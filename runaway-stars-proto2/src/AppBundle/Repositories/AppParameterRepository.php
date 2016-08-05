@@ -40,4 +40,64 @@ class AppParameterRepository extends EntityRepository
 		$incorrectText = $this->findOneByKey("INCORRECT_ANSWER_TEXT")->getValue();
 		return $incorrectText;
 	}
+
+	public function getLevelsBeginnerText()
+	{
+		return $this->findOneByKey("LEVELS_BEGINNER_TEXT")->getValue();
+	}
+
+	public function getLevelsBeginnerLegend()
+	{
+		return $this->findOneByKey("LEVELS_BEGINNER_LEGEND")->getValue();
+	}
+
+	public function getLevelsIntermediateText()
+	{
+		return $this->findOneByKey("LEVELS_INTERMEDIATE_TEXT")->getValue();
+	}
+
+	public function getLevelsIntermediateLegend()
+	{
+		return $this->findOneByKey("LEVELS_INTERMEDIATE_LEGEND")->getValue();
+	}
+
+	public function getLevelsExpertText()
+	{
+		return $this->findOneByKey("LEVELS_EXPERT_TEXT")->getValue();
+	}
+
+	public function getLevelsExpertLegend()
+	{
+		return $this->findOneByKey("LEVELS_EXPERT_LEGEND")->getValue();
+	}
+
+	public function getBadgesBeginnerLegend()
+	{
+		return $this->findOneByKey("BADGES_BEGINNER_LEGEND")->getValue();
+	}
+
+	public function getBadgesIntermediateLegend()
+	{
+		return $this->findOneByKey("BADGES_INTERMEDIATE_LEGEND")->getValue();
+	}
+
+	public function getBadgesExpertLegend()
+	{
+		return $this->findOneByKey("BADGES_EXPERT_LEGEND")->getValue();
+	}
+
+	public function getBadgesBeginnerBadge()
+	{
+		return $this->findOneByKey("BADGES_BEGINNER_BADGE")->getValue();
+	}
+
+	public function getBadgesIntermediateBadge()
+	{
+		return $this->findOneByKey("BADGES_INTERMEDIATE_BADGE")->getValue();
+	}
+
+	public function getBadgesExpertBadge()
+	{
+		return $this->findOneByKey("BADGES_EXPERT_BADGE")->getValue();
+	}
 }

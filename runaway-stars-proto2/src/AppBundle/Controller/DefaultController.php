@@ -34,8 +34,6 @@ class DefaultController extends BaseController
 
     const POINTS_REPO               = "pointsRepository";
 
-    const PARAM_REPO                = "paramsRepository";
-
     //const TRAINING_REPO             = "trainingRepository";
 
 

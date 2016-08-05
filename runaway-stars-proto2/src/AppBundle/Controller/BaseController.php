@@ -24,6 +24,8 @@ class BaseController extends Controller
 
     const GAMIFICATION_KEY          = "gamification-type"; 
 
+    const PARAM_REPO                = "paramsRepository";
+
 	protected function getEntityManager()
 	{
 		return $this->get("doctrine.orm.default_entity_manager");

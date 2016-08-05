@@ -52,7 +52,7 @@ CREATE TABLE `app_parameter` (
   `key` varchar(255) NOT NULL,
   `value` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `app_parameter` (
 
 LOCK TABLES `app_parameter` WRITE;
 /*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
-INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','10'),(2,'CORRECT_ANSWER_TEXT','Felicitaciones! tu respuesta es correcta.'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!');
+INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','5'),(2,'CORRECT_ANSWER_TEXT','Felicitaciones! tu respuesta es correcta.'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la medalla de principiante, &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','Buen Trabajo...demostraste que ya podes identificar algunas runaway stars...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','gb1.jpg'),(14,'BADGES_INTERMEDIATE_BADGE','gb2.jpg'),(15,'BADGES_EXPERT_BADGE','gb3.jpg');
 /*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `fos_user` (
 
 LOCK TABLES `fos_user` WRITE;
 /*!40000 ALTER TABLE `fos_user` DISABLE KEYS */;
-INSERT INTO `fos_user` VALUES (1,'admin','$2y$13$j9xuyx2bhcg8s00o4s488u5ZtLCrGvrI7Jc2KCxth2iWcqzVow3yC','admin','admin@admin','admin@admin',1,'j9xuyx2bhcg8s00o4s4880wcw000o40','2016-08-04 13:14:03',0,0,NULL,NULL,NULL,'a:1:{i:0;s:16:\"ROLE_SUPER_ADMIN\";}',0,NULL);
+INSERT INTO `fos_user` VALUES (1,'admin','$2y$13$j9xuyx2bhcg8s00o4s488u5ZtLCrGvrI7Jc2KCxth2iWcqzVow3yC','admin','admin@admin','admin@admin',1,'j9xuyx2bhcg8s00o4s4880wcw000o40','2016-08-04 22:49:22',0,0,NULL,NULL,NULL,'a:1:{i:0;s:16:\"ROLE_SUPER_ADMIN\";}',0,NULL);
 /*!40000 ALTER TABLE `fos_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,6 +117,7 @@ CREATE TABLE `image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `file_path` varchar(255) NOT NULL,
   `is_correct` tinyint(4) NOT NULL,
+  `marked_bowshock_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -127,7 +128,7 @@ CREATE TABLE `image` (
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (6,'HIP2036.jpg',1),(7,'HIP22783.jpg',1),(8,'HIP32067.jpg',1),(9,'HIP34536.jpg',1),(10,'HIP82171.jpg',1),(11,'HIP398.jpg',0),(12,'HIP505.jpg',0),(13,'HIP14969.jpg',0),(14,'HIP14969.png',0),(15,'HIP29201.jpg',0),(16,'HIP48730.jpg',0),(17,'HIP61958.jpg',0),(18,'HIP92133.jpg',0),(19,'HIP99303.jpg',0),(20,'HIP110386.jpg',0),(21,'HIP114482.jpg',0),(22,'11891.jpg',1),(23,'28881.jpg',1),(24,'29276.jpg',1),(25,'31766.jpg',1),(26,'88652.jpg',1);
+INSERT INTO `image` VALUES (6,'HIP2036.jpg',1,'marked/HIP2036_m.jpg'),(7,'HIP22783.jpg',1,'marked/HIP22783_m.jpg'),(8,'HIP32067.jpg',1,'marked/HIP32067_m.jpg'),(9,'HIP34536.jpg',1,'marked/HIP34536_m.jpg'),(10,'HIP82171.jpg',1,'marked/HIP82171_m.jpg'),(11,'HIP398.jpg',0,NULL),(12,'HIP505.jpg',0,NULL),(13,'HIP14969.jpg',0,NULL),(14,'HIP14969.png',0,NULL),(15,'HIP29201.jpg',0,NULL),(16,'HIP48730.jpg',0,NULL),(17,'HIP61958.jpg',0,NULL),(18,'HIP92133.jpg',0,NULL),(19,'HIP99303.jpg',0,NULL),(20,'HIP110386.jpg',0,NULL),(21,'HIP114482.jpg',0,NULL),(22,'11891.jpg',1,'marked/11891_m.jpg'),(23,'28881.jpg',1,'marked/28881_m.jpg'),(24,'29276.jpg',1,'marked/29276_m.jpg'),(25,'31766.jpg',1,'marked/31766_m.jpg'),(26,'88652.jpg',1,'marked/88652_m.jpg');
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +145,7 @@ CREATE TABLE `participant` (
   `age` int(11) DEFAULT NULL,
   `gender` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +186,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +215,7 @@ CREATE TABLE `participant_session` (
   PRIMARY KEY (`id`),
   KEY `fk_session_participant_participant_idx` (`participant_id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,4 +269,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-04 15:41:44
+-- Dump completed on 2016-08-04 23:01:38

@@ -61,7 +61,7 @@ CREATE TABLE `app_parameter` (
 
 LOCK TABLES `app_parameter` WRITE;
 /*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
-INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','5'),(2,'CORRECT_ANSWER_TEXT','Felicitaciones! tu respuesta es correcta.'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la medalla de principiante, &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','Buen Trabajo...demostraste que ya podes identificar algunas runaway stars...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','gb1.jpg'),(14,'BADGES_INTERMEDIATE_BADGE','gb2.jpg'),(15,'BADGES_EXPERT_BADGE','gb3.jpg');
+INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','5'),(2,'CORRECT_ANSWER_TEXT','Felicitaciones! tu respuesta es correcta.'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la insignia de principiante, &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','&iexcl;Buen Trabajo, ganaste la insignia intermedia! demostraste que ya pod&eacute;s identificar algunas runaway stars...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Ganaste la insignia de experto! &iquest;Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','gb1.jpg'),(14,'BADGES_INTERMEDIATE_BADGE','gb2.jpg'),(15,'BADGES_EXPERT_BADGE','gb3.jpg');
 /*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +145,7 @@ CREATE TABLE `participant` (
   `age` int(11) DEFAULT NULL,
   `gender` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,6 +154,7 @@ CREATE TABLE `participant` (
 
 LOCK TABLES `participant` WRITE;
 /*!40000 ALTER TABLE `participant` DISABLE KEYS */;
+INSERT INTO `participant` VALUES (47,'agustin',23,'aa'),(48,'agustin',23,'aaa'),(49,'agustin',25,'aa'),(50,'agustin',24,'aa');
 /*!40000 ALTER TABLE `participant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +187,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,6 +196,7 @@ CREATE TABLE `participant_response` (
 
 LOCK TABLES `participant_response` WRITE;
 /*!40000 ALTER TABLE `participant_response` DISABLE KEYS */;
+INSERT INTO `participant_response` VALUES (190,47,17,22,13,22,22,5),(191,47,8,13,16,8,8,5),(192,47,11,6,20,6,6,5),(193,47,13,10,14,10,10,5),(194,47,8,12,17,8,8,5),(195,48,17,16,26,26,26,5),(196,48,16,26,15,26,26,5),(197,48,11,25,20,25,25,5),(198,48,20,21,24,24,24,5),(199,48,11,10,19,10,10,5),(200,49,21,12,10,10,10,5),(201,49,12,11,6,6,6,5),(202,49,9,11,18,9,9,5),(203,49,15,21,25,25,25,5),(204,49,16,25,15,25,25,5),(205,50,13,14,24,24,24,5),(206,50,17,26,18,26,26,5),(207,50,17,25,21,25,25,5),(208,50,18,16,6,6,18,5),(209,50,17,22,19,22,17,5);
 /*!40000 ALTER TABLE `participant_response` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +217,7 @@ CREATE TABLE `participant_session` (
   PRIMARY KEY (`id`),
   KEY `fk_session_participant_participant_idx` (`participant_id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,6 +226,7 @@ CREATE TABLE `participant_session` (
 
 LOCK TABLES `participant_session` WRITE;
 /*!40000 ALTER TABLE `participant_session` DISABLE KEYS */;
+INSERT INTO `participant_session` VALUES (47,47,'k1iof46ulj8av4lvu0f4snq005','2016-08-04 23:03:25','2016-08-04 23:03:52',25),(48,48,'k1iof46ulj8av4lvu0f4snq005','2016-08-04 23:05:20','2016-08-04 23:05:40',25),(49,49,'k1iof46ulj8av4lvu0f4snq005','2016-08-04 23:06:29','2016-08-04 23:08:06',25),(50,50,'k1iof46ulj8av4lvu0f4snq005','2016-08-04 23:09:07','2016-08-04 23:09:25',25);
 /*!40000 ALTER TABLE `participant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-04 23:01:38
+-- Dump completed on 2016-08-04 23:11:41

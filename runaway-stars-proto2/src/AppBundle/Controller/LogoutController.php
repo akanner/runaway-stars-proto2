@@ -35,16 +35,19 @@ class LogoutController extends BaseController
 
         $session = $request->getSession();
         //this should be injected, to do this, this controller should be declared as a service
-        $em = $this->getEntityManager();
-        $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         //sets the user session as finished
         $userSession->setEndedAt(new \Datetime('now'));
+        $em = $this->getEntityManager();
         $em->persist($userSession);
         $em->flush();
 
         $viewParams = [];
         $gamificationType = $this->getGamificationType($session);
         $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$userSession->getPercentageOfCorrectTasks());
+
+
+        
         $viewParams["back_url"]      = $this->generateUrl('logInUser', array("gamification" => $gamificationType), true);
         $viewParams["gamType"]       = $gamificationType;   
         $viewParams["level"]         = $gamificationResult["level"];

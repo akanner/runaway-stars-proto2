@@ -71,10 +71,10 @@ class LoginController extends BaseController
         $age                = $request->request->get("age");
         $gender             = $request->request->get("gender");
         $gamificationType   = $session->get(static::GAMIFICATION_KEY);
-        //creates user and session in the database
-        $gamificationEntity = $this->get(static::GAMIFICATION_REPO)->findOneByName($gamificationType);
-        $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
         //gets gamificationType entity
+        $gamificationEntity = $this->get(static::GAMIFICATION_REPO)->findOneByName($gamificationType);
+        //creates user and session in the database
+        $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
         $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant,$gamificationEntity);
         $participant->setSession($participantSession);
         //it would be better if this controller is defined as a service as well
@@ -85,8 +85,7 @@ class LoginController extends BaseController
         $em->persist($participantSession);
         $em->flush();
 
-        $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$participantSession);
-
+        $this->serializeParticipantSessionIntoHttpSession($session,$participantSession);
 
         //redirects to the home
         return $this->redirectToTasks();
@@ -111,4 +110,7 @@ class LoginController extends BaseController
         $paramRepository = $this->get(static::PARAM_REPO);
         return $paramRepository->getMaxNumberOfQuestions();
     }
+
+
+    /* -------------------------- session management --------------------------*/
 }

@@ -15,7 +15,7 @@ use AppBundle\Entity\ParticipantSession;
 //view objects 
 use AppBundle\ViewObjects\ViewImage;
 
-class BaseController extends Controller
+abstract class BaseController extends Controller
 {
 
     /**
@@ -34,6 +34,8 @@ class BaseController extends Controller
     const PARAM_REPO                = "paramsRepository";
 
     const GAMIFICATION_REPO         = "gamificationTypeRepository";
+
+    const PARTICIPANT_SESSION_REPO  = "participantSessionRepository";
 
 	protected function getEntityManager()
 	{
@@ -99,6 +101,36 @@ class BaseController extends Controller
         return $urlImage;
     }
 
+
+    /*-----------------session serialization/deserialization--------------------*/
+
+    protected function serializeEntityIntoSession($session,$key,$entity)
+    {
+        $entityId = $entity->getId();
+        $session->set($key,$entityId);
+    }
+
+    protected function deserializeEntityFromSession($session,$key,$entityRepo)
+    {
+        $entityId = $session->get($key);
+        $entity   = $entityRepo->findOneById($entityId);
+
+        return $entity;
+    }
+
+    protected function deserializeParticipantSessionEntityFromHttpSession($session)
+    {
+        $entityRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
+
+        return $this->deserializeEntityFromSession($session,static::USER_SESSION_SESSION_KEY,$entityRepo);
+    }
+
+    protected function serializeParticipantSessionIntoHttpSession($httpSession,$participantSessionEntity)
+    {
+        $this->serializeEntityIntoSession($httpSession,static::USER_SESSION_SESSION_KEY,$participantSessionEntity);
+    }
+
+    /*--------------------------------redirects to pages---------------------------------*/
     protected function redirectToTasks()
     {
         return $this->redirectToURL("taskIndex");

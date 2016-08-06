@@ -51,7 +51,7 @@ class TaskController extends BaseController
         $session = $request->getSession();
         //this should be injected, to do this, that controller should be declared as a service
         $em = $this->getEntityManager();
-        $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$randomImages);
         $this->serializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em,$participantResponse);
 
@@ -129,11 +129,11 @@ class TaskController extends BaseController
      */
     private function sumPoints($em,$session,$points)
     {
-        $userSession = $this->deserializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         $userSession->sumPoints($points);
         $em->persist($userSession);
         $em->flush();
-        $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$userSession);
+        $this->serializeParticipantSessionIntoHttpSession($session,$userSession);
     }
 
 

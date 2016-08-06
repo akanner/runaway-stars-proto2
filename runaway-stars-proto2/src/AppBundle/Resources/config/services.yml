@@ -26,14 +26,20 @@ services:
     arguments:
       - AppBundle\Entity\TrainingTask
   paramsRepository:
-    class: Doctrine\ORM\AppParameterRepository
+    class: Doctrine\ORM\EntityRepository
     factory_service: doctrine.orm.default_entity_manager
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\AppParameter
   gamificationTypeRepository:
-    class: Doctrine\ORM\GamificationTypeRepository
+    class: Doctrine\ORM\EntityRepository
     factory_service: doctrine.orm.default_entity_manager
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\GamificationType
+  participantSessionRepository:
+    class: Doctrine\ORM\EntityRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+      - AppBundle\Entity\ParticipantSession

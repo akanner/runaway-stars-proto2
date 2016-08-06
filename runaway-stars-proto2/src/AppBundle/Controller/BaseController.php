@@ -33,6 +33,8 @@ class BaseController extends Controller
 
     const PARAM_REPO                = "paramsRepository";
 
+    const GAMIFICATION_REPO         = "gamificationTypeRepository";
+
 	protected function getEntityManager()
 	{
 		return $this->get("doctrine.orm.default_entity_manager");
@@ -109,7 +111,7 @@ class BaseController extends Controller
 
     protected function redirectToLogin()
     {
-        return $this->redirectToURL("login");
+        return $this->redirectToURL("logInUser");
     }
 
     protected function redirectToURL($routeName,$params=array())

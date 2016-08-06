@@ -66,15 +66,23 @@ class ParticipantSession
      */
     private $participant;
 
+     /**
+     * @var \AppBundle\Entity\GamificationType
+     */
+    private $gamification_type;
+
+
+
     /**
      * Constructor
      */
-    public static function createWith($httpSessionId,$startedAt,$participant)
+    public static function createWith($httpSessionId,$startedAt,$participant,$gamificationType)
     {
         $session = new ParticipantSession();
         $session->setHttpSession($httpSessionId);
         $session->setStartedAt($startedAt);
         $session->setParticipant($participant);
+        $session->setGamificationType($gamificationType);
         $session->setTotalPoints(0);
 
         return $session;
@@ -188,6 +196,29 @@ class ParticipantSession
         return $this->id;
     }
 
+     /**
+     * Set gamification_type
+     *
+     * @param \AppBundle\Entity\GamificationType $gamificationType
+     * @return ParticipantSession
+     */
+    public function setGamificationType(\AppBundle\Entity\GamificationType $gamificationType = null)
+    {
+        $this->gamification_type = $gamificationType;
+
+        return $this;
+    }
+
+    /**
+     * Get gamification_type
+     *
+     * @return \AppBundle\Entity\GamificationType 
+     */
+    public function getGamificationType()
+    {
+        return $this->gamification_type;
+    }
+
     /**
      * Add responses
      *
@@ -265,4 +296,5 @@ class ParticipantSession
     {
         return $this->getNumberOfCorrectResponses() * 100 / $this->getNumberOfResponses();
     }
+   
 }

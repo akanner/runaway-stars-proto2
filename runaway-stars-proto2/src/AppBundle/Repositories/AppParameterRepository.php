@@ -100,4 +100,15 @@ class AppParameterRepository extends EntityRepository
 	{
 		return $this->findOneByKey("BADGES_EXPERT_BADGE")->getValue();
 	}
+
+	public function findOneByKey($key)
+	{
+		$entity = parent::findOneByKey($key);
+		if(!$entity)
+		{
+			throw new Exception("AppParameter '$key' NOT FOUND", 1);
+		}
+
+		return $entity;
+	}
 }

@@ -17,5 +17,7 @@
       </join-columns>
     </many-to-one>
     <one-to-many field="responses" target-entity="ParticipantResponse" mapped-by="session" />
+
+    <one-to-one field="gamification_type" target-entity="GamificationType" />
   </entity>
 </doctrine-mapping>

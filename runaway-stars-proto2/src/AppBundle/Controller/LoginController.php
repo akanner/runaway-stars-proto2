@@ -27,19 +27,19 @@ class LoginController extends BaseController
      */
     public function logInUser(Request $request)
     {
-        $postUrl = $this->generateUrl('logInUserResponse', array(), true);
-        $viewParams = array();
-        $viewParams["post_url"] = $postUrl;
-
-         //sets the type of gamification depending of an initial parameter in the URL
-        $session = $request->getSession();
+        //gets the type of gamification depending of an initial parameter in the URL
         $gamificationType = $request->query->get("gamification");
         if(!GamificationTypes::isAValidGamificationType($gamificationType))
         {
             $gamificationType = GamificationTypes::GAMIFICATION_BADGES;
         }
+        $session = $request->getSession();
         $session->set(static::GAMIFICATION_KEY,$gamificationType);
 
+
+        $postUrl = $this->generateUrl('logInUserResponse', array(), true);
+        $viewParams = array();
+        $viewParams["post_url"] = $postUrl;
         return $this->render('login/index.html.twig',$viewParams);
     }
 
@@ -67,12 +67,15 @@ class LoginController extends BaseController
 
         $session = $this->initializeSession($request);
         //gets user's data
-        $username = $request->request->get("username");
-        $age      = $request->request->get("age");
-        $gender   = $request->request->get("gender");
+        $username           = $request->request->get("username");
+        $age                = $request->request->get("age");
+        $gender             = $request->request->get("gender");
+        $gamificationType   = $session->get(static::GAMIFICATION_KEY);
         //creates user and session in the database
+        $gamificationEntity = $this->get(static::GAMIFICATION_REPO)->findOneByName($gamificationType);
         $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
-        $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
+        //gets gamificationType entity
+        $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant,$gamificationEntity);
         $participant->setSession($participantSession);
         //it would be better if this controller is defined as a service as well
         //gets the em from the IoC container

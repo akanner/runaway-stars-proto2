@@ -15,7 +15,7 @@ class DefaultController extends BaseController
      */
     public function indexAction(Request $request)
     {
-            return $this->redirect('task/');
+            return $this->redirect('login/');
         
     }
 }

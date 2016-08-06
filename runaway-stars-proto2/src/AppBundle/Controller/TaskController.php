@@ -20,12 +20,6 @@ use AppBundle\Utils\GamificationTypes;
 class TaskController extends BaseController
 {
 
-    /**
-     * session key that holds the user's session object
-     */
-    const STEP                      = "task-number";
-
-    const MAX_STEPS                 = "max-tasks";
 
     /**
      * TODO inject it into a variable
@@ -38,7 +32,7 @@ class TaskController extends BaseController
 
 
     /**
-     * @Route("task/", name="task")
+     * @Route("task/", name="taskIndex")
      */
     public function indexAction(Request $request)
     {
@@ -48,7 +42,7 @@ class TaskController extends BaseController
         $isUserLogged = $this->isUserLogged($request);
         if(!$isUserLogged)
         {
-            return $this->redirect('/logInUser');
+            return $this->redirectToLogin();
         }
 
         //get the images
@@ -75,7 +69,7 @@ class TaskController extends BaseController
         $viewParams["current_step"]  = $session->get(static::STEP);
         $viewParams["max_step"]      = $session->get(static::MAX_STEPS);
 
-        $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
+        $viewParams["post_url"]      = $this->generateUrl('processTaskResponse', array(), true);
         $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
         // replace this example code with whatever you need
         return $this->render('task/index.html.twig', $viewParams);
@@ -87,7 +81,7 @@ class TaskController extends BaseController
 
 
     /**
-     * @Route("/processResponse", name="processResponse")
+     * @Route("task/processResponse", name="processTaskResponse")
      */
     public function processResponse(Request $request)
     {
@@ -125,92 +119,6 @@ class TaskController extends BaseController
         $em->flush();
 
         return $this->showNextTask($session);
-    }
-
-
-    /**
-     * registers user's information
-     *
-     */
-     /**
-     * @Route("/logInUser", name="logInUser")
-     */
-    public function logInUser(Request $request)
-    {
-        $postUrl = $this->generateUrl('logInUserResponse', array(), true);
-        $viewParams = array();
-        $viewParams["post_url"] = $postUrl;
-
-         //sets the type of gamification depending of an initial parameter in the URL
-        $session = $request->getSession();
-        $gamificationType = $request->query->get("gamification");
-        if(!GamificationTypes::isAValidGamificationType($gamificationType))
-        {
-            $gamificationType = GamificationTypes::GAMIFICATION_BADGES;
-        }
-        $session->set(static::GAMIFICATION_KEY,$gamificationType);
-
-        return $this->render('task/login.html.twig',$viewParams);
-    }
-
-    /**
-     * registers user's information
-     *
-     */
-     /**
-     * @Route("/logInUserResponse", name="logInUserResponse")
-     */
-    public function logInUserResponse(Request $request)
-    {
-        //TODO use a interceptor,filter or something to check session ending
-        //-------------------------------------------------------------------
-
-        //if the user is already logged, we redirect it to the home page
-        $isUserLogged = $this->isUserLogged($request);
-        if($isUserLogged)
-        {
-            //redirects to the home
-            return $this->redirectToIndex();
-        }
-        //-------------------------------------------------------------------
-        //stores user's name in the session
-
-        $session = $this->initializeSession($request);
-        //gets user's data
-        $username = $request->request->get("username");
-        $age      = $request->request->get("age");
-        $gender   = $request->request->get("gender");
-        //creates user and session in the database
-        $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
-        $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant);
-        $participant->setSession($participantSession);
-        //it would be better if this controller is defined as a service as well
-        //gets the em from the IoC container
-        //doctrine.orm.default_entity_manager
-        $em = $this->getEntityManager();
-        $em->persist($participant);
-        $em->persist($participantSession);
-        $em->flush();
-
-        $this->serializeEntityIntoTheSession($session,static::USER_SESSION_SESSION_KEY,$em,$participantSession);
-
-
-        //redirects to the home
-        return $this->redirectToIndex();
-    }
-
-    private function initializeSession($request)
-    {
-        $session = $request->getSession();
-        $username = $request->request->get("username");
-        $session->set("username",$username);
-        $session->set("logged",true);
-        //sets the max number of tasks in the session
-        $maxNumberOfTask = $this->getMaxNumberOfQuestions();
-        $session->set(static::STEP,1);
-        $session->set(static::MAX_STEPS,$maxNumberOfTask);
-
-        return $session;
     }
 
 
@@ -271,12 +179,6 @@ class TaskController extends BaseController
         $imageRepository = $this->get(static::IMAGES_REPO);
         return $imageRepository->getRandomImages();
     }
-
-    private function getMaxNumberOfQuestions()
-    {
-        $paramRepository = $this->get(static::PARAM_REPO);
-        return $paramRepository->getMaxNumberOfQuestions();
-    }
     /**
      * assigns points to the user's response
      *
@@ -320,13 +222,13 @@ class TaskController extends BaseController
         }
         else
         {
-            return $this->redirect("logout/");
+            return $this->redirectToLogout();
         }
     }
 
     private function redirectToIndex()
     {
-        return $this->redirect("task/");
+        return $this->redirectToTasks();
     }
 
 }

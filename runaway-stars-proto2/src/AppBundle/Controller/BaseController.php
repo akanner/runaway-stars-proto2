@@ -18,6 +18,13 @@ use AppBundle\ViewObjects\ViewImage;
 class BaseController extends Controller
 {
 
+    /**
+     * session key that holds the user's session object
+     */
+    const STEP                      = "task-number";
+
+    const MAX_STEPS                 = "max-tasks";
+
     const USER_SESSION_SESSION_KEY  = "user-session";
 
     const USER_RESPONSE_SESSION_KEY = "user-response";
@@ -88,5 +95,25 @@ class BaseController extends Controller
         $assetsHelper = $this->get('templating.helper.assets');
         $urlImage = $assetsHelper->getUrl("bundles/app/images/tasks/$imageName");
         return $urlImage;
+    }
+
+    protected function redirectToTasks()
+    {
+        return $this->redirectToURL("taskIndex");
+    }
+
+    protected function redirectToLogout()
+    {
+        return $this->redirectToURL("logout");
+    }
+
+    protected function redirectToLogin()
+    {
+        return $this->redirectToURL("login");
+    }
+
+    protected function redirectToURL($routeName,$params=array())
+    {
+        return $this->redirect($this->generateUrl($routeName, $params,true));
     }
 }

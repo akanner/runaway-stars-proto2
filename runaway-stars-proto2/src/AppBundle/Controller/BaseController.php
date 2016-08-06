@@ -70,6 +70,23 @@ class BaseController extends Controller
      */
     protected function getImageUrl($imageName)
     {
-        return "images/$imageName";
+        $assetsHelper = $this->get('templating.helper.assets');
+        $urlImage = $assetsHelper->getUrl("bundles/app/images/$imageName");
+        return $urlImage;
+    }
+
+    /**
+     * gets gets the URL of an image
+     *
+     * @param string    $imageName     image's name
+     *
+     * @return string image's URL
+     *
+     */
+    protected function getTaskUrl($imageName)
+    {
+        $assetsHelper = $this->get('templating.helper.assets');
+        $urlImage = $assetsHelper->getUrl("bundles/app/images/tasks/$imageName");
+        return $urlImage;
     }
 }

@@ -27,7 +27,7 @@
 
       :checked + label:before {
         content: "✓";
-        background-color: green;
+        background-color: grey;
         transform: scale(1);
       }
 
@@ -46,5 +46,5 @@
       }
 
        body {
-        padding-top: 50px;
+        padding-top: 70px;
       }

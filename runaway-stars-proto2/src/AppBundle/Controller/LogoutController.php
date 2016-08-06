@@ -30,7 +30,7 @@ class LogoutController extends BaseController
 
         if(!$isUserLogged)
         {
-            return $this->redirect("/");
+            return $this->redirect("task/");
         }
 
         $session = $request->getSession();

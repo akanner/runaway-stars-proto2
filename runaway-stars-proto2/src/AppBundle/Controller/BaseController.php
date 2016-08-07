@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
+use AppBundle\ViewObjects\ParticipantResponseSerialized;
 
 //view objects 
 use AppBundle\ViewObjects\ViewImage;
@@ -36,6 +37,8 @@ abstract class BaseController extends Controller
     const GAMIFICATION_REPO         = "gamificationTypeRepository";
 
     const PARTICIPANT_SESSION_REPO  = "participantSessionRepository";
+
+    const PARTICIPANT_RESPONSE_SESSION_REPO = "participantResponseRepository";
 
 	protected function getEntityManager()
 	{
@@ -128,6 +131,30 @@ abstract class BaseController extends Controller
     protected function serializeParticipantSessionIntoHttpSession($httpSession,$participantSessionEntity)
     {
         $this->serializeEntityIntoSession($httpSession,static::USER_SESSION_SESSION_KEY,$participantSessionEntity);
+    }
+
+    protected function serializeResponseIntoHttpSession($httpSession,$participantResponse)
+    {
+         $responseDTO = new ParticipantResponseSerialized($participantResponse);
+         $httpSession->set(static::USER_RESPONSE_SESSION_KEY,$responseDTO);
+    }
+
+    protected function deserializeParticipantResponseFromHttpSession($session)
+    {
+        //gets images and participant session repositories
+        $sessionRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
+        $imageRepository =$this->get(static::IMAGES_REPO);
+        //gets ParticipantResponseSerialized 
+        $responseSerialized = $session->get(static::USER_RESPONSE_SESSION_KEY);
+        //gets images and participant session
+        $participantSessionEntity = $sessionRepo->findOneById($responseSerialized->sessionId);
+        $firstImageServed         = $imageRepository->findOneById($responseSerialized->firstImageServed);
+        $secondImageServed        = $imageRepository->findOneById($responseSerialized->secondImageServed);
+        $thirdImageServed         = $imageRepository->findOneById($responseSerialized->thirdImageServed);
+        //returns image entity
+        $images = array($firstImageServed,$secondImageServed,$thirdImageServed);
+        $response = ParticipantResponse::createFromSessionAndImages($participantSessionEntity,$images);
+        return $response;
     }
 
     /*--------------------------------redirects to pages---------------------------------*/

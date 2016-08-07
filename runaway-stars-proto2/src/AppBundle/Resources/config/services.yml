@@ -43,3 +43,9 @@ services:
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\ParticipantSession
+  participantResponseRepository:
+    class: Doctrine\ORM\EntityRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+      - AppBundle\Entity\ParticipantResponse

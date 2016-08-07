@@ -53,7 +53,7 @@ class TaskController extends BaseController
         $em = $this->getEntityManager();
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$randomImages);
-        $this->serializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em,$participantResponse);
+        $this->serializeResponseIntoHttpSession($session,$participantResponse);
 
 
         //builds view's parameters
@@ -110,7 +110,7 @@ class TaskController extends BaseController
         $this->sumPoints($em,$session,$points);
         //handles the training mode
         //gets the user response previously stored in the session, remember, this user response was not really answered yet
-        $userResponse = $this->deserializeEntityIntoTheSession($session,static::USER_RESPONSE_SESSION_KEY,$em);
+        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
         //sets the user's actual response and saves it in the database
         $userResponse->setSelectedImage($imageSelected);
         $userResponse->setPointsEarned($points);

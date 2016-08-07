@@ -35,6 +35,11 @@ class GamificationType
      */
     private $description;
 
+     /**
+     * @var integer
+     */
+    private $gamificationTypeBalance;
+
     /**
      * Set name
      *
@@ -89,5 +94,28 @@ class GamificationType
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set gamificationTypeBalance
+     *
+     * @param integer $gamificationTypeBalance
+     * @return GamificationType
+     */
+    public function setGamificationTypeBalance($gamificationTypeBalance)
+    {
+        $this->gamificationTypeBalance = $gamificationTypeBalance;
+
+        return $this;
+    }
+
+    /**
+     * Get gamificationTypeBalance
+     *
+     * @return integer 
+     */
+    public function getGamificationTypeBalance()
+    {
+        return $this->gamificationTypeBalance;
     }
 }

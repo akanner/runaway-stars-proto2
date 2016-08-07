@@ -6,5 +6,6 @@
     </id>
     <field name="name" type="string" column="name" length="255" nullable="false"/>
     <field name="description" type="string" column="description" length="255" nullable="true"/>
+    <field name="gamificationTypeBalance" type="integer" column="gamification_type_balance" options="{'default'=0}" length="255" nullable="false"/>
   </entity>
 </doctrine-mapping>

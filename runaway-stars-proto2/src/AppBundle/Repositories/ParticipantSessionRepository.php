@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class ParticipantSessionRepository extends EntityRepository
 {
+	public function getTotalRows()
+	{
+		$qb = $this->createQueryBuilder('session');
+		$qb->select('COUNT(session)');
+
+		$count = $qb->getQuery()->getSingleScalarResult();
+		return $count;
+	}
+
+	public function getTotalSessionsUsingGamificationType($gamType)
+	{
+		$query = $this->createQueryBuilder('session')
+			  ->select('COUNT(session)')
+              ->where('session.gamification_type = :gType')
+              ->setParameter('gType', $gamType)
+              ->getQuery();
+        $count = $query->getSingleScalarResult();
+		return $count;
+	}
 }

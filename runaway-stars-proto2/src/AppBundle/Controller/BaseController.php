@@ -55,25 +55,6 @@ abstract class BaseController extends Controller
         return $isUserLogged;
     }
 
-    //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
-    //TODO save only the entity's ID
-    //IF the entity manager would be injected,and this method were on a superclass and if the method were something like 
-    //storeEntityInSession($key,$entity) it could be a good idea, but the problem is that you need the entity manager and that 
-    //would not work with a service layer
-    protected function serializeEntityIntoTheSession($session,$key,$em,$entity)
-    {
-        $em->detach($entity);
-        $session->set($key,$entity);
-    }
-    //http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/entities-in-session.html
-     //TODO save only the entity's ID
-    protected function deserializeEntityIntoTheSession($session,$key,$em)
-    {
-        $entity = $session->get($key);
-        $entity = $em->merge($entity);
-        return $entity;
-    }
-
     /**
      * gets gets the URL of an image
      *
@@ -213,9 +194,9 @@ abstract class BaseController extends Controller
         return $this->redirectToURL("logout");
     }
 
-    protected function redirectToLogin()
+    protected function redirectToLogin($params=array())
     {
-        return $this->redirectToURL("logInUser");
+        return $this->redirectToURL("logInUser",$params);
     }
 
     protected function redirectToURL($routeName,$params=array())

@@ -23,7 +23,7 @@ class LoginController extends BaseController
      *
      */
      /**
-     * @Route("login/", name="logInUser")
+     * @Route("intro/", name="logInUser")
      */
     public function logInUser(Request $request)
     {

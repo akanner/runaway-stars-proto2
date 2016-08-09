@@ -49,3 +49,11 @@ services:
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\ParticipantResponse
+
+    #doctrine extensions
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]

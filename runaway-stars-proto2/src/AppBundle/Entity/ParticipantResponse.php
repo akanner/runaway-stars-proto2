@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * ParticipantResponse
@@ -86,6 +87,12 @@ class ParticipantResponse
      *
      */
     private $pointsEarned;
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="answered_at", type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $answeredAt;
 
 
     public static function createFromSessionAndImages($userSession,$images)
@@ -281,4 +288,10 @@ class ParticipantResponse
     {
         return $this->pointsEarned;
     }
+
+    public function getAnsweredAt()
+    {
+        return $this->answeredAt;
+    }
+
 }

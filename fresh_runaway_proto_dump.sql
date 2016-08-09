@@ -74,11 +74,11 @@ DROP TABLE IF EXISTS `fos_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fos_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
+  `username` varchar(180) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `username_canonical` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `email_canonical` varchar(255) NOT NULL,
+  `username_canonical` varchar(180) NOT NULL,
+  `email` varchar(180) NOT NULL,
+  `email_canonical` varchar(180) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `salt` varchar(255) NOT NULL,
   `last_login` datetime DEFAULT NULL,
@@ -171,7 +171,7 @@ CREATE TABLE `participant` (
   `age` int(11) DEFAULT NULL,
   `gender` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,6 +180,7 @@ CREATE TABLE `participant` (
 
 LOCK TABLES `participant` WRITE;
 /*!40000 ALTER TABLE `participant` DISABLE KEYS */;
+INSERT INTO `participant` VALUES (16,'aaa',25,'aa');
 /*!40000 ALTER TABLE `participant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,6 +200,7 @@ CREATE TABLE `participant_response` (
   `correct_image_id` int(11) DEFAULT NULL,
   `selected_image_id` int(11) DEFAULT NULL,
   `pointsEarned` int(11) DEFAULT NULL,
+  `answered_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_participant_response_image1_idx` (`first_image_served_id`),
   KEY `fk_participant_response_image2_idx` (`second_image_served_id`),
@@ -212,7 +214,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,6 +223,7 @@ CREATE TABLE `participant_response` (
 
 LOCK TABLES `participant_response` WRITE;
 /*!40000 ALTER TABLE `participant_response` DISABLE KEYS */;
+INSERT INTO `participant_response` VALUES (71,16,9,21,18,9,9,5,'2016-08-09 19:43:22');
 /*!40000 ALTER TABLE `participant_response` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +247,7 @@ CREATE TABLE `participant_session` (
   KEY `IDX_4A491ADC6A33B9B3` (`gamification_type_id`),
   CONSTRAINT `FK_4A491ADC6A33B9B3` FOREIGN KEY (`gamification_type_id`) REFERENCES `gamification_type` (`id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,6 +256,7 @@ CREATE TABLE `participant_session` (
 
 LOCK TABLES `participant_session` WRITE;
 /*!40000 ALTER TABLE `participant_session` DISABLE KEYS */;
+INSERT INTO `participant_session` VALUES (16,16,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 19:43:18',NULL,5,1);
 /*!40000 ALTER TABLE `participant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -298,4 +302,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-08 14:15:10
+-- Dump completed on 2016-08-09 19:44:12

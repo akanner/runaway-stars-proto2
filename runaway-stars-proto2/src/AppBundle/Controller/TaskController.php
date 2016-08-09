@@ -42,7 +42,7 @@ class TaskController extends BaseController
         $isUserLogged = $this->isUserLogged($request);
         if(!$isUserLogged)
         {
-            return $this->redirectToLogin();
+            return $this->redirectToDefault();
         }
 
         //get the images

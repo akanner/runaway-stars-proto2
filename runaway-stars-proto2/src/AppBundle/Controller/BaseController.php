@@ -199,6 +199,11 @@ abstract class BaseController extends Controller
         return $this->redirectToURL("logInUser",$params);
     }
 
+    protected function redirectToDefault()
+    {
+        return $this->redirectToURL("homepage");
+    }
+
     protected function redirectToURL($routeName,$params=array())
     {
         return $this->redirect($this->generateUrl($routeName, $params,true));

@@ -30,7 +30,7 @@ class LogoutController extends BaseController
 
         if(!$isUserLogged)
         {
-            return $this->redirectToTasks();
+            return $this->redirectToDefault();
         }
 
         $session = $request->getSession();
@@ -99,15 +99,17 @@ class LogoutController extends BaseController
     private function getLevelsResult($percentajeOfCorrectness,$paramRepository)
     {
         //migrate this to DATABASE!!!
+        $intermediatePercentajeOfCorrectness = $paramRepository->getMinimumPercentageIntermediateLevel();
+        $expertPercentajeOfCorrectness = $paramRepository->getMinimumPercentageExpertLevel();
         $gamificationResult = [];
         $gamificationResult["level"] = $paramRepository->getLevelsBeginnerText();
         $gamificationResult["legend"]= $paramRepository->getLevelsBeginnerLegend();
-        if($percentajeOfCorrectness >= 33)
+        if($percentajeOfCorrectness >= $intermediatePercentajeOfCorrectness)
         {
             $gamificationResult["level"] = $paramRepository->getLevelsIntermediateText();
             $gamificationResult["legend"]= $paramRepository->getLevelsIntermediateLegend();
         }
-        if($percentajeOfCorrectness >= 66)
+        if($percentajeOfCorrectness >= $expertPercentajeOfCorrectness)
         {
             $gamificationResult["level"] = $paramRepository->getLevelsExpertText();
             $gamificationResult["legend"]= $paramRepository->getLevelsExpertLegend();
@@ -120,20 +122,23 @@ class LogoutController extends BaseController
     private function getBadgesResult($percentajeOfCorrectness,$paramRepository)
     {
         //migrate this to DATABASE!!!
+        $intermediatePercentajeOfCorrectness = $paramRepository->getMinimumPercentageIntermediateLevel();
+        $expertPercentajeOfCorrectness = $paramRepository->getMinimumPercentageExpertLevel();
+
         $gamificationResult = [];
         //gets the values for the first level
         $badge = $paramRepository->getBadgesBeginnerBadge();
         $gamificationResult["level"] = $this->getImageUrl($badge);
         $gamificationResult["legend"]= $paramRepository->getBadgesBeginnerLegend();
         //gets the values for the second level
-        if($percentajeOfCorrectness >= 33)
+        if($percentajeOfCorrectness >= $intermediatePercentajeOfCorrectness)
         {
             $badge = $paramRepository->getBadgesIntermediateBadge();
             $gamificationResult["level"] = $this->getImageUrl($badge);
             $gamificationResult["legend"]= $paramRepository->getBadgesIntermediateLegend();
         }
         //gets the values for the third level
-        if($percentajeOfCorrectness >= 66)
+        if($percentajeOfCorrectness >= $expertPercentajeOfCorrectness)
         {
             $badge = $paramRepository->getBadgesExpertBadge();
             $gamificationResult["level"] = $this->getImageUrl($badge);

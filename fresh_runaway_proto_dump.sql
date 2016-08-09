@@ -52,7 +52,7 @@ CREATE TABLE `app_parameter` (
   `key` varchar(255) NOT NULL,
   `value` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `app_parameter` (
 
 LOCK TABLES `app_parameter` WRITE;
 /*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
-INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','5'),(2,'CORRECT_ANSWER_TEXT','Felicitaciones! tu respuesta es correcta.'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la insignia de principiante, &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','&iexcl;Buen Trabajo, ganaste la insignia intermedia! demostraste que ya pod&eacute;s identificar algunas runaway stars...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Ganaste la insignia de experto! &iquest;Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','beginner_badge.png'),(14,'BADGES_INTERMEDIATE_BADGE','intermediate_badge.png'),(15,'BADGES_EXPERT_BADGE','expert_badge.png');
+INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','5'),(2,'CORRECT_ANSWER_TEXT','Felicitaciones! tu respuesta es correcta.'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la insignia de principiante, &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','&iexcl;Buen Trabajo, ganaste la insignia intermedia! demostraste que ya pod&eacute;s identificar algunas runaway stars...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Ganaste la insignia de experto! &iquest;Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','beginner_badge.png'),(14,'BADGES_INTERMEDIATE_BADGE','intermediate_badge.png'),(15,'BADGES_EXPERT_BADGE','expert_badge.png'),(16,'MINIMUM_PERCENTAGE_INTERMEDIATE_LEVEL','50'),(17,'MINIMUM_PERCENTAGE_EXPERT_LEVEL','80');
 /*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +171,7 @@ CREATE TABLE `participant` (
   `age` int(11) DEFAULT NULL,
   `gender` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,7 +180,7 @@ CREATE TABLE `participant` (
 
 LOCK TABLES `participant` WRITE;
 /*!40000 ALTER TABLE `participant` DISABLE KEYS */;
-INSERT INTO `participant` VALUES (16,'aaa',25,'aa');
+INSERT INTO `participant` VALUES (16,'aaa',25,'aa'),(17,'aa',25,'aa'),(18,'aaa',25,'aa'),(19,'aaa',25,'aa'),(20,'aaa',26,'aa'),(21,'aaa',25,'aa'),(22,'25',23,'aa'),(23,'aa',25,'aa');
 /*!40000 ALTER TABLE `participant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +214,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +223,7 @@ CREATE TABLE `participant_response` (
 
 LOCK TABLES `participant_response` WRITE;
 /*!40000 ALTER TABLE `participant_response` DISABLE KEYS */;
-INSERT INTO `participant_response` VALUES (71,16,9,21,18,9,9,5,'2016-08-09 19:43:22');
+INSERT INTO `participant_response` VALUES (71,16,9,21,18,9,9,5,'2016-08-09 19:43:22'),(72,16,11,20,22,22,22,5,'2016-08-09 19:45:00'),(73,16,17,8,11,8,8,5,'2016-08-09 19:45:03'),(74,16,19,23,14,23,23,5,'2016-08-09 19:45:06'),(75,16,10,18,12,10,10,5,'2016-08-09 19:45:10'),(76,17,26,12,13,26,26,5,'2016-08-09 20:06:38'),(77,17,15,14,9,9,9,5,'2016-08-09 20:06:41'),(78,17,11,26,19,26,26,5,'2016-08-09 20:06:44'),(79,17,12,11,8,8,11,5,'2016-08-09 20:06:47'),(80,17,11,15,10,10,11,5,'2016-08-09 20:06:51'),(81,18,7,20,18,7,7,5,'2016-08-09 20:07:16'),(82,18,21,26,16,26,16,5,'2016-08-09 20:07:19'),(83,18,13,14,9,9,14,5,'2016-08-09 20:07:22'),(84,18,15,19,7,7,19,5,'2016-08-09 20:07:29'),(85,18,19,18,23,23,23,5,'2016-08-09 20:07:32'),(86,19,14,7,13,7,7,5,'2016-08-09 20:07:51'),(87,19,18,6,21,6,6,5,'2016-08-09 20:07:54'),(88,19,12,10,21,10,10,5,'2016-08-09 20:07:57'),(89,19,13,10,19,10,10,5,'2016-08-09 20:08:04'),(90,19,15,6,19,6,19,5,'2016-08-09 20:08:07'),(91,20,16,15,6,6,6,5,'2016-08-09 20:08:20'),(92,20,20,22,21,22,22,5,'2016-08-09 20:08:24'),(93,20,15,14,8,8,8,5,'2016-08-09 20:08:29'),(94,20,8,14,12,8,14,5,'2016-08-09 20:08:32'),(95,20,21,25,15,25,15,5,'2016-08-09 20:08:35'),(96,21,19,22,17,22,17,5,'2016-08-09 20:08:57'),(97,21,21,11,25,25,11,5,'2016-08-09 20:09:00'),(98,21,7,11,17,7,11,5,'2016-08-09 20:09:03'),(99,21,20,11,24,24,11,5,'2016-08-09 20:09:05'),(100,21,20,14,8,8,14,5,'2016-08-09 20:09:08'),(101,22,14,19,10,10,10,5,'2016-08-09 20:09:20'),(102,22,24,13,15,24,13,5,'2016-08-09 20:09:23'),(103,22,6,17,11,6,6,5,'2016-08-09 20:09:26'),(104,22,13,22,20,22,20,5,'2016-08-09 20:09:29'),(105,22,16,23,21,23,23,5,'2016-08-09 20:09:33'),(106,23,12,13,7,7,7,5,'2016-08-09 20:09:44'),(107,23,9,21,19,9,9,5,'2016-08-09 20:09:47'),(108,23,17,25,15,25,25,5,'2016-08-09 20:09:51'),(109,23,13,12,7,7,7,5,'2016-08-09 20:09:54'),(110,23,20,6,18,6,6,5,'2016-08-09 20:09:57');
 /*!40000 ALTER TABLE `participant_response` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,7 +247,7 @@ CREATE TABLE `participant_session` (
   KEY `IDX_4A491ADC6A33B9B3` (`gamification_type_id`),
   CONSTRAINT `FK_4A491ADC6A33B9B3` FOREIGN KEY (`gamification_type_id`) REFERENCES `gamification_type` (`id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +256,7 @@ CREATE TABLE `participant_session` (
 
 LOCK TABLES `participant_session` WRITE;
 /*!40000 ALTER TABLE `participant_session` DISABLE KEYS */;
-INSERT INTO `participant_session` VALUES (16,16,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 19:43:18',NULL,5,1);
+INSERT INTO `participant_session` VALUES (16,16,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 19:43:18','2016-08-09 19:45:10',25,1),(17,17,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:06:33','2016-08-09 20:06:51',25,2),(18,18,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:07:11','2016-08-09 20:07:32',25,1),(19,19,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:07:45','2016-08-09 20:08:07',25,1),(20,20,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:08:15','2016-08-09 20:08:35',25,1),(21,21,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:08:52','2016-08-09 20:09:09',25,2),(22,22,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:09:16','2016-08-09 20:09:33',25,2),(23,23,'4d0qn8ucnms9an6ssu6huukri2','2016-08-09 20:09:40','2016-08-09 20:09:57',25,2);
 /*!40000 ALTER TABLE `participant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,4 +302,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-09 19:44:12
+-- Dump completed on 2016-08-09 20:11:13

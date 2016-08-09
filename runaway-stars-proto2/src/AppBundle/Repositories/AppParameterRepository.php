@@ -96,6 +96,18 @@ class AppParameterRepository extends EntityRepository
 		return $this->findOneByKey("BADGES_INTERMEDIATE_BADGE")->getValue();
 	}
 
+	public function getMinimumPercentageIntermediateLevel()
+	{
+		$percentage = $this->findOneByKey("MINIMUM_PERCENTAGE_INTERMEDIATE_LEVEL")->getValue();
+		return intval($percentage);
+	}
+
+	public function getMinimumPercentageExpertLevel()
+	{
+		$percentage = $this->findOneByKey("MINIMUM_PERCENTAGE_EXPERT_LEVEL")->getValue();
+		return intval($percentage);
+	}
+
 	public function getBadgesExpertBadge()
 	{
 		return $this->findOneByKey("BADGES_EXPERT_BADGE")->getValue();

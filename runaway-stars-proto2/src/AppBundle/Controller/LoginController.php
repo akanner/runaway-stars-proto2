@@ -70,11 +70,13 @@ class LoginController extends BaseController
         $username           = $request->request->get("username");
         $age                = $request->request->get("age");
         $gender             = $request->request->get("gender");
+        $zooniverseUser     = $request->request->get("zooniverse_username");
         $gamificationType   = $session->get(static::GAMIFICATION_KEY);
         //gets gamificationType entity
         $gamificationEntity = $this->get(static::GAMIFICATION_REPO)->findOneByName($gamificationType);
         //creates user and session in the database
         $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
+        $participant->setZooniverseUsername($zooniverseUser);
         $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant,$gamificationEntity);
         $participant->setSession($participantSession);
         //it would be better if this controller is defined as a service as well

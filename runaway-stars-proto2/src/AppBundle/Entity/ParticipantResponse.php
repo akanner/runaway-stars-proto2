@@ -294,4 +294,18 @@ class ParticipantResponse
         return $this->answeredAt;
     }
 
+
+    /**
+     * Set answeredAt
+     *
+     * @param \DateTime $answeredAt
+     *
+     * @return ParticipantResponse
+     */
+    public function setAnsweredAt($answeredAt)
+    {
+        $this->answeredAt = $answeredAt;
+
+        return $this;
+    }
 }

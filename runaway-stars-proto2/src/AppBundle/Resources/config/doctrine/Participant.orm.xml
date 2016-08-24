@@ -7,7 +7,7 @@
     <field name="name" type="string" column="name" length="255" nullable="false"/>
     <field name="age" type="integer" column="age" nullable="true"/>
     <field name="gender" type="string" column="gender" length="45" nullable="true"/>
-
+    <field name="zooniverseUsername" type="string" column="zooniverse_username" length="100" nullable="true"/>
     <one-to-one field="session" target-entity="ParticipantSession" mapped-by="participant" />
 
   </entity>

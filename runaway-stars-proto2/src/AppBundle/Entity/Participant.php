@@ -162,4 +162,33 @@ class Participant
     {
         return $this->session;
     }
+    /**
+     * @var string
+     */
+    private $zooniverseUsername;
+
+
+    /**
+     * Set zooniverseUsername
+     *
+     * @param string $zooniverseUsername
+     *
+     * @return Participant
+     */
+    public function setZooniverseUsername($zooniverseUsername)
+    {
+        $this->zooniverseUsername = $zooniverseUsername;
+
+        return $this;
+    }
+
+    /**
+     * Get zooniverseUsername
+     *
+     * @return string
+     */
+    public function getZooniverseUsername()
+    {
+        return $this->zooniverseUsername;
+    }
 }

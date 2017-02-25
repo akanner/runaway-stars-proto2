@@ -101,16 +101,17 @@ class LoginController extends BaseController
         $session->set("logged",true);
         //sets the max number of tasks in the session
         $maxNumberOfTask = $this->getMaxNumberOfQuestions();
-        $session->set(static::STEP,1);
-        $session->set(static::MAX_STEPS,$maxNumberOfTask);
+        $session->set(static::TRAINING_STEP,1);
+        $session->set(static::TRAINING_MAX_STEPS,$maxNumberOfTask);
 
         return $session;
     }
 
      private function getMaxNumberOfQuestions()
     {
-        $paramRepository = $this->get(static::PARAM_REPO);
-        return $paramRepository->getMaxNumberOfQuestions();
+        $trainingRepository = $this->get(static::TRAINING_REPO);
+        $numberOfTrainingTasks = $trainingRepository->getMaxNumberOfQuestions();
+        return $numberOfTrainingTasks;
     }
 
 

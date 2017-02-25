@@ -17,7 +17,7 @@ use AppBundle\ViewObjects\ViewImage;
 
 use AppBundle\Utils\GamificationTypes;
 
-class TaskController extends BaseController
+class TrainingController extends BaseController
 {
 
 
@@ -27,8 +27,6 @@ class TaskController extends BaseController
     const IMAGES_REPO               = "imagesRepository";
 
     const POINTS_REPO               = "pointsRepository";
-
-    //const TRAINING_REPO             = "trainingRepository";
 
 
     /**
@@ -44,15 +42,17 @@ class TaskController extends BaseController
         {
             return $this->redirectToDefault();
         }
-
-        //get the images
-        $randomImages = $this->getTasksForQuestion($request);
-        //creates and saves the user response in the session, when the user answer us, it will be save in the db
+           //creates and saves the user response in the session, when the user answer us, it will be save in the db
         $session = $request->getSession();
+        //get the images
+        $trainingStepNumber = $session->get(static::TRAINING_STEP);
+        $trainingStep = $this->getTrainingTask($trainingStepNumber);
+        $trainingImages = $this->getTasksForQuestion($trainingStep);
+     
         //this should be injected, to do this, that controller should be declared as a service
         $em = $this->getEntityManager();
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$randomImages);
+        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$trainingImages);
         $this->serializeResponseIntoHttpSession($session,$participantResponse);
 
 
@@ -63,12 +63,12 @@ class TaskController extends BaseController
         $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
         $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
         //gets the images's paths and passes them to the view
-        $viewParams["images"] = $this->getViewImages($randomImages);
+        $viewParams["images"] = $this->getViewImages($trainingImages);
         $viewParams["points"] = $userSession->getTotalPoints();
         //gets current and max steps
-        $viewParams["current_step"]  = $session->get(static::STEP);
-        $viewParams["max_step"]      = $session->get(static::MAX_STEPS);
-
+        $viewParams["current_step"]  = $session->get(static::TRAINING_STEP);
+        $viewParams["max_step"]      = $session->get(static::TRAINING_MAX_STEPS);
+        $viewParams["training_mode"] = true;
         $viewParams["post_url"]      = $this->generateUrl('processTaskResponse', array(), true);
         $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
         // replace this example code with whatever you need
@@ -171,13 +171,18 @@ class TaskController extends BaseController
         return $viewImages;
     }
 
-
-    private function getTasksForQuestion($request)
+    private function getTrainingTask($trainingStepNumber)
     {
-        //it would be better if this controller is defined as a service as well
-        //gets the image repository from the IoC container
-        $imageRepository = $this->get(static::IMAGES_REPO);
-        return $imageRepository->getRandomImages();
+        $trainingRepo = $this->get(static::TRAINING_REPO);
+        return $trainingRepo->findOneByTrainingStep($trainingStepNumber);
+    }
+
+    private function getTasksForQuestion($trainingTask)
+    {
+        $firstImage     = $trainingTask->getFirstImage();
+        $secondImage    = $trainingTask->getSecondImage();
+        $thirdImage     = $trainingTask->getThirdImage();
+        return array($firstImage,$secondImage,$thirdImage);
     }
     /**
      * assigns points to the user's response
@@ -200,9 +205,9 @@ class TaskController extends BaseController
 
     private function advanceNextStep($session)
     {
-        $currentStep = $session->get(static::STEP);
+        $currentStep = $session->get(static::TRAINING_STEP);
         $nextStep    = $currentStep + 1;
-        $session->set(static::STEP,$nextStep);
+        $session->set(static::TRAINING_STEP,$nextStep);
     }
 
 
@@ -212,8 +217,8 @@ class TaskController extends BaseController
      */
     private function showNextTask($session)
     {
-        $tasksCompleted = $session->get(static::STEP);
-        $maxTasks       = $session->get(static::MAX_STEPS);
+        $tasksCompleted = $session->get(static::TRAINING_STEP);
+        $maxTasks       = $session->get(static::TRAINING_MAX_STEPS);
 
         $userShouldRespondMoreTasks = $tasksCompleted <= $maxTasks;
         if($userShouldRespondMoreTasks)

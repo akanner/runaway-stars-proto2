@@ -22,9 +22,9 @@ abstract class BaseController extends Controller
     /**
      * session key that holds the user's session object
      */
-    const STEP                      = "task-number";
+    const TRAINING_STEP                      = "training-task-number";
 
-    const MAX_STEPS                 = "max-tasks";
+    const TRAINING_MAX_STEPS                 = "training-max-tasks";
 
     const USER_SESSION_SESSION_KEY  = "user-session";
 
@@ -39,6 +39,8 @@ abstract class BaseController extends Controller
     const PARTICIPANT_SESSION_REPO  = "participantSessionRepository";
 
     const PARTICIPANT_RESPONSE_SESSION_REPO = "participantResponseRepository";
+
+    const TRAINING_REPO             = "trainingRepository";
 
 	protected function getEntityManager()
 	{

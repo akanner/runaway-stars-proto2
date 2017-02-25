@@ -69,7 +69,7 @@
       if(trainingMode)
       {
         //this will show the text of the three images
-      	starContainer = starContainer.parent();
+      	starContainer = starContainer.parent().children();
       }
       
       starContainer.each(

@@ -17,7 +17,7 @@ use AppBundle\ViewObjects\ViewImage;
 
 use AppBundle\Utils\GamificationTypes;
 
-class LogoutController extends BaseController
+class StadisticsController extends BaseController
 {
 
 	 /**
@@ -40,11 +40,15 @@ class LogoutController extends BaseController
         $userSession->setEndedAt(new \Datetime('now'));
         $em = $this->getEntityManager();
         $em->persist($userSession);
+        //calculates percentile TODO: this could be a lot faster if it is calculated using a stored procedure
+        $userPercentile = $this->calculatePercentile($userSession);
+        $userSession->setPercentile($userPercentile);
         $em->flush();
 
         $viewParams = [];
-        $gamificationType = $this->getGamificationType($session);
+        $gamificationType = $this->getGamificationType($session); 
         $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$userSession->getPercentageOfCorrectTasks());
+
 
 
         
@@ -52,6 +56,7 @@ class LogoutController extends BaseController
         $viewParams["gamType"]       = $gamificationType;   
         $viewParams["level"]         = $gamificationResult["level"];
         $viewParams["legend"]        = $gamificationResult["legend"];
+        $viewParams["percentile"]    = round($userPercentile,2);
 
         //closes the session
         $session->clear();
@@ -72,6 +77,38 @@ class LogoutController extends BaseController
             default:
                 return "logout/no-gamification.html.twig";
         }
+    }
+    /**
+     * Calculates the percentile of the participant's score
+     *
+     * @param UserSession Participant's session
+     *
+     * @return Integer Percentile of the participant
+     *
+     */
+    private function calculatePercentile($userSession)
+    {
+        $currentUserScore = $userSession->getTotalPoints();
+
+        //gets all users's scores
+        $participantSessionRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
+        $participantsScores = $participantSessionRepo->getAllScores();
+        //gets the array's legth
+        $totalParticipantsScores = count($participantsScores);
+        //calculates the amount of scores that are lower than the current user score
+        $totalParticipantScoresLowerThanCurrentUserScore = array_reduce($participantsScores,
+            function($carry,$score) use ($currentUserScore){
+                if($score <= $currentUserScore)
+                {
+                    $carry++;
+                }
+                return $carry;
+            },0);
+        $percentile = ($totalParticipantScoresLowerThanCurrentUserScore / $totalParticipantsScores);
+        //gets the percentile 
+        $percentile = $percentile * 100; //transoforms the percentile into an actual percentage
+
+        return $percentile;
     }
 
 
@@ -98,7 +135,6 @@ class LogoutController extends BaseController
 
     private function getLevelsResult($percentajeOfCorrectness,$paramRepository)
     {
-        //migrate this to DATABASE!!!
         $intermediatePercentajeOfCorrectness = $paramRepository->getMinimumPercentageIntermediateLevel();
         $expertPercentajeOfCorrectness = $paramRepository->getMinimumPercentageExpertLevel();
         $gamificationResult = [];

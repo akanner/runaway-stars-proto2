@@ -31,4 +31,22 @@ class ParticipantSessionRepository extends EntityRepository
         $count = $query->getSingleScalarResult();
 		return $count;
 	}
+
+	/**
+	 * Gets all the participant's scores
+	 *
+	 * @return array[integer] all the participants's scores
+	 *
+	 */
+	public function getAllScores()
+	{
+		$query = 
+			$this
+			  ->createQueryBuilder('session')
+			  ->select("session.totalPoints")
+			  ->getQuery();
+		$scores = $query->getResult();
+		return array_map('current', $scores);
+
+	}
 }

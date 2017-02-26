@@ -49,6 +49,13 @@ class ParticipantSession
      */
     private $id;
 
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="percentile", type="integer", nullable=true)
+     */
+    private $percentile;
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
@@ -161,6 +168,28 @@ class ParticipantSession
     public function getTotalPoints()
     {
         return $this->totalPoints;
+    }
+
+     /**
+     * Set percentile
+     *
+     * @param float $percentile
+     * @return ParticipantSession
+     */
+    public function setPercentile($percentile)
+    {
+        $this->percentile = $percentile;
+
+        return $this;
+    }
+     /**
+     * Get percentile
+     *
+     * @return float 
+     */
+    public function getPercentile()
+    {
+        return $this->percentile;
     }
 
     /**

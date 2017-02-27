@@ -21,11 +21,11 @@ class StadisticsController extends BaseController
 {
 
 	 /**
-     * @Route("logout/", name="logout")
+     * @Route("stadistics/", name="logout")
      */
     public function logout(Request $request)
     {
-          //TODO use a interceptor,filter or something to check session ending
+      //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
 
         if(!$isUserLogged)
@@ -44,7 +44,6 @@ class StadisticsController extends BaseController
         $userPercentile = $this->calculatePercentile($userSession);
         $userSession->setPercentile($userPercentile);
         $em->flush();
-
         $viewParams = [];
         $gamificationType = $this->getGamificationType($session); 
         $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$userSession->getPercentageOfCorrectTasks());
@@ -53,19 +52,44 @@ class StadisticsController extends BaseController
 
         
         $viewParams["back_url"]      = $this->generateUrl('logInUser', array("gamification" => $gamificationType), true);
+        $viewParams["post_url"]      = $this->generateUrl('endTraining', array(), true);
         $viewParams["gamType"]       = $gamificationType;   
         $viewParams["level"]         = $gamificationResult["level"];
         $viewParams["legend"]        = $gamificationResult["legend"];
         $viewParams["percentile"]    = round($userPercentile,2);
 
-        //closes the session
-        $session->clear();
         //redirects the user to the end
         $viewName = $this->getGamificationTypeView($gamificationType);
         return $this->render($viewName,$viewParams);
 
     }
 
+     /**
+     * @Route("stadistics/submit", name="endTraining")
+     */
+     public function endTraining(Request $request)
+     {
+        //TODO use a interceptor,filter or something to check session ending
+        $isUserLogged = $this->isUserLogged($request);
+
+        if(!$isUserLogged)
+        {
+            return $this->redirectToDefault();
+        }
+        $httpSession = $request->getSession();
+        $participantSessionEntity = $this->deserializeParticipantSessionEntityFromHttpSession($httpSession);
+
+        //saves the user's confidence
+        $confidence = $request->request->get("confidence");
+        $participantSessionEntity->setParticipantConfidence($confidence);
+
+        $em = $this->getEntityManager();
+        $em->persist($participantSessionEntity);
+
+        //redirect to the training or to the real tasks
+        $userChoice = $request->request->get("userChoice");
+
+     }
     private function getGamificationTypeView($gamificationType)
     {
         switch ($gamificationType) 

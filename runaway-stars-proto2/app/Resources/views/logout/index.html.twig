@@ -7,7 +7,7 @@
 	}
 
     .badge_img{
-        height: 400px;
+        height: 300px;
     }
 </style>
 
@@ -21,20 +21,53 @@
             </div>
         </div>
         {% block result %}{% endblock %}
-        <div class="row">
-        	<div class="col-md-12">
-	        	<p class="lead text-center">&iquest;Queres probar de nuevo?</p>
-	        </div>
-        </div>
-        <div class="row">
-        	<div class="col-md-offset-5 col-md-1">
-        		<a class="btn btn-success btn-lg"  href="{{back_url}}" role="button">Si</a>
-        	</div>
-        	<div class="col-md-1">
-        		<a class="btn btn-danger btn-lg" type="button" href="#" role="button">No</a>
-        	</div>
-        	<div class="col-md-5">
-        	</div>
-        </div>
+        <form id="submitTraining" method="POST" action="{{post_url}}" class="form">
+           <div class="row text-center">
+                <p class="text-center">&iquest;Qu&eacute; tan confiado te sent&iacute;s para detectar estrellas fugitivas reales?</p>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="1" required="required">1
+                </label>
+               <label class="radio-inline">
+                    <input type="radio" name="confidence" value="2" required="required">2
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="3" required="required">3
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="4" required="required">4
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="5" required="required">5
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="6" required="required">6
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="7" required="required">7
+                </label> 
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="8" required="required">8
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="9" required="required">9
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="confidence" value="10" required="required">10
+                </label>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="lead text-center">&iquest;Queres probar de nuevo?</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-5 col-md-1">
+                    <button name="userChoice" type="submit" class="btn btn-success btn-lg"  value="true" role="button">Si</button>
+                </div>
+                <div class="col-md-1">
+                    <button name="userChoice" type="submit" class="btn btn-danger btn-lg" type="button" value="false" role="button">No</submit>
+                </div>
+            </div>
+        </form>
 	</div>
 {% endblock %}

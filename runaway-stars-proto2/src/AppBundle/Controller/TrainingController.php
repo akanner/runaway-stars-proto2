@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 //entities
 
 use AppBundle\Entity\Participant;
-use AppBundle\Entity\ParticipantResponse;
+use AppBundle\Entity\ParticipantTrainingResponse;
 use AppBundle\Entity\ParticipantSession;
 
 //view objects
@@ -47,12 +47,12 @@ class TrainingController extends BaseController
         //get the images
         $trainingStepNumber = $session->get(static::TRAINING_STEP);
         $trainingStep = $this->getTrainingTask($trainingStepNumber);
-        $trainingImages = $this->getTasksForQuestion($trainingStep);
+
      
         //this should be injected, to do this, that controller should be declared as a service
         $em = $this->getEntityManager();
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$trainingImages);
+        $participantResponse = ParticipantTrainingResponse::createFromSessionAndTrainingTask($userSession,$trainingStep);
         $this->serializeResponseIntoHttpSession($session,$participantResponse);
 
 
@@ -63,6 +63,7 @@ class TrainingController extends BaseController
         $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
         $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
         //gets the images's paths and passes them to the view
+        $trainingImages = $this->getTasksForQuestion($trainingStep);
         $viewParams["images"] = $this->getViewImages($trainingImages);
         $viewParams["points"] = $userSession->getTotalPoints();
         //gets current and max steps

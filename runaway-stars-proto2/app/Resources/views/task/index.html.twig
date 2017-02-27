@@ -15,7 +15,7 @@
                 <h3>Pregunta <span id="current-task">{{current_step}}</span> de <span id="total-questions">{{max_step}}</span></h3>
             </div>
             <div class="col-md-2 col-md-offset-8">
-                <h3>PUNTOS: <span id="score">{{points}}</span></h3>
+                {% block points %}{% endblock %}
             </div>
         </div>
         <form id="runaway-stars-form" class="well" action="{{post_url}}" method="POST">

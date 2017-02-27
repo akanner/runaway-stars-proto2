@@ -53,6 +53,7 @@ class StadisticsController extends BaseController
         
         $viewParams["back_url"]      = $this->generateUrl('logInUser', array("gamification" => $gamificationType), true);
         $viewParams["post_url"]      = $this->generateUrl('endTraining', array(), true);
+        $viewParams["points"]        = $userSession->getTotalPoints();
         $viewParams["gamType"]       = $gamificationType;   
         $viewParams["level"]         = $gamificationResult["level"];
         $viewParams["legend"]        = $gamificationResult["legend"];
@@ -90,17 +91,20 @@ class StadisticsController extends BaseController
         $userChoice = $request->request->get("userChoice");
 
      }
+     /**
+      * gets the template for the selected gamification type
+      *
+      * @param string Gamification type name
+      *
+      */
     private function getGamificationTypeView($gamificationType)
     {
-        switch ($gamificationType) 
-        {
-            case GamificationTypes::GAMIFICATION_BADGES:
-                return "logout/badges.html.twig";
-            case GamificationTypes::GAMIFICATION_LEVEL:
-                return "logout/levels.html.twig";
-            default:
-                return "logout/no-gamification.html.twig";
-        }
+        $gTypeRepo = $this->get(static::GAMIFICATION_REPO);
+
+        //gets the gamification type
+        $gType = $gTypeRepo->findOneByName($gamificationType);
+
+        return $gType->getStadisticsView();
     }
     /**
      * Calculates the percentile of the participant's score
@@ -135,7 +139,12 @@ class StadisticsController extends BaseController
         return $percentile;
     }
 
-
+    /**
+     * Gets the gamification type from the http session
+     *
+     * @return string Name of the gamification type
+     *
+     */
     private function getGamificationType($session)
     {
         return $session->get(static::GAMIFICATION_KEY);

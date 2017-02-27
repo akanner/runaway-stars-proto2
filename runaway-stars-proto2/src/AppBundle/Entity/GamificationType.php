@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use AppBundle\Utils\GamificationTypes;
 /**
  * GamificationType
  *
@@ -119,5 +119,39 @@ class GamificationType
     public function getGamificationTypeBalance()
     {
         return $this->gamificationTypeBalance;
+    }
+
+    /**
+     * Gets the path to the stadistics view corresponding to each gamification type
+     *
+     * TODO: subclassify GamificationType???
+     *
+     */
+    public function getStadisticsView()
+    {
+        switch ($this->name) 
+        {
+            case GamificationTypes::GAMIFICATION_BADGES:
+                return "logout/badges.html.twig";
+            case GamificationTypes::GAMIFICATION_LEVEL:
+                return "logout/levels.html.twig";
+            case GamificationTypes::GAMIFICATION_NONE:
+                return "logout/no-gamification.html.twig";
+            case GamificationTypes::GAMIFICATION_POINTS:
+                return "logout/points.html.twig";
+            default:
+                throw new \Exception("unknown gamification type:  $this->name");
+        }
+    }
+
+    public function getPointsView()
+    {
+        switch ($this->name) 
+        {
+            case GamificationTypes::GAMIFICATION_POINTS:
+                return "training/points.html.twig";
+            default:
+                return "training/no-points.html.twig";
+        }
     }
 }

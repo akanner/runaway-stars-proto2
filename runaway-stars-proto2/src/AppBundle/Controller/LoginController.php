@@ -40,6 +40,15 @@ class LoginController extends BaseController
         $postUrl = $this->generateUrl('logInUserResponse', array(), true);
         $viewParams = array();
         $viewParams["post_url"] = $postUrl;
+        //sets the twig block called "points"
+        //this is done here to avoid asking to the database in each step of the training
+        //we show the user's points depending if the gamification type is "points" or not
+        //to show the points we have defined two twig templates: 1)training/points.html.twig and 2)training/no-points/no-points.html.twig
+        //both templates extend task/index.html
+        $gTypeRepo = $this->get(static::GAMIFICATION_REPO);
+        $gType = $gTypeRepo->findOneByName($gamificationType);
+        $session->set(static::POINTS_VIEW_SESSION_KEY,$gType->getPointsView());
+
         return $this->render('login/index.html.twig',$viewParams);
     }
 

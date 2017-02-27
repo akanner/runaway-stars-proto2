@@ -30,6 +30,8 @@ abstract class BaseController extends Controller
 
     const USER_RESPONSE_SESSION_KEY = "user-response";
 
+    const POINTS_VIEW_SESSION_KEY   = "points-view";
+
     const GAMIFICATION_KEY          = "gamification-type"; 
 
     const PARAM_REPO                = "paramsRepository";

@@ -46,4 +46,17 @@ class GamificationTypeRepository extends EntityRepository
 
 		return $levelsEntity;
 	}
+
+		/**
+	 * Gets GamificationType points Entity
+	 *
+	 * @return GamificationType
+	 */
+	public function getPointsEntity()
+	{
+		$levelsEntity = $this->findOneByName("points");
+
+		return $levelsEntity;
+	}
+
 }

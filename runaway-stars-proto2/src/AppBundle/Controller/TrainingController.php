@@ -72,8 +72,8 @@ class TrainingController extends BaseController
         $viewParams["training_mode"] = true;
         $viewParams["post_url"]      = $this->generateUrl('processTaskResponse', array(), true);
         $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
-        // replace this example code with whatever you need
-        return $this->render('task/index.html.twig', $viewParams);
+        //looks in the http session the view to show (with or without points)
+        return $this->render($session->get(static::POINTS_VIEW_SESSION_KEY), $viewParams);
     }
 
 

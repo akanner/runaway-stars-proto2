@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AppBundle\Entity\ParticipantSession" table="participant_session" repository-class="AppBundle\Repositories\ParticipantSessionRepository">
+  <entity name="AppBundle\Entity\ParticipantSession" table="participant_session">
     <indexes>
       <index name="fk_session_participant_participant_idx" columns="participant_id"/>
+      <index name="IDX_4A491ADC6A33B9B3" columns="gamification_type_id"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="httpSession" type="string" column="http_session" length="1024" nullable="false"/>
+    <field name="httpSession" type="string" column="http_session" length="1024" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="startedAt" type="datetime" column="started_at" nullable="false"/>
     <field name="endedAt" type="datetime" column="ended_at" nullable="true"/>
-    <field name="totalPoints" type="integer" column="total_points" nullable="false"/>
-    <field name="percentile" type="float" column="percentile" nullable="true" />
-    <many-to-one field="participant" target-entity="Participant" inversed-by="session">
+    <field name="totalPoints" type="integer" column="total_points" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="percentile" type="float" column="percentile" precision="10" scale="0" nullable="true"/>
+    <field name="participantConfidence" type="integer" column="participant_confidence" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <many-to-one field="gamificationType" target-entity="GamificationType" fetch="LAZY">
+      <join-columns>
+        <join-column name="gamification_type_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="participant" target-entity="Participant" fetch="LAZY">
       <join-columns>
         <join-column name="participant_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <one-to-many field="responses" target-entity="ParticipantResponse" mapped-by="session" />
-
-    <many-to-one field="gamification_type" target-entity="GamificationType" />
   </entity>
 </doctrine-mapping>

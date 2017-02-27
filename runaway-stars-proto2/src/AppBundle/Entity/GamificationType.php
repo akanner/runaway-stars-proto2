@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * GamificationType
  *
  * @ORM\Table(name="gamification_type")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repositories\GamificationTypeRepository")
  */
 class GamificationType
 {
@@ -37,6 +37,8 @@ class GamificationType
 
      /**
      * @var integer
+     *
+     * @ORM\Column(name="gamification_type_balance", type="integer")
      */
     private $gamificationTypeBalance;
 

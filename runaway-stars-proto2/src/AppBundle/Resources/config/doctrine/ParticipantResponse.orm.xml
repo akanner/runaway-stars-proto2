@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd" xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
-  <entity name="AppBundle\Entity\ParticipantResponse" table="participant_response" repository-class="AppBundle\Repositories\ParticipantResponseRepository">
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ParticipantResponse" table="participant_response">
     <indexes>
-      <index name="fk_participant_response_session_participant_idx" columns="session_id"/>
       <index name="fk_participant_response_image1_idx" columns="first_image_served_id"/>
       <index name="fk_participant_response_image2_idx" columns="second_image_served_id"/>
       <index name="fk_participant_response_image3_idx" columns="third_image_served_id"/>
       <index name="fk_participant_response_image4_idx" columns="correct_image_id"/>
       <index name="fk_participant_response_image5_idx" columns="selected_image_id"/>
+      <index name="fk_participant_response_session_participant_idx" columns="session_id"/>
+      <index name="fk_participant_response_training_task_idx" columns="training_task_id"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <many-to-one field="selectedImage" target-entity="Image">
-      <join-columns>
-        <join-column name="selected_image_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="session" target-entity="ParticipantSession" inversed-by="responses">
-      <join-columns>
-        <join-column name="session_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="correctImage" target-entity="Image">
-      <join-columns>
-        <join-column name="correct_image_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="thirdImageServed" target-entity="Image">
-      <join-columns>
-        <join-column name="third_image_served_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="secondImageServed" target-entity="Image">
-      <join-columns>
-        <join-column name="second_image_served_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="firstImageServed" target-entity="Image">
+    <field name="pointsEarned" type="integer" column="pointsEarned" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="answeredAt" type="datetime" column="answered_at" nullable="true"/>
+    <field name="type" type="string" column="type" length="45" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="firstImageServed" target-entity="Image" fetch="LAZY">
       <join-columns>
         <join-column name="first_image_served_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <field name="pointsEarned" type="integer" column="pointsEarned" nullable="true"/>
-    <field name="answeredAt" type="datetime" nullable="true" column="answered_at">
-      <gedmo:timestampable on="create"/>
-    </field>
+    <many-to-one field="secondImageServed" target-entity="Image" fetch="LAZY">
+      <join-columns>
+        <join-column name="second_image_served_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="thirdImageServed" target-entity="Image" fetch="LAZY">
+      <join-columns>
+        <join-column name="third_image_served_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="correctImage" target-entity="Image" fetch="LAZY">
+      <join-columns>
+        <join-column name="correct_image_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="selectedImage" target-entity="Image" fetch="LAZY">
+      <join-columns>
+        <join-column name="selected_image_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="session" target-entity="ParticipantSession" fetch="LAZY">
+      <join-columns>
+        <join-column name="session_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="trainingTask" target-entity="TrainingTask" fetch="LAZY">
+      <join-columns>
+        <join-column name="training_task_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
   </entity>
 </doctrine-mapping>

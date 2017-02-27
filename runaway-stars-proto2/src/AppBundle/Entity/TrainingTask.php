@@ -6,36 +6,62 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TrainingTask
+ *
+ * @ORM\Entity(repositoryClass="AppBundle\Repositories\TrainingRepository")
+ * @ORM\Table(name="training_task", indexes={@ORM\Index(name="fk_training_task_image1_idx", columns={"first_image"}),@ORM\Index(name="fk_training_task_image2_idx", columns={"second_image"}),@ORM\Index(name="fk_training_task_image3_idx", columns={"third_image"}),
+ })
  */
 class TrainingTask
 {
     /**
      * @var integer
+     *
+     * @ORM\Column(name="training_step", type="integer", nullable=false)
      */
     private $trainingStep;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="help_text", type="text", length=65535, nullable=false)
      */
     private $helpText;
 
     /**
      * @var integer
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \AppBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="third_image", referencedColumnName="id")
+     * })
      */
     private $thirdImage;
 
     /**
      * @var \AppBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="second_image", referencedColumnName="id")
+     * })
      */
     private $secondImage;
 
     /**
      * @var \AppBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="first_image", referencedColumnName="id")
+     * })
      */
     private $firstImage;
 

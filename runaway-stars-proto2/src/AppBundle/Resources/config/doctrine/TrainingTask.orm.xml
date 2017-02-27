@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AppBundle\Entity\TrainingTask" table="training_task" repository-class="AppBundle\Repositories\TrainingRepository">
+  <entity name="AppBundle\Entity\TrainingTask" table="training_task">
     <indexes>
       <index name="fk_training_task_image1_idx" columns="first_image"/>
       <index name="fk_training_task_image2_idx" columns="second_image"/>
@@ -9,21 +9,29 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="trainingStep" type="integer" column="training_step" nullable="false"/>
-    <field name="helpText" type="text" column="help_text" length="65535" nullable="true"/>
-    <many-to-one field="thirdImage" target-entity="Image">
+    <field name="trainingStep" type="integer" column="training_step" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="helpText" type="text" column="help_text" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="firstImage" target-entity="Image" fetch="LAZY">
       <join-columns>
-        <join-column name="third_image" referenced-column-name="id"/>
+        <join-column name="first_image" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="secondImage" target-entity="Image">
+    <many-to-one field="secondImage" target-entity="Image" fetch="LAZY">
       <join-columns>
         <join-column name="second_image" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="firstImage" target-entity="Image">
+    <many-to-one field="thirdImage" target-entity="Image" fetch="LAZY">
       <join-columns>
-        <join-column name="first_image" referenced-column-name="id"/>
+        <join-column name="third_image" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

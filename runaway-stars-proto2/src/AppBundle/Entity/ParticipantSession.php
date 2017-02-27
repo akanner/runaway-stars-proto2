@@ -43,6 +43,13 @@ class ParticipantSession
     /**
      * @var integer
      *
+     * @ORM\Column(name="participant_confidence", type="integer", nullable=true)
+     */
+    private $participantConfidence;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -75,6 +82,9 @@ class ParticipantSession
 
      /**
      * @var \AppBundle\Entity\GamificationType
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\GamificationType")
+     * @ORM\JoinColumn(name="gamification_type_id", referencedColumnName="id")
      */
     private $gamification_type;
 
@@ -168,6 +178,28 @@ class ParticipantSession
     public function getTotalPoints()
     {
         return $this->totalPoints;
+    }
+
+     /**
+     * Set participantConfidence
+     *
+     * @param integer $participantConfidence
+     * @return ParticipantSession
+     */
+    public function setParticipantConfidence($participantConfidence)
+    {
+        $this->participantConfidence = $participantConfidence;
+
+        return $this;
+    }
+     /**
+     * Get totalPoints
+     *
+     * @return integer 
+     */
+    public function getParticipantConfidence()
+    {
+        return $this->participantConfidence;
     }
 
      /**

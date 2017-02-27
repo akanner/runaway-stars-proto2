@@ -8,8 +8,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * ParticipantResponse
  *
- * @ORM\Table(name="participant_response", indexes={@ORM\Index(name="fk_participant_response_session_participant_idx", columns={"session_id"}), @ORM\Index(name="fk_participant_response_image1_idx", columns={"first_image_served_id"}), @ORM\Index(name="fk_participant_response_image2_idx", columns={"second_image_served_id"}), @ORM\Index(name="fk_participant_response_image3_idx", columns={"third_image_served_id"}), @ORM\Index(name="fk_participant_response_image4_idx", columns={"correct_image_id"}), @ORM\Index(name="fk_participant_response_image5_idx", columns={"selected_image_id"})})
+ * @ORM\Table(name="participant_response", indexes={@ORM\Index(name="fk_participant_response_session_participant_idx", columns={"session_id"}), @ORM\Index(name="fk_participant_response_image1_idx", columns={"first_image_served_id"}), @ORM\Index(name="fk_participant_response_image2_idx", columns={"second_image_served_id"}), @ORM\Index(name="fk_participant_response_image3_idx", columns={"third_image_served_id"}), @ORM\Index(name="fk_participant_response_image4_idx", columns={"correct_image_id"}), @ORM\Index(name="fk_participant_response_image5_idx", columns={"selected_image_id"}),
+  @ORM\Index(name="fk_participant_training_task_idx", columns={"training_task_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repositories\ParticipantResponseRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"real" = "ParticipantResponse", "training" = "ParticipantTrainingResponse"})
  */
 class ParticipantResponse
 {
@@ -95,9 +99,10 @@ class ParticipantResponse
     private $answeredAt;
 
 
+
     public static function createFromSessionAndImages($userSession,$images)
     {
-        $response = new ParticipantResponse();
+        $response = new static();
 
         $response->setSession($userSession);
         $response->setFirstImageServed($images[0]);

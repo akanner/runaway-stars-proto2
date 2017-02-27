@@ -157,8 +157,9 @@ abstract class BaseController extends Controller
      */
     protected function serializeResponseIntoHttpSession($httpSession,$participantResponse)
     {
-         $responseDTO = new ParticipantResponseSerialized($participantResponse);
-         $httpSession->set(static::USER_RESPONSE_SESSION_KEY,$responseDTO);
+         $em = $this->getEntityManager();
+         $em->detach($participantResponse);
+         $httpSession->set(static::USER_RESPONSE_SESSION_KEY,$participantResponse);
     }
     /**
      * Deserializes a AppBundle\Entity\ParticipantResponse instance from the http session
@@ -170,18 +171,11 @@ abstract class BaseController extends Controller
     protected function deserializeParticipantResponseFromHttpSession($session)
     {
         //gets images and participant session repositories
-        $sessionRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
-        $imageRepository =$this->get(static::IMAGES_REPO);
+        $em = $this->getEntityManager();
         //gets ParticipantResponseSerialized 
         $responseSerialized = $session->get(static::USER_RESPONSE_SESSION_KEY);
-        //gets images and participant session
-        $participantSessionEntity = $sessionRepo->findOneById($responseSerialized->sessionId);
-        $firstImageServed         = $imageRepository->findOneById($responseSerialized->firstImageServed);
-        $secondImageServed        = $imageRepository->findOneById($responseSerialized->secondImageServed);
-        $thirdImageServed         = $imageRepository->findOneById($responseSerialized->thirdImageServed);
-        //returns image entity
-        $images = array($firstImageServed,$secondImageServed,$thirdImageServed);
-        $response = ParticipantResponse::createFromSessionAndImages($participantSessionEntity,$images);
+        $response = $em->merge($responseSerialized);
+     
         return $response;
     }
 

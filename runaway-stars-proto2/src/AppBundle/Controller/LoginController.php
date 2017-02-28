@@ -27,6 +27,7 @@ class LoginController extends BaseController
      */
     public function logInUser(Request $request)
     {
+
         //gets the type of gamification depending of an initial parameter in the URL
         $gamificationType = $request->query->get("gamification");
         if(!GamificationTypes::isAValidGamificationType($gamificationType))
@@ -48,7 +49,6 @@ class LoginController extends BaseController
         $gTypeRepo = $this->get(static::GAMIFICATION_REPO);
         $gType = $gTypeRepo->findOneByName($gamificationType);
         $session->set(static::POINTS_VIEW_SESSION_KEY,$gType->getPointsView());
-
         return $this->render('login/index.html.twig',$viewParams);
     }
 
@@ -71,21 +71,27 @@ class LoginController extends BaseController
             //redirects to the home
             return $this->redirectToTrainingTasks();
         }
+      //gets user's data
+        $username           = $request->request->get("username");
+        $age                = $request->request->get("age");
+        $ocupation             = $request->request->get("ocupation");
+
+        if($username==NULL || $age==NULL || $ocupation==NULL)
+        {
+            return $this->redirectToDefault();
+        }
         //-------------------------------------------------------------------
         //stores user's name in the session
 
         $session = $this->initializeSession($request);
-        //gets user's data
-        $username           = $request->request->get("username");
-        $age                = $request->request->get("age");
-        $gender             = $request->request->get("gender");
-        $zooniverseUser     = $request->request->get("zooniverse_username");
+      
+        //$zooniverseUser     = $request->request->get("zooniverse_username");
         $gamificationType   = $session->get(static::GAMIFICATION_KEY);
         //gets gamificationType entity
         $gamificationEntity = $this->get(static::GAMIFICATION_REPO)->findOneByName($gamificationType);
         //creates user and session in the database
-        $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
-        $participant->setZooniverseUsername($zooniverseUser);
+        $participant        = Participant::createWithNameAgeAndOcupation($username,$age,$ocupation);
+        //$participant->setZooniverseUsername($zooniverseUser);
         $userSession = $this->createParticipantSession($session->getId(),$participant,$gamificationEntity);
 
         $em = $this->getEntityManager();

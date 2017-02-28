@@ -29,9 +29,9 @@ class Participant
     /**
      * @var string
      *
-     * @ORM\Column(name="gender", type="string", length=45, nullable=true)
+     * @ORM\Column(name="ocupation", type="string", length=45, nullable=true)
      */
-    private $gender;
+    private $ocupation;
 
     /**
      * @var integer
@@ -51,12 +51,12 @@ class Participant
 
     
 
-    public static function createWithNameAgeAndGender($username,$age,$gender)
+    public static function createWithNameAgeAndOcupation($username,$age,$ocupation)
         {
             $participant = new Participant();
             $participant->setName($username);
             $participant->setAge($age);
-            $participant->setGender($gender);
+            $participant->setOcupation($ocupation);
 
             return $participant;
         }
@@ -108,26 +108,26 @@ class Participant
     }
 
     /**
-     * Set gender
+     * Set ocupation
      *
-     * @param string $gender
+     * @param string $ocupation
      * @return Participant
      */
-    public function setGender($gender)
+    public function setOcupation($ocupation)
     {
-        $this->gender = $gender;
+        $this->ocupation = $ocupation;
 
         return $this;
     }
 
     /**
-     * Get gender
+     * Get ocupation
      *
      * @return string 
      */
-    public function getGender()
+    public function getOcupation()
     {
-        return $this->gender;
+        return $this->ocupation;
     }
 
     /**

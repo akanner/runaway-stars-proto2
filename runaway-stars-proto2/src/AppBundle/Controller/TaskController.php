@@ -107,8 +107,9 @@ class TaskController extends BaseController
         $em->persist($userSession);
         //
         $session->clear();
-
-        var_dump("finish!!");exit;
+        $viewParams = [];
+        $viewParams["back_url"] = $this->generateUrl('homepage', array(), true);
+        return $this->render("task/logout.html.twig",$viewParams);
     }
 
      private function getTasksForQuestion($request)

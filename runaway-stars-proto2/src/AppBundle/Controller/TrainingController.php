@@ -24,13 +24,13 @@ class TrainingController extends BaseController
     /**
      * TODO inject it into a variable
      */
-    const IMAGES_REPO               = "imagesRepository";
+
 
     const POINTS_REPO               = "pointsRepository";
 
 
     /**
-     * @Route("task/", name="taskIndex")
+     * @Route("training/", name="trainingIndex")
      */
     public function indexAction(Request $request)
     {
@@ -70,8 +70,7 @@ class TrainingController extends BaseController
         $viewParams["current_step"]  = $session->get(static::TRAINING_STEP);
         $viewParams["max_step"]      = $session->get(static::TRAINING_MAX_STEPS);
         $viewParams["training_mode"] = true;
-        $viewParams["post_url"]      = $this->generateUrl('processTaskResponse', array(), true);
-        $viewParams["end_url"]       = $this->generateUrl('logout',array(),true);
+        $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);
         //looks in the http session the view to show (with or without points)
         return $this->render($session->get(static::POINTS_VIEW_SESSION_KEY), $viewParams);
     }
@@ -82,7 +81,7 @@ class TrainingController extends BaseController
 
 
     /**
-     * @Route("task/processResponse", name="processTaskResponse")
+     * @Route("training/processResponse", name="processTrainingResponse")
      */
     public function processResponse(Request $request)
     {
@@ -135,41 +134,6 @@ class TrainingController extends BaseController
         $em->persist($userSession);
         $em->flush();
         $this->serializeParticipantSessionIntoHttpSession($session,$userSession);
-    }
-
-
-    /**
-     * transforms all Images Entities to DTO AppBundle\ViewObjects\ViewImage
-     */
-    private function getViewImages($images)
-    {
-        $viewImages = array();
-
-        $paramRepository    = $this->get(static::PARAM_REPO);
-        $correctText        = $paramRepository->getCorrectAnswerText();
-        $incorrectText      = $paramRepository->getIncorrectAnswerText();
-        
-        
-        foreach ($images as $img) 
-
-        {
-            //in case that $img is correct, we take the path of the "marked" version of the image
-            $markedBowshockImage= null;
-            if($img->getIsCorrect())
-            {
-                $markedBowshockImage = $this->getTaskUrl($img->getMarkedBowshockImage());
-            }
-            $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
-                $img->getId(),
-                $this->getTaskUrl($img->getFilePath())
-                ,$img->getIsCorrect()
-                ,$correctText
-                ,$incorrectText
-                ,$markedBowshockImage
-                );
-        }
-
-        return $viewImages;
     }
 
     private function getTrainingTask($trainingStepNumber)
@@ -228,13 +192,13 @@ class TrainingController extends BaseController
         }
         else
         {
-            return $this->redirectToLogout();
+            return $this->redirectToStadistics();
         }
     }
 
     private function redirectToIndex()
     {
-        return $this->redirectToTasks();
+        return $this->redirectToTrainingTasks();
     }
 
 }

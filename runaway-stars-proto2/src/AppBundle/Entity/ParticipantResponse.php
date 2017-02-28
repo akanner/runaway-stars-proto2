@@ -87,11 +87,6 @@ class ParticipantResponse
     private $firstImageServed;
 
     /**
-     * @var integer
-     *
-     */
-    private $pointsEarned;
-    /**
      * @var \DateTime
      * @ORM\Column(name="answered_at", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -100,24 +95,6 @@ class ParticipantResponse
 
 
 
-    public static function createFromSessionAndImages($userSession,$images)
-    {
-        $response = new static();
-
-        $response->setSession($userSession);
-        $response->setFirstImageServed($images[0]);
-        $response->setSecondImageServed($images[1]);
-        $response->setThirdImageServed($images[2]);
-        //array_filter will filter $images to get the correct one, but it will leave it will the image's original key in the array
-        $correctResponses = array_filter($images,function($img){return $img->getIsCorrect();});
-        //array_values will create a new array with new keys, that means that the correct image will always be in the first position
-        $correctResponses = array_values($correctResponses);
-        $correctResponse = $correctResponses[0];
-
-        $response->setCorrectImage($correctResponse);
-
-        return $response;
-    }
     /**
      * Get id
      *
@@ -271,28 +248,7 @@ class ParticipantResponse
     {
         return $this->getCorrectImage() == $this->getSelectedImage();
     }
-    /**
-     * Set points
-     *
-     * @param integer $pointsEarned
-     * @return ParticipantResponse
-     */
-    public function setPointsEarned($points)
-    {
-        $this->pointsEarned = $points;
 
-        return $this;
-    }
-
-    /**
-     * Get pointsEarned
-     *
-     * @return integer 
-     */
-    public function getPointsEarned()
-    {
-        return $this->pointsEarned;
-    }
 
     public function getAnsweredAt()
     {
@@ -312,5 +268,25 @@ class ParticipantResponse
         $this->answeredAt = $answeredAt;
 
         return $this;
+    }
+
+
+    public static function createFromSessionAndImages($userSession,$images)
+    {
+        $response = new static();
+
+        $response->setSession($userSession);
+        $response->setFirstImageServed($images[0]);
+        $response->setSecondImageServed($images[1]);
+        $response->setThirdImageServed($images[2]);
+        //array_filter will filter $images to get the correct one, but it will leave it will the image's original key in the array
+        $correctResponses = array_filter($images,function($img){return $img->getIsCorrect();});
+        //array_values will create a new array with new keys, that means that the correct image will always be in the first position
+        $correctResponses = array_values($correctResponses);
+        $correctResponse = $correctResponses[0];
+
+        $response->setCorrectImage($correctResponse);
+
+        return $response;
     }
 }

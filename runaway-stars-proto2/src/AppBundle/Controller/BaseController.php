@@ -26,6 +26,10 @@ abstract class BaseController extends Controller
 
     const TRAINING_MAX_STEPS                 = "training-max-tasks";
 
+    const STEP                      = "task-number";
+
+    const MAX_STEPS                 = "max-tasks";
+
     const USER_SESSION_SESSION_KEY  = "user-session";
 
     const USER_RESPONSE_SESSION_KEY = "user-response";
@@ -43,6 +47,8 @@ abstract class BaseController extends Controller
     const PARTICIPANT_RESPONSE_SESSION_REPO = "participantResponseRepository";
 
     const TRAINING_REPO             = "trainingRepository";
+
+    const IMAGES_REPO               = "imagesRepository";
 
 	protected function getEntityManager()
 	{
@@ -72,6 +78,40 @@ abstract class BaseController extends Controller
         $assetsHelper = $this->get('templating.helper.assets');
         $urlImage = $assetsHelper->getUrl("bundles/app/images/$imageName");
         return $urlImage;
+    }
+
+    /**
+     * transforms all Images Entities to DTO AppBundle\ViewObjects\ViewImage
+     */
+    protected function getViewImages($images)
+    {
+        $viewImages = array();
+
+        $paramRepository    = $this->get(static::PARAM_REPO);
+        $correctText        = $paramRepository->getCorrectAnswerText();
+        $incorrectText      = $paramRepository->getIncorrectAnswerText();
+        
+        
+        foreach ($images as $img) 
+
+        {
+            //in case that $img is correct, we take the path of the "marked" version of the image
+            $markedBowshockImage= null;
+            if($img->getIsCorrect())
+            {
+                $markedBowshockImage = $this->getTaskUrl($img->getMarkedBowshockImage());
+            }
+            $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
+                $img->getId(),
+                $this->getTaskUrl($img->getFilePath())
+                ,$img->getIsCorrect()
+                ,$correctText
+                ,$incorrectText
+                ,$markedBowshockImage
+                );
+        }
+
+        return $viewImages;
     }
 
     /**
@@ -182,14 +222,14 @@ abstract class BaseController extends Controller
     }
 
     /*--------------------------------redirects to pages---------------------------------*/
-    protected function redirectToTasks()
+    protected function redirectToTrainingTasks()
     {
-        return $this->redirectToURL("taskIndex");
+        return $this->redirectToURL("trainingIndex");
     }
 
-    protected function redirectToLogout()
+    protected function redirectToStadistics()
     {
-        return $this->redirectToURL("logout");
+        return $this->redirectToURL("stadistics");
     }
 
     protected function redirectToLogin($params=array())
@@ -205,5 +245,14 @@ abstract class BaseController extends Controller
     protected function redirectToURL($routeName,$params=array())
     {
         return $this->redirect($this->generateUrl($routeName, $params,true));
+    }
+
+    /*----------------OBjects creation ---------------------*/
+    protected function createParticipantSession($httpSessionId,$participantEntity,$gamificationTypEntity)
+    {
+        
+        $participantSession = ParticipantSession::createWith($httpSessionId,new \Datetime("now"),$participantEntity,$gamificationTypEntity);
+        $participantEntity->setSession($participantSession);
+        return $participantSession;
     }
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ParticipantSession
  *
- * @ORM\Table(name="participant_session", indexes={@ORM\Index(name="fk_session_participant_participant_idx", columns={"participant_id"})})
+ * @ORM\Table(name="participant_session", indexes={@ORM\Index(name="fk_session_participant_participant_idx", columns={"participant_id"}),@ORM\Index(name="fk_participant_session_participant_session_idx", columns={"next_session_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repositories\ParticipantSessionRepository")
  */
 class ParticipantSession
@@ -88,7 +88,13 @@ class ParticipantSession
      */
     private $gamification_type;
 
-
+    /**
+     * @var  \AppBundle\Entity\ParticipantSession it is used to know if a participant repeated the training, if it is <> null it means that the participant decided to repeat the training before doing real questions
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ParticipantSession")
+     * @ORM\JoinColumn(name="next_session_id", referencedColumnName="id")
+     */
+    private $nextSession;
 
     /**
      * Constructor
@@ -334,6 +340,29 @@ class ParticipantSession
     public function getParticipant()
     {
         return $this->participant;
+    }
+
+    /**
+     * Set nextSession
+     *
+     * @param \AppBundle\Entity\ParticipantSession $participantSession
+     * @return ParticipantSession
+     */
+    public function setNextSession(\AppBundle\Entity\ParticipantSession $participantSession = null)
+    {
+        $this->nextSession = $participantSession;
+
+        return $this;
+    }
+
+    /**
+     * Get nextSession
+     *
+     * @return \AppBundle\Entity\ParticipantSession 
+     */
+    public function getNextSession()
+    {
+        return $this->nextSession;
     }
 
     public function sumPoints($points)

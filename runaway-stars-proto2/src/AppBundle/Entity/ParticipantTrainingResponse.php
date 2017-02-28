@@ -21,6 +21,36 @@ class ParticipantTrainingResponse extends ParticipantResponse
 	private $trainingTask; 
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="pointsEarned", type="integer")
+     */
+    private $pointsEarned;
+
+    /**
+     * Set points
+     *
+     * @param integer $pointsEarned
+     * @return ParticipantResponse
+     */
+    public function setPointsEarned($points)
+    {
+        $this->pointsEarned = $points;
+
+        return $this;
+    }
+
+    /**
+     * Get pointsEarned
+     *
+     * @return integer 
+     */
+    public function getPointsEarned()
+    {
+        return $this->pointsEarned;
+    }
+
+    /**
      * Set selectedImage
      *
      * @param \AppBundle\Entity\TrainingTask $trainingTask

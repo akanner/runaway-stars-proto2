@@ -69,7 +69,7 @@ class LoginController extends BaseController
         if($isUserLogged)
         {
             //redirects to the home
-            return $this->redirectToTasks();
+            return $this->redirectToTrainingTasks();
         }
         //-------------------------------------------------------------------
         //stores user's name in the session
@@ -86,20 +86,21 @@ class LoginController extends BaseController
         //creates user and session in the database
         $participant        = Participant::createWithNameAgeAndGender($username,$age,$gender);
         $participant->setZooniverseUsername($zooniverseUser);
-        $participantSession = ParticipantSession::createWith($session->getId(),new \Datetime("now"),$participant,$gamificationEntity);
-        $participant->setSession($participantSession);
-        //it would be better if this controller is defined as a service as well
-        //gets the em from the IoC container
-        //doctrine.orm.default_entity_manager
+        $userSession = $this->createParticipantSession($session->getId(),$participant,$gamificationEntity);
+
         $em = $this->getEntityManager();
         $em->persist($participant);
-        $em->persist($participantSession);
+        $em->persist($userSession);
         $em->flush();
+        //flush it before serializing it!!!
 
-        $this->serializeParticipantSessionIntoHttpSession($session,$participantSession);
+        //serializes the session into the http session
+        $this->serializeParticipantSessionIntoHttpSession($session,$userSession);
+        //persists the ParticipantSession
+
 
         //redirects to the home
-        return $this->redirectToTasks();
+        return $this->redirectToTrainingTasks();
     }
 
     private function initializeSession($request)
@@ -109,14 +110,14 @@ class LoginController extends BaseController
         $session->set("username",$username);
         $session->set("logged",true);
         //sets the max number of tasks in the session
-        $maxNumberOfTask = $this->getMaxNumberOfQuestions();
+        $maxNumberOfTask = $this->getMaxNumberOfTrainingQuestions();
         $session->set(static::TRAINING_STEP,1);
         $session->set(static::TRAINING_MAX_STEPS,$maxNumberOfTask);
 
         return $session;
     }
 
-     private function getMaxNumberOfQuestions()
+    private function getMaxNumberOfTrainingQuestions()
     {
         $trainingRepository = $this->get(static::TRAINING_REPO);
         $numberOfTrainingTasks = $trainingRepository->getMaxNumberOfQuestions();

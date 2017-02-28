@@ -1,0 +1,21 @@
+{% extends 'task/index.html.twig' %}
+
+
+{% block submit_buttons %}
+	<div class="col-md-1 col-md-offset-10">
+	    <button type="button" id="answer-button" class="btn btn-lg btn-primary">Contestar!</button>
+	</div>
+	<div class="col-md-1">
+	    <button type="submit" id="submit-button" disabled="disabled" class="btn btn-lg btn-success">Siguiente</button>
+	</div>
+{% endblock %}
+
+
+{% block points_variables %}
+    <!-- points -->
+    <div class="hidden" id="div-points">
+        <p id="correct-points">{{correct_points}}</p>
+        <p id="incorrect-points">{{incorrect_points}}</p>
+    </div>
+    <p class="hidden" id="tmode">{{training_mode}}</p>
+{% endblock %}

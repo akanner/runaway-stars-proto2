@@ -28,7 +28,7 @@ class TrainingResultsHelper
         //calculates the amount of scores that are lower than the current user score
         $totalParticipantScoresLowerThanCurrentUserScore = array_reduce($participantsScores,
             function($carry,$score) use ($currentUserScore){
-                if($score <= $currentUserScore)
+                if($score < $currentUserScore)
                 {
                     $carry++;
                 }

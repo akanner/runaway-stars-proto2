@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class ParticipantRepository extends EntityRepository
 {
+
+	public function getParticipantNumber()
+	{
+			$query = $this->createQueryBuilder('participants')
+			  ->select('COUNT(participants)')
+              ->getQuery();
+        $count = $query->getSingleScalarResult();
+		return $count+1;
+	}
 }

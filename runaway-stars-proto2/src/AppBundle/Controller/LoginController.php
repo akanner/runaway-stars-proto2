@@ -18,6 +18,8 @@ use AppBundle\Utils\GamificationTypes;
 class LoginController extends BaseController
 {
 
+    const PARTICIPANT_REPO = "participantRepository";
+
     /**
      * registers user's information
      *
@@ -72,7 +74,8 @@ class LoginController extends BaseController
             return $this->redirectToTrainingTasks();
         }
       //gets user's data
-        $username           = $request->request->get("username");
+        $userNumber         = $this->get(static::PARTICIPANT_REPO)->getParticipantNumber();
+        $username           = "usuario$userNumber"; 
         $age                = $request->request->get("age");
         $ocupation             = $request->request->get("ocupation");
 

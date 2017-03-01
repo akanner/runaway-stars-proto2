@@ -49,6 +49,12 @@ services:
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\ParticipantResponse
+  participantRepository:
+    class: Doctrine\ORM\EntityRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+      - AppBundle\Entity\Participant
 
     #doctrine extensions
     gedmo.listener.timestampable:

@@ -44,14 +44,15 @@ class TaskController extends BaseController
         $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$trainingImages);
         $this->serializeResponseIntoHttpSession($session,$participantResponse);
 
-
+        $currentStep = $session->get(static::STEP);
         //builds view's parameters
         $viewParams = array();
         //answer points
 
         $viewParams["images"] = $this->getViewImages($trainingImages);
         //gets current and max steps
-        $viewParams["current_step"]  = $session->get(static::STEP);
+        $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
+        $viewParams["current_step"]  = $currentStep;
         $viewParams["max_step"]      = $session->get(static::MAX_STEPS);
         $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
 

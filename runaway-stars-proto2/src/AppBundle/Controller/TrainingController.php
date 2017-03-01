@@ -55,7 +55,7 @@ class TrainingController extends BaseController
         $participantResponse = ParticipantTrainingResponse::createFromSessionAndTrainingTask($userSession,$trainingStep);
         $this->serializeResponseIntoHttpSession($session,$participantResponse);
 
-
+        $currentStep = $session->get(static::TRAINING_STEP);
         //builds view's parameters
         $viewParams = array();
         //answer points
@@ -67,7 +67,8 @@ class TrainingController extends BaseController
         $viewParams["images"] = $this->getViewImages($trainingImages);
         $viewParams["points"] = $userSession->getTotalPoints();
         //gets current and max steps
-        $viewParams["current_step"]  = $session->get(static::TRAINING_STEP);
+        $viewParams["current_step"]  = $currentStep;
+        $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
         $viewParams["max_step"]      = $session->get(static::TRAINING_MAX_STEPS);
         $viewParams["training_mode"] = true;
         $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);

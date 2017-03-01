@@ -6,7 +6,6 @@
 <script src="{{ asset('bundles/app/js/lib.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 <script src="{{ asset('bundles/app/js/tasks.js') }}"></script>
-
 {% endblock %}
 {% block body %}
     <div class="container-fluid">
@@ -54,5 +53,8 @@
         <img  src="{{ asset('bundles/app/images/ajax-loader.gif') }}" alt="wait">
     </div>
 
+    <!-- show_help_holder -->
+    <p id="show_help" class="hidden">{{show_help}}</p>
+    {% block help_text %}{% endblock %}
 
 {% endblock %}

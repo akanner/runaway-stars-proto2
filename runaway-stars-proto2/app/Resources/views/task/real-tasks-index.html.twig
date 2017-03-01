@@ -12,3 +12,27 @@
 
 {% block points_variables %}
 {% endblock %}
+
+
+{% block help_text %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">No conocemos estas imagenes</h4>
+      </div>
+      <div class="modal-body">
+        <p>No hemos analizado estas imagenes, por ende no podemos decirte si tu respuesta fue correcta.</p>
+        <p>Usa tu entrenamiento para decirnos cuales te parecen <i>runaway stars</i></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

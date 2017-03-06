@@ -84,4 +84,10 @@ class ParticipantTrainingResponse extends ParticipantResponse
     	return $trainingResponse;
     }
 
+    
+    public function isTrainingResponse()
+    {
+        return true;
+    }
+
 }

@@ -106,6 +106,7 @@ class TaskController extends BaseController
         $userSession->setEndedAt(new \Datetime('now'));
         $em = $this->getEntityManager();
         $em->persist($userSession);
+        $em->flush();
         //
         $session->clear();
         $viewParams = [];

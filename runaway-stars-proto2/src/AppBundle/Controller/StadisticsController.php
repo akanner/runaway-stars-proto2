@@ -56,7 +56,7 @@ class StadisticsController extends BaseController
         $gamificationType = $this->getGamificationType($session); 
         $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$userSession->getPercentageOfCorrectTasks(),$paramRepo);
         $viewName = $this->getGamificationTypeView($gamificationType);
-
+        $leaderboard = TrainingResultsHelper::getLeadersboard($participantSessionRepo->findAll(),$userSession);
 
         $viewParams = [];
         $viewParams["back_url"]      = $this->generateUrl('logInUser', array("gamification" => $gamificationType), true);
@@ -65,6 +65,7 @@ class StadisticsController extends BaseController
         $viewParams["gamType"]       = $gamificationType;   
         $viewParams["level"]         = $gamificationResult["level"];
         $viewParams["legend"]        = $gamificationResult["legend"];
+        $viewParams["leadersboard"]   = $leaderboard;
         $viewParams["percentile"]    = round($userPercentile,2);
         return $this->render($viewName,$viewParams);
 

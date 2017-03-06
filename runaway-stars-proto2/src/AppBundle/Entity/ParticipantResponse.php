@@ -289,4 +289,9 @@ class ParticipantResponse
 
         return $response;
     }
+
+    public function isTrainingResponse()
+    {
+        return false;
+    }
 }

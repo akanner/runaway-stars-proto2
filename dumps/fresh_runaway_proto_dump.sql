@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
 --
--- Host: localhost    Database: raway_db
+-- Host: localhost    Database: raway_db_dev
 -- ------------------------------------------------------
 -- Server version	5.7.17-0ubuntu0.16.04.1
 
@@ -61,7 +61,7 @@ CREATE TABLE `app_parameter` (
 
 LOCK TABLES `app_parameter` WRITE;
 /*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
-INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','7'),(2,'CORRECT_ANSWER_TEXT','Respuesta correcta!'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la insignia de principiante, &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','&iexcl;Buen Trabajo, ganaste la insignia intermedia! demostraste que ya pod&eacute;s identificar algunas runaway stars...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Ganaste la insignia de experto! &iquest;Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','beginner_badge.png'),(14,'BADGES_INTERMEDIATE_BADGE','intermediate_badge.png'),(15,'BADGES_EXPERT_BADGE','expert_badge.png'),(16,'MINIMUM_PERCENTAGE_INTERMEDIATE_LEVEL','50'),(17,'MINIMUM_PERCENTAGE_EXPERT_LEVEL','80');
+INSERT INTO `app_parameter` VALUES (1,'MAX_QUESTIONS','7'),(2,'CORRECT_ANSWER_TEXT','Respuesta correcta!'),(3,'INCORRECT_ANSWER_TEXT','Respuesta Incorrecta!'),(4,'LEVELS_BEGINNER_TEXT','Principiante'),(5,'LEVELS_BEGINNER_LEGEND','Ten&eacute;s que seguir practicando!'),(6,'LEVELS_INTERMEDIATE_TEXT','Intermedio'),(7,'LEVELS_INTERMEDIATE_LEGEND','Buen Trabajo...pero pod&eacute;s mejorar!'),(8,'LEVELS_EXPERT_TEXT','Experto'),(9,'LEVELS_EXPERT_LEGEND','Seguro qu&eacute; no sos un astr&oacute;nomo?'),(10,'BADGES_BEGINNER_LEGEND','Ganaste la insignia de principiante </br> &iquest;te anim&aacute;s a ganar la siguiente?'),(11,'BADGES_INTERMEDIATE_LEGEND','&iexcl;Buen Trabajo, ganaste la insignia intermedia! </br> Demostraste que ya pod&eacute;s identificar algunas runaway stars </br> ...pero todavia pod&eacute;s mejorar!'),(12,'BADGES_EXPERT_LEGEND','Ganaste la insignia de experto! </br> &iquest;Seguro qu&eacute; no sos un astr&oacute;nomo?'),(13,'BADGES_BEGINNER_BADGE','beginner_badge.png'),(14,'BADGES_INTERMEDIATE_BADGE','intermediate_badge.png'),(15,'BADGES_EXPERT_BADGE','expert_badge.png'),(16,'MINIMUM_PERCENTAGE_INTERMEDIATE_LEVEL','50'),(17,'MINIMUM_PERCENTAGE_EXPERT_LEVEL','80');
 /*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +145,7 @@ CREATE TABLE `image` (
   `is_correct` tinyint(4) NOT NULL,
   `marked_bowshock_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `image` (
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (6,'HIP2036.jpg',1,'marked/HIP2036_m.jpg'),(7,'HIP22783.jpg',1,'marked/HIP22783_m.jpg'),(8,'HIP32067.jpg',1,'marked/HIP32067_m.jpg'),(9,'HIP34536.jpg',1,'marked/HIP34536_m.jpg'),(10,'HIP82171.jpg',1,'marked/HIP82171_m.jpg'),(11,'HIP398.jpg',0,NULL),(12,'HIP505.jpg',0,NULL),(13,'HIP14969.jpg',0,NULL),(14,'HIP14969.png',0,NULL),(15,'HIP29201.jpg',0,NULL),(16,'HIP48730.jpg',0,NULL),(17,'HIP61958.jpg',0,NULL),(18,'HIP92133.jpg',0,NULL),(19,'HIP99303.jpg',0,NULL),(20,'HIP110386.jpg',0,NULL),(21,'HIP114482.jpg',0,NULL),(22,'11891.jpg',1,'marked/11891_m.jpg'),(23,'28881.jpg',1,'marked/28881_m.jpg'),(24,'29276.jpg',1,'marked/29276_m.jpg'),(25,'31766.jpg',1,'marked/31766_m.jpg'),(26,'88652.jpg',1,'marked/88652_m.jpg'),(27,'HIP16518.png',1,'marked/HIP16518_m.png'),(28,'HIP24575.png',1,'marked/HIP24575_m.jpg'),(29,'HIP25923.png',1,'marked/HIP25923_m.jpg'),(30,'HIP72510.jpg',1,'marked/HIP72510_m.jpg'),(31,'HIP77391.jpg',1,'marked/HIP77391_m.jpg');
+INSERT INTO `image` VALUES (6,'HIP2036.jpg',1,'marked/HIP2036_m.jpg'),(7,'HIP22783.jpg',1,'marked/HIP22783_m.jpg'),(8,'HIP32067.jpg',1,'marked/HIP32067_m.jpg'),(9,'HIP34536.jpg',1,'marked/HIP34536_m.jpg'),(10,'HIP82171.jpg',1,'marked/HIP82171_m.jpg'),(11,'HIP398.jpg',0,NULL),(12,'HIP505.jpg',0,NULL),(13,'HIP14969.jpg',0,NULL),(14,'HIP14969.png',0,NULL),(15,'HIP29201.jpg',0,NULL),(16,'HIP48730.jpg',0,NULL),(17,'HIP61958.jpg',0,NULL),(18,'HIP92133.jpg',0,NULL),(19,'HIP99303.jpg',0,NULL),(20,'HIP110386.jpg',0,NULL),(21,'HIP114482.jpg',0,NULL),(22,'11891.jpg',1,'marked/11891_m.jpg'),(23,'28881.jpg',1,'marked/28881_m.jpg'),(24,'29276.jpg',1,'marked/29276_m.jpg'),(25,'31766.jpg',1,'marked/31766_m.jpg'),(26,'88652.jpg',1,'marked/88652_m.jpg'),(27,'HIP16518.png',1,'marked/HIP16518_m.png'),(28,'HIP24575.png',1,'marked/HIP24575_m.jpg'),(29,'HIP25923.png',1,'marked/HIP25923_m.jpg'),(30,'HIP72510.jpg',1,'marked/HIP72510_m.jpg'),(31,'HIP77391.jpg',1,'marked/HIP77391_m.jpg'),(32,'HIP88652_alt_1.jpg',1,'marked/HIP88652_alt_1_m.jpg'),(33,'Kronberger61.jpg',0,NULL),(34,'Orion-nebula.jpg',0,NULL);
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `participant` (
   `ocupation` varchar(45) DEFAULT NULL,
   `zooniverse_username` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_training_task` FOREIGN KEY (`training_task_id`) REFERENCES `training_task` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,7 +255,7 @@ CREATE TABLE `participant_session` (
   CONSTRAINT `FK_4A491ADC6A33B9B3` FOREIGN KEY (`gamification_type_id`) REFERENCES `gamification_type` (`id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_session_participant_session` FOREIGN KEY (`next_session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +288,7 @@ CREATE TABLE `training_task` (
   CONSTRAINT `fk_training_task_image1` FOREIGN KEY (`first_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_training_task_image2` FOREIGN KEY (`second_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_training_task_image3` FOREIGN KEY (`third_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +297,7 @@ CREATE TABLE `training_task` (
 
 LOCK TABLES `training_task` WRITE;
 /*!40000 ALTER TABLE `training_task` DISABLE KEYS */;
-INSERT INTO `training_task` VALUES (1,1,'aaaaaa',6,11,12),(2,2,NULL,18,7,20),(3,3,NULL,21,24,19);
+INSERT INTO `training_task` VALUES (1,1,'aaaaaa',6,11,12),(2,2,NULL,18,7,20),(3,3,NULL,21,24,19),(4,4,NULL,33,34,32);
 /*!40000 ALTER TABLE `training_task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -310,4 +310,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-28 23:19:47
+-- Dump completed on 2017-03-07 11:38:26

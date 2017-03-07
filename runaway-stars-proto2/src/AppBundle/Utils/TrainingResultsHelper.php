@@ -49,7 +49,7 @@ class TrainingResultsHelper
             $userInfo = array();
             $userInfo["username"] = $session->getParticipant()->getName();
             $userInfo["score"] = $session->getPercentageOfCorrectTasks();
-
+            $userInfo["session_id"] = $session->getId();
             //gets the training answers
             $trainAnswers = array_filter(
                 $session->getResponses()->toArray(),
@@ -60,22 +60,33 @@ class TrainingResultsHelper
             $userInfo["timeSpent"] = end($trainAnswers)->getAnsweredAt()->getTimestamp() - $trainAnswers[0]->getAnsweredAt()->getTimestamp();
             //stores the current user information
             if($session == $currentSession){
+                $userInfo["current_user"] = true;
                 $currentUser = $userInfo;
+
             }
             $leadersboard[] = $userInfo;
         }
         //sorting 
         $leadersboard = static::array_orderby($leadersboard,"score",SORT_DESC,"timeSpent",SORT_ASC);
         $currentUserPos = array_search($currentUser, $leadersboard);
-        //attaches the positions
-        $leadersboard[0]["pos"]  =1;
-        $leadersboard[1]["pos"]  =2;
-        $currentUser["pos"] = $currentUserPos+1;
+
+
+
         //reducing leadersboard;
-        $reducedLeaderBoard = array();
-        $reducedLeaderBoard[] = $leadersboard[0];
-        $reducedLeaderBoard[] = $leadersboard[1];
-        $reducedLeaderBoard[] = $currentUser;
+        $reducedLeaderBoard = array_slice ( $leadersboard , 0, 3);
+        //attaches the positions
+        foreach ($reducedLeaderBoard  as $key => $leader) {
+            $reducedLeaderBoard[$key]["pos"] = $key+1;
+        }
+        //if the current user is not in the firsts three, i add it to the leadersboard
+        if(array_search($currentUser["session_id"], array_column($reducedLeaderBoard, "session_id"))===false)
+        {
+            $currentUser["pos"] = $currentUserPos+1;
+            $reducedLeaderBoard[] = $currentUser;
+        }
+
+
+        //print_r(json_encode($reducedLeaderBoard));exit;
         return $reducedLeaderBoard;
 
 

@@ -9,28 +9,29 @@
     </tr>
   </thead>
   <tbody>
-  	{% for i in 0..1 %}
-	    <tr>
-            <td># {{leadersboard[i].pos}}</td>
-            <td>{{leadersboard[i].username}}</td>
-            <td>{{leadersboard[i].score}}%</td>
-            <td>{{leadersboard[i].timeSpent}} segundos</td>
+  	{% for user in leadersboard %}
+    	<tr>
+  		{% if user.current_user is defined %}
+  			{% if user.pos > 3 %}
+				<tr>
+					<td colspan="4" class="text-center three-dots">...</td>
+				</tr>
+			{% endif %}
+		  	<td><p class="text-primary"># {{user.pos}}</p></td>
+            <td><p class="text-primary">{{user.username}}</p></td>
+            <td><p class="text-primary">{{user.score}}%</p></td>
+            <td><p class="text-primary">{{user.timeSpent}} segundos</p></td>
+  		{% else %}
+            <td># {{user.pos}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.score}}%</td>
+            <td>{{user.timeSpent}} segundos</td>
+        {% endif %}
         </tr>
 	{% endfor %}
-	{% if leadersboard[2].pos > 3%}
-		<tr>
-			<td colspan="4" class="text-center three-dots">...</td>
-		</tr>
-	{% endif %}
- 		<tr>
-            <td><p class="text-primary"># {{leadersboard[2].pos}}</p></td>
-            <td><p class="text-primary">{{leadersboard[2].username}}</p></td>
-            <td><p class="text-primary">{{leadersboard[2].score}}%</p></td>
-            <td><p class="text-primary">{{leadersboard[2].timeSpent}} segundos</p></td>
-        </tr>
-		<tr>
-			<td colspan="4" class="text-center three-dots">...</td>
-		</tr>
+	<tr>
+		<td colspan="4" class="text-center three-dots">...</td>
+	</tr>
   </tbody>
 </table>
 {% block stylesheets %}

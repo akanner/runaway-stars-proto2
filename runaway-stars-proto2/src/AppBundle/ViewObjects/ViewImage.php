@@ -21,13 +21,13 @@ class ViewImage
 		if($correct)
 		{
 			$this->text			= $correctText;
-			$this->correct		= "true";
+			$this->correct		= "1";
 			$this->cssClass		= "bg-success";
 		}
 		else
 		{
 			$this->text 		= $incorrectText;
-			$this->correct		= "false";
+			$this->correct		= "0";
 			$this->cssClass		= "bg-danger";
 		}
 		

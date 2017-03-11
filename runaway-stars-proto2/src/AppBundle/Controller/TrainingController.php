@@ -16,6 +16,8 @@ use AppBundle\Entity\ParticipantSession;
 use AppBundle\ViewObjects\ViewImage;
 
 use AppBundle\Utils\GamificationTypes;
+use AppBundle\Utils\UserAnswerEnum;
+
 
 class TrainingController extends BaseController
 {
@@ -63,8 +65,8 @@ class TrainingController extends BaseController
         $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
         $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
         //gets the images's paths and passes them to the view
-        $trainingImages = $this->getTasksForQuestion($trainingStep);
-        $viewParams["images"] = $this->getViewImages($trainingImages);
+        $trainingImage = $trainingStep->getImageServed();
+        $viewParams["images"] = $this->getViewImages($trainingImage);
         $viewParams["points"] = $userSession->getTotalPoints();
         //gets current and max steps
         $viewParams["current_step"]  = $currentStep;
@@ -88,7 +90,7 @@ class TrainingController extends BaseController
     {
         //TODO use synfony's forms validations
         $userSubmission = $request->request->get("answer");
-        $requestIsValid = isset($userSubmission);
+        $requestIsValid = isset($userSubmission) && UserAnswerEnum::isValidValue(intval($userSubmission));
 
         //if the session has ended
         //TODO use a interceptor,filter or something to check session ending
@@ -98,22 +100,22 @@ class TrainingController extends BaseController
         {
             return $this->redirectToIndex();
         }
-
-        $imageRepository =$this->get(static::IMAGES_REPO);
         $session = $request->getSession();
+
         $this->advanceNextStep($session);
+        //gets the user response previously stored in the session, remember, this user response was not really answered yet
+        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
+        $userResponse->setParticipantAnswer($userSubmission);
         //this should be injected, to do this, this controller should be declared as a service
         $em = $this->getEntityManager();
-        $imageSelected = $imageRepository->findOneById($userSubmission);
         //add points
-        $points = $this->assignPoints($imageSelected);
+        $points = $this->assignPoints($userResponse);
         //although it was fun dealing with entities and the session, this experiment has to stop! haha
         $this->sumPoints($em,$session,$points);
         //handles the training mode
-        //gets the user response previously stored in the session, remember, this user response was not really answered yet
-        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
+
         //sets the user's actual response and saves it in the database
-        $userResponse->setSelectedImage($imageSelected);
+
         $userResponse->setPointsEarned($points);
 
         $em->persist($userResponse);
@@ -142,14 +144,6 @@ class TrainingController extends BaseController
         $trainingRepo = $this->get(static::TRAINING_REPO);
         return $trainingRepo->findOneByTrainingStep($trainingStepNumber);
     }
-
-    private function getTasksForQuestion($trainingTask)
-    {
-        $firstImage     = $trainingTask->getFirstImage();
-        $secondImage    = $trainingTask->getSecondImage();
-        $thirdImage     = $trainingTask->getThirdImage();
-        return array($firstImage,$secondImage,$thirdImage);
-    }
     /**
      * assigns points to the user's response
      *
@@ -158,11 +152,11 @@ class TrainingController extends BaseController
      * @return int points given to the user
      *
      */
-    private function assignPoints($imageSelected)
+    private function assignPoints($userResponse)
     {
         $pointsRepository = $this->get(static::POINTS_REPO);
         $points = $pointsRepository->getPointsForIncorrectAnswer();
-        if($imageSelected->getIsCorrect())
+        if($userResponse->isCorrect())
         {
             $points = $pointsRepository->getPointsForCorrectAnswer();
         }

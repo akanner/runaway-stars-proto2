@@ -14,6 +14,7 @@ use AppBundle\Entity\ParticipantSession;
 use AppBundle\ViewObjects\ViewImage;
 
 use AppBundle\Utils\GamificationTypes;
+use AppBundle\Utils\UserAnswerEnum;
 
 class TaskController extends BaseController
 {
@@ -40,8 +41,8 @@ class TaskController extends BaseController
         $em = $this->getEntityManager();
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         //gets the images's paths and passes them to the view
-        $trainingImages = $this->getTasksForQuestion($request);
-        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$trainingImages);
+        $taskImage = $this->getTasksForQuestion($request);
+        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$taskImage);
         $this->serializeResponseIntoHttpSession($session,$participantResponse);
 
         $currentStep = $session->get(static::STEP);
@@ -49,7 +50,7 @@ class TaskController extends BaseController
         $viewParams = array();
         //answer points
 
-        $viewParams["images"] = $this->getViewImages($trainingImages);
+        $viewParams["images"] = $this->getViewImages($taskImage);
         //gets current and max steps
         $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
         $viewParams["current_step"]  = $currentStep;
@@ -67,7 +68,7 @@ class TaskController extends BaseController
     {
         //TODO use synfony's forms validations
         $userSubmission = $request->request->get("answer");
-        $requestIsValid = isset($userSubmission);
+        $requestIsValid = isset($userSubmission) && UserAnswerEnum::isValidValue(intval($userSubmission));
 
         //if the session has ended
         //TODO use a interceptor,filter or something to check session ending
@@ -75,7 +76,7 @@ class TaskController extends BaseController
 
         if(!$isUserLogged || !$requestIsValid)
         {
-            return $this->redirectToIndex();
+            return $this->redirectToTasks();
         }
 
         $imageRepository =$this->get(static::IMAGES_REPO);
@@ -83,12 +84,11 @@ class TaskController extends BaseController
         $this->advanceNextStep($session);
         //this should be injected, to do this, this controller should be declared as a service
         $em = $this->getEntityManager();
-        $imageSelected = $imageRepository->findOneById($userSubmission);
 
         //gets the user response previously stored in the session, remember, this user response was not really answered yet
         $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
         //sets the user's actual response and saves it in the database
-        $userResponse->setSelectedImage($imageSelected);
+        $userResponse->setParticipantAnswer($userSubmission);
 
         $em->persist($userResponse);
         $em->flush();
@@ -119,7 +119,7 @@ class TaskController extends BaseController
      	//it would be better if this controller is defined as a service as well
         //gets the image repository from the IoC container
         $imageRepository = $this->get(static::IMAGES_REPO);
-        return $imageRepository->getRandomImages();
+        return $imageRepository->findRandomImage();
      }
 
      private function advanceNextStep($session)

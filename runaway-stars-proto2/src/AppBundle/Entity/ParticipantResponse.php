@@ -27,16 +27,6 @@ class ParticipantResponse
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Image
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="selected_image_id", referencedColumnName="id")
-     * })
-     */
-    private $selectedImage;
-
-    /**
      * @var \AppBundle\Entity\ParticipantSession
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ParticipantSession", inversedBy="responses")
@@ -47,44 +37,26 @@ class ParticipantResponse
     private $session;
 
     /**
-     * @var \AppBundle\Entity\Image
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="correct_image_id", referencedColumnName="id")
-     * })
+     * @var \int
+     * @ORM\Column(name="correct_answer", type="integer")
      */
-    private $correctImage;
+    private $correctAnswer;
+
+    /**
+     * @var \int
+     * @ORM\Column(name="participant_answer", type="integer")
+     */
+    private $participantAnswer;
 
     /**
      * @var \AppBundle\Entity\Image
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="third_image_served_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="image_served_id", referencedColumnName="id")
      * })
      */
-    private $thirdImageServed;
-
-    /**
-     * @var \AppBundle\Entity\Image
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="second_image_served_id", referencedColumnName="id")
-     * })
-     */
-    private $secondImageServed;
-
-    /**
-     * @var \AppBundle\Entity\Image
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="first_image_served_id", referencedColumnName="id")
-     * })
-     */
-    private $firstImageServed;
+    private $imageServed;
 
     /**
      * @var \DateTime
@@ -103,29 +75,6 @@ class ParticipantResponse
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set selectedImage
-     *
-     * @param \AppBundle\Entity\Image $selectedImage
-     * @return ParticipantResponse
-     */
-    public function setSelectedImage(\AppBundle\Entity\Image $selectedImage = null)
-    {
-        $this->selectedImage = $selectedImage;
-
-        return $this;
-    }
-
-    /**
-     * Get selectedImage
-     *
-     * @return \AppBundle\Entity\Image 
-     */
-    public function getSelectedImage()
-    {
-        return $this->selectedImage;
     }
 
     /**
@@ -152,101 +101,79 @@ class ParticipantResponse
     }
 
     /**
-     * Set correctImage
-     *
-     * @param \AppBundle\Entity\Image $correctImage
-     * @return ParticipantResponse
-     */
-    public function setCorrectImage(\AppBundle\Entity\Image $correctImage = null)
-    {
-        $this->correctImage = $correctImage;
-
-        return $this;
-    }
-
-    /**
-     * Get correctImage
-     *
-     * @return \AppBundle\Entity\Image 
-     */
-    public function getCorrectImage()
-    {
-        return $this->correctImage;
-    }
-
-    /**
-     * Set thirdImageServed
-     *
-     * @param \AppBundle\Entity\Image $thirdImageServed
-     * @return ParticipantResponse
-     */
-    public function setThirdImageServed(\AppBundle\Entity\Image $thirdImageServed = null)
-    {
-        $this->thirdImageServed = $thirdImageServed;
-
-        return $this;
-    }
-
-    /**
-     * Get thirdImageServed
-     *
-     * @return \AppBundle\Entity\Image 
-     */
-    public function getThirdImageServed()
-    {
-        return $this->thirdImageServed;
-    }
-
-    /**
-     * Set secondImageServed
-     *
-     * @param \AppBundle\Entity\Image $secondImageServed
-     * @return ParticipantResponse
-     */
-    public function setSecondImageServed(\AppBundle\Entity\Image $secondImageServed = null)
-    {
-        $this->secondImageServed = $secondImageServed;
-
-        return $this;
-    }
-
-    /**
-     * Get secondImageServed
-     *
-     * @return \AppBundle\Entity\Image 
-     */
-    public function getSecondImageServed()
-    {
-        return $this->secondImageServed;
-    }
-
-    /**
-     * Set firstImageServed
+     * Set imageServed
      *
      * @param \AppBundle\Entity\Image $firstImageServed
      * @return ParticipantResponse
      */
-    public function setFirstImageServed(\AppBundle\Entity\Image $firstImageServed = null)
+    public function setImageServed(\AppBundle\Entity\Image $imageServed = null)
     {
-        $this->firstImageServed = $firstImageServed;
+        $this->imageServed = $imageServed;
 
         return $this;
     }
 
     /**
-     * Get firstImageServed
+     * Get imageServed
      *
      * @return \AppBundle\Entity\Image 
      */
-    public function getFirstImageServed()
+    public function getImageServed()
     {
-        return $this->firstImageServed;
+        return $this->imageServed;
     }
+
+    /**
+     * Set correctAnswer
+     *
+     * @param boolean $correctAnswer
+     * @return ParticipantResponse
+     */
+    public function setCorrectAnswer($correctAnswer = null)
+    {
+        $this->correctAnswer = $correctAnswer;
+
+        return $this;
+    }
+
+    /**
+     * Get correctAnswer
+     *
+     * @return boolean
+     */
+    public function getCorrectAnswer()
+    {
+        return $this->correctAnswer;
+    }
+
+    /**
+     * Set participantAnswer
+     *
+     * @param boolean $participantAnswer
+     * @return ParticipantResponse
+     */
+    public function setParticipantAnswer($participantAnswer = null)
+    {
+        $this->participantAnswer = $participantAnswer;
+
+        return $this;
+    }
+
+    /**
+     * Get participantAnswer
+     *
+     * @return boolean
+     */
+    public function getParticipantAnswer()
+    {
+        return $this->participantAnswer;
+    }
+
 
 
     public function isCorrect()
     {
-        return $this->getCorrectImage() == $this->getSelectedImage();
+        return $this->getCorrectAnswer() == $this->getParticipantAnswer();
     }
 
 
@@ -271,21 +198,13 @@ class ParticipantResponse
     }
 
 
-    public static function createFromSessionAndImages($userSession,$images)
+    public static function createFromSessionAndImages($userSession,$image)
     {
         $response = new static();
 
         $response->setSession($userSession);
-        $response->setFirstImageServed($images[0]);
-        $response->setSecondImageServed($images[1]);
-        $response->setThirdImageServed($images[2]);
-        //array_filter will filter $images to get the correct one, but it will leave it will the image's original key in the array
-        $correctResponses = array_filter($images,function($img){return $img->getIsCorrect();});
-        //array_values will create a new array with new keys, that means that the correct image will always be in the first position
-        $correctResponses = array_values($correctResponses);
-        $correctResponse = $correctResponses[0];
-
-        $response->setCorrectImage($correctResponse);
+        $response->setImageServed($image);
+        $response->setCorrectAnswer($image->getIsCorrect());
 
         return $response;
     }

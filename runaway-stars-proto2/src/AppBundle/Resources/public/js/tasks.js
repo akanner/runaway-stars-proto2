@@ -10,7 +10,7 @@
        }, 1000);
     });
     //enables submit button
-    $( "#answer-button" ).on( "click", function( event ) {
+    $( ".answerBtn" ).on( "click", function( event ) {
       //validates the form
       formSelector = "#runaway-stars-form";
       form          = $(formSelector);
@@ -30,15 +30,17 @@
         return;
       }
       //shows answer and help text
-      radioSelected    = $('input[name=answer]:checked', '#runaway-stars-form');
-      starContainer    = radioSelected.parents('.star-container');
-      showResponse(starContainer,isInTrainingMode());
+      var buttonClicked    = $(this);
+      var answer =  $('input[name=answer]', formSelector);
+      answer.val(buttonClicked.attr("value"));
+      starContainer    = $('.star-container');
+      showResponse(starContainer,answer.val(),isInTrainingMode());
       //enables submit button
-      $("#submit-button").prop('disabled', false);
+      $("#submit-button").removeClass('hidden');
+      $("#submit-button").prop('disabled',false);
       $(this).prop('disabled',true);
-      $(" input:radio").addClass('hidden');
-      //adds points
-      addPointsFor(starContainer);
+      $(".answerBtn").addClass('hidden');
+
     });
 
     //shows the help modal

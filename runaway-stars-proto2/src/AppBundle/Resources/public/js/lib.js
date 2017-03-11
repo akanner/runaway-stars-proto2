@@ -1,9 +1,9 @@
 
 
-    function addPointsFor(starContainer)
+    function addPointsFor(userAnswer)
     {
         currentScore = getCurrentScore();
-        points       = getPointsForStarImage(starContainer);
+        points       = getPointsForUserResponse(userAnswer);
 
         currentScore = parseInt(currentScore);
         points       = parseInt(points);
@@ -40,19 +40,24 @@
         return getPointsFor("incorrect-points");
     }
 
-    function isStarContainerCorrect(starContainer)
+    function isUserAnswerCorrect(starContainer,userAnswer)
     {
-        answerContainer = $(starContainer).find(".answer")[0];
-        isCorrect = $($(answerContainer).find(".answerValue")[0]).text();
-        isCorrect = "true" == isCorrect;
+        var correctAnswer = isThereARunawayStarInTheImage(starContainer);
+        var isCorrect = correctAnswer == userAnswer;
 
         return isCorrect;
     }
 
-    function getPointsForStarImage(starContainer)
+    function isThereARunawayStarInTheImage(starContainer)
     {
-        isCorrect = isStarContainerCorrect(starContainer)
-        if(isCorrect)
+        var answerContainer = $(starContainer).find(".answer")[0];
+        var isThereARunAwayStar = $($(answerContainer).find(".answerValue")[0]).text();
+        return isThereARunAwayStar == "1";
+    }
+
+    function getPointsForUserResponse(userAnswer)
+    {
+        if(userAnswer)
         {
             return getPointsForValidResponse();
         }
@@ -62,32 +67,29 @@
         }
     }
 
-    function showResponse(starContainer,trainingMode)
+    function showResponse(starContainer,userAnswer,trainingMode)
     {
-	  
-      //will show all the answers texts
-      if(trainingMode)
-      {
-        //this will show the text of the three images
-      	starContainer = starContainer.parent().children();
-      }
-      
-      starContainer.each(
-      	function(i,starContainer)
-      		{
-                //shows the text under the image
-      			$(starContainer).find(".answer").removeClass("hidden");
-                //shows the bow in the image
-                isCorrect = isStarContainerCorrect(starContainer);
-                if(isCorrect)
-                {
-                    //chage the src of the image to the marked up one
-                    newSrc = $(starContainer).find(".marked-image").prop("src");
-                    $(starContainer).find(".star-image").prop("src",newSrc)
-                }
-                
-      		});
-    }
+
+        var isCorrect = isUserAnswerCorrect(starContainer,userAnswer);
+        if(isCorrect)
+        {
+
+            $(starContainer).find(".answerTextRight").removeClass("hidden");
+        }
+        else
+        {
+            $(starContainer).find(".answerTextWrong").removeClass("hidden");
+        }
+        //chage the src of the image to the marked up one
+        if(isThereARunawayStarInTheImage(starContainer))
+        {
+            var newSrc = $(starContainer).find(".marked-image").prop("src");
+            $(starContainer).find(".star-image").prop("src",newSrc);
+        }
+
+        //adds points
+        addPointsFor(isCorrect);
+}
 
     function isInTrainingMode()
     {

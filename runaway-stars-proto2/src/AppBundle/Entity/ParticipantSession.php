@@ -384,7 +384,10 @@ class ParticipantSession
 
     public function getPercentageOfCorrectTasks()
     {
-        return $this->getNumberOfCorrectResponses() * 100 / $this->getNumberOfResponses();
+        $numberOfResponses = $this->getNumberOfResponses();
+        $numberOfCorrectResponses = $this->getNumberOfCorrectResponses();
+
+        return (($numberOfCorrectResponses * 100) / $numberOfResponses);
     }
    
 }

@@ -83,7 +83,7 @@ abstract class BaseController extends Controller
     /**
      * transforms all Images Entities to DTO AppBundle\ViewObjects\ViewImage
      */
-    protected function getViewImages($images)
+    protected function getViewImages($image)
     {
         $viewImages = array();
 
@@ -92,24 +92,20 @@ abstract class BaseController extends Controller
         $incorrectText      = $paramRepository->getIncorrectAnswerText();
         
         
-        foreach ($images as $img) 
-
+        //in case that $img is correct, we take the path of the "marked" version of the image
+        $markedBowshockImage= null;
+        if($image->getIsCorrect())
         {
-            //in case that $img is correct, we take the path of the "marked" version of the image
-            $markedBowshockImage= null;
-            if($img->getIsCorrect())
-            {
-                $markedBowshockImage = $this->getTaskUrl($img->getMarkedBowshockImage());
-            }
-            $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
-                $img->getId(),
-                $this->getTaskUrl($img->getFilePath())
-                ,$img->getIsCorrect()
-                ,$correctText
-                ,$incorrectText
-                ,$markedBowshockImage
-                );
+            $markedBowshockImage = $this->getTaskUrl($image->getMarkedBowshockImage());
         }
+        $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
+            $image->getId(),
+            $this->getTaskUrl($image->getFilePath())
+            ,$image->getIsCorrect()
+            ,$correctText
+            ,$incorrectText
+            ,$markedBowshockImage
+            );
 
         return $viewImages;
     }
@@ -245,6 +241,12 @@ abstract class BaseController extends Controller
     protected function redirectToURL($routeName,$params=array())
     {
         return $this->redirect($this->generateUrl($routeName, $params,true));
+    }
+
+    protected function redirectToTasks()
+    {
+        return $this->redirectToURL("taskIndex");
+
     }
 
     /*----------------OBjects creation ---------------------*/

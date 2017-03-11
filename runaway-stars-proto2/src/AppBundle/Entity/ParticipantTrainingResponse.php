@@ -74,10 +74,8 @@ class ParticipantTrainingResponse extends ParticipantResponse
     }
 
     public static function createFromSessionAndTrainingTask($userSession,$trainingTask){
-    	//gets the images of the training task
-    	$images = [$trainingTask->getFirstImage(),$trainingTask->getSecondImage(),$trainingTask->getThirdImage()];
     	//creates a new ParticipantTrainingResponse
-    	$trainingResponse = static::createFromSessionAndImages($userSession,$images);
+    	$trainingResponse = static::createFromSessionAndImages($userSession,$trainingTask->getImageServed());
     	//assings the trainingTask
     	$trainingResponse->setTrainingTask($trainingTask);
 

@@ -1,12 +1,20 @@
 {% extends 'task/index.html.twig' %}
 
+{% block training_js %}
+
+  <script src="{{ asset('bundles/app/js/lib.js') }}"></script>
+  <script src="{{ asset('bundles/app/js/tasks.js') }}"></script>
+{% endblock %}
+
 
 {% block submit_buttons %}
-	<div class="col-md-1 col-md-offset-10">
-	    <button type="button" id="answer-button" class="btn btn-lg btn-primary">Contestar!</button>
-	</div>
-	<div class="col-md-1">
-	    <button type="submit" id="submit-button" disabled="disabled" class="btn btn-lg btn-success">Siguiente</button>
+	<div class="col-md-2 col-md-offset-5">
+	    <button type="button" id="yesBtn" class="btn btn-lg btn-success answerBtn" value="1">Si</button>
+      <button type="button" id="noBtn" class="btn btn-lg btn-danger answerBtn" value="0">No</button>
+      <button type="button" id="dontKnowBtn" class="btn btn-lg btn-warning answerBtn" value="2">No estoy seguro</button>
+      <input type="hidden" name="answer" />
+
+      <button type="submit" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
 	</div>
 {% endblock %}
 

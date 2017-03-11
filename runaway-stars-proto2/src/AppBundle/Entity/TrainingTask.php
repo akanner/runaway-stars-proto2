@@ -40,31 +40,10 @@ class TrainingTask
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="third_image", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="image_served_id", referencedColumnName="id")
      * })
      */
-    private $thirdImage;
-
-    /**
-     * @var \AppBundle\Entity\Image
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="second_image", referencedColumnName="id")
-     * })
-     */
-    private $secondImage;
-
-    /**
-     * @var \AppBundle\Entity\Image
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="first_image", referencedColumnName="id")
-     * })
-     */
-    private $firstImage;
-
+    private $imageServed;
 
     /**
      * Set trainingStep
@@ -123,71 +102,26 @@ class TrainingTask
     }
 
     /**
-     * Set thirdImage
+     * Set imageServed
      *
-     * @param \AppBundle\Entity\Image $thirdImage
-     * @return TrainingTask
+     * @param \AppBundle\Entity\Image $firstImageServed
+     * @return ParticipantResponse
      */
-    public function setThirdImage(\AppBundle\Entity\Image $thirdImage = null)
+    public function setImageServed(\AppBundle\Entity\Image $imageServed = null)
     {
-        $this->thirdImage = $thirdImage;
+        $this->imageServed = $imageServed;
 
         return $this;
     }
 
     /**
-     * Get thirdImage
+     * Get imageServed
      *
      * @return \AppBundle\Entity\Image 
      */
-    public function getThirdImage()
+    public function getImageServed()
     {
-        return $this->thirdImage;
+        return $this->imageServed;
     }
 
-    /**
-     * Set secondImage
-     *
-     * @param \AppBundle\Entity\Image $secondImage
-     * @return TrainingTask
-     */
-    public function setSecondImage(\AppBundle\Entity\Image $secondImage = null)
-    {
-        $this->secondImage = $secondImage;
-
-        return $this;
-    }
-
-    /**
-     * Get secondImage
-     *
-     * @return \AppBundle\Entity\Image 
-     */
-    public function getSecondImage()
-    {
-        return $this->secondImage;
-    }
-
-    /**
-     * Set firstImage
-     *
-     * @param \AppBundle\Entity\Image $firstImage
-     * @return TrainingTask
-     */
-    public function setFirstImage(\AppBundle\Entity\Image $firstImage = null)
-    {
-        $this->firstImage = $firstImage;
-
-        return $this;
-    }
-
-    /**
-     * Get firstImage
-     *
-     * @return \AppBundle\Entity\Image 
-     */
-    public function getFirstImage()
-    {
-        return $this->firstImage;
-    }
 }

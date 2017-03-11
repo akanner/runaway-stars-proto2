@@ -77,4 +77,19 @@ class ImageRepository extends EntityRepository
 		//returns the firsts $quantity images
 		return array_slice($images,0,$quantity);
 	}
+
+
+	public function findRandomImage()
+	{
+		//this could be very inefficient if there are many Images, use with caution!!
+		//more options in:
+		//http://stackoverflow.com/questions/10762538/how-to-select-randomly-with-doctrine
+		//gets all the images 
+		$images = $this->findAll();
+		//shuffles the array
+		shuffle($images);
+
+		//returns the firsts $quantity images
+		return $images[0];
+	}
 }

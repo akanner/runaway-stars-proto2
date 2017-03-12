@@ -373,21 +373,27 @@ class ParticipantSession
 
     public function getNumberOfResponses()
     {
-        return $this->responses->count();
+        return $this->responses->filter(function($response){return $response->isTrainingResponse();})->count();
     }
 
     public function getNumberOfCorrectResponses()
     {
-        $correctResponses = $this->responses->filter(function($response){return $response->isCorrect();});
+        $correctResponses = $this->responses->filter(function($response){return $response->isCorrect() && $response->isTrainingResponse();});
         return count($correctResponses);
     }
 
     public function getPercentageOfCorrectTasks()
     {
+        $percentage = 0;
         $numberOfResponses = $this->getNumberOfResponses();
-        $numberOfCorrectResponses = $this->getNumberOfCorrectResponses();
+        if($numberOfResponses!=0)
+        {
+            $numberOfCorrectResponses = $this->getNumberOfCorrectResponses();
 
-        return (($numberOfCorrectResponses * 100) / $numberOfResponses);
+            $percentage = $numberOfCorrectResponses * 100 / $numberOfResponses;
+        }
+        var_dump($percentage);
+        return $percentage;
     }
    
 }

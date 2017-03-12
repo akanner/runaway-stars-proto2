@@ -44,7 +44,7 @@
     });
 
     //shows the help modal
-    $(window).load(function(){
+    $(window).on("load",function(){
       showHelp = $("#show_help").text();
       if(showHelp=="true")
       {

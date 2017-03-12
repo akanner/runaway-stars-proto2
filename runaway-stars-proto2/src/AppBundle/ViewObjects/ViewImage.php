@@ -13,20 +13,20 @@ class ViewImage
 	public $cssClass;
 	public $markedBowshockImage;
 
-	function __construct($id,$path,$correct,$correctText="Correcta",$incorrectText="Incorrecta",$markedBowshockImage=null)
+	function __construct($id,$path,$correct,$tooltipText="",$markedBowshockImage=null)
 	{
 		$this->id 					= $id;
 		$this->path 				= $path;
 		$this->markedBowshockImage  = $markedBowshockImage;
+		$this->text					= $tooltipText;
 		if($correct)
 		{
-			$this->text			= $correctText;
+
 			$this->correct		= "1";
 			$this->cssClass		= "bg-success";
 		}
 		else
 		{
-			$this->text 		= $incorrectText;
 			$this->correct		= "0";
 			$this->cssClass		= "bg-danger";
 		}

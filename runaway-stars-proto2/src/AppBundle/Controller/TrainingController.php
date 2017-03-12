@@ -65,8 +65,7 @@ class TrainingController extends BaseController
         $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
         $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
         //gets the images's paths and passes them to the view
-        $trainingImage = $trainingStep->getImageServed();
-        $viewParams["images"] = $this->getViewImages($trainingImage);
+        $viewParams["images"] = $this->getTrainingImage($trainingStep);
         $viewParams["points"] = $userSession->getTotalPoints();
         //gets current and max steps
         $viewParams["current_step"]  = $currentStep;

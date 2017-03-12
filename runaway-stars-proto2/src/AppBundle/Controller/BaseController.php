@@ -83,31 +83,34 @@ abstract class BaseController extends Controller
     /**
      * transforms all Images Entities to DTO AppBundle\ViewObjects\ViewImage
      */
-    protected function getViewImages($image)
+    protected function getViewImages($image,$tooltipText=null)
     {
-        $viewImages = array();
-
-        $paramRepository    = $this->get(static::PARAM_REPO);
-        $correctText        = $paramRepository->getCorrectAnswerText();
-        $incorrectText      = $paramRepository->getIncorrectAnswerText();
-        
-        
         //in case that $img is correct, we take the path of the "marked" version of the image
         $markedBowshockImage= null;
         if($image->getIsCorrect())
         {
             $markedBowshockImage = $this->getTaskUrl($image->getMarkedBowshockImage());
         }
-        $viewImages[] = new \AppBundle\ViewObjects\ViewImage(
+        $viewImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
             $this->getTaskUrl($image->getFilePath())
             ,$image->getIsCorrect()
-            ,$correctText
-            ,$incorrectText
+            ,$tooltipText
             ,$markedBowshockImage
             );
 
-        return $viewImages;
+        return $viewImage;
+    }
+    /**
+     * transforms a TraningTask Entity to a ViewImage
+     *
+     * @param AppBundle\Entity\TrainingTask 
+     *
+     * @return ViewImage
+     */
+    protected function getTrainingImage($trainingTask)
+    {
+        return $this->getViewImages($trainingTask->getImageServed(),$trainingTask->getHelpText());
     }
 
     /**

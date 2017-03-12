@@ -50,7 +50,7 @@
 
     function isThereARunawayStarInTheImage(starContainer)
     {
-        var answerContainer = $(starContainer).find(".answer")[0];
+        var answerContainer = $(".answer");
         var isThereARunAwayStar = $($(answerContainer).find(".answerValue")[0]).text();
         return isThereARunAwayStar == "1";
     }
@@ -74,16 +74,16 @@
         if(isCorrect)
         {
 
-            $(starContainer).find(".answerTextRight").removeClass("hidden");
+            $("#answerTextRight").removeClass("hidden");
         }
         else
         {
-            $(starContainer).find(".answerTextWrong").removeClass("hidden");
+            $("#answerTextWrong").removeClass("hidden");
         }
         //chage the src of the image to the marked up one
         if(isThereARunawayStarInTheImage(starContainer))
         {
-            var newSrc = $(starContainer).find(".marked-image").prop("src");
+            var newSrc = $(".marked-image").prop("src");
             $(starContainer).find(".star-image").prop("src",newSrc);
         }
 

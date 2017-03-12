@@ -28,6 +28,22 @@
     <p class="hidden" id="tmode">{{training_mode}}</p>
 {% endblock %}
 
+
+{% block training_response %}
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3  answer">
+          <div class="hidden alert alert-danger" role="alert"  id="answerTextWrong">
+            <strong>Respuesta Incorrecta:</strong>{{images.text}}
+          </div>
+          <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
+            <strong>Respuesta Correcta:</strong>{{images.text}}
+          </div>
+           <img class="hidden marked-image" src="{{ images.markedBowshockImage }}"/>
+           <p class="answerValue hidden">{{images.correct}}</p>
+       </div>
+    </div>
+{% endblock %}
+
 {% block help_text %}
 
 

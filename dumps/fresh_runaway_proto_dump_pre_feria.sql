@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
 --
--- Host: localhost    Database: raway_db
+-- Host: localhost    Database: raway_db_dev
 -- ------------------------------------------------------
 -- Server version	5.7.17-0ubuntu0.16.04.1
 
@@ -172,7 +172,7 @@ CREATE TABLE `participant` (
   `ocupation` varchar(45) DEFAULT NULL,
   `zooniverse_username` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,21 +194,31 @@ DROP TABLE IF EXISTS `participant_response`;
 CREATE TABLE `participant_response` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) DEFAULT NULL,
-  `image_served_id` int(11) DEFAULT NULL,
+  `first_image_served_id` int(11) DEFAULT NULL,
+  `second_image_served_id` int(11) DEFAULT NULL,
+  `third_image_served_id` int(11) DEFAULT NULL,
+  `correct_image_id` int(11) DEFAULT NULL,
+  `selected_image_id` int(11) DEFAULT NULL,
   `pointsEarned` int(11) DEFAULT NULL,
   `answered_at` datetime DEFAULT NULL,
   `type` varchar(45) NOT NULL,
   `training_task_id` int(11) DEFAULT NULL,
-  `correct_answer` int(11) NOT NULL,
-  `participant_answer` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_participant_response_image1_idx` (`image_served_id`),
+  KEY `fk_participant_response_image1_idx` (`first_image_served_id`),
+  KEY `fk_participant_response_image2_idx` (`second_image_served_id`),
+  KEY `fk_participant_response_image3_idx` (`third_image_served_id`),
+  KEY `fk_participant_response_image4_idx` (`correct_image_id`),
+  KEY `fk_participant_response_image5_idx` (`selected_image_id`),
   KEY `fk_participant_response_session_participant_idx` (`session_id`),
   KEY `fk_participant_response_training_task_idx` (`training_task_id`),
-  CONSTRAINT `fk_participant_response_image1` FOREIGN KEY (`image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_participant_response_image1` FOREIGN KEY (`first_image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_participant_response_image2` FOREIGN KEY (`second_image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_participant_response_image3` FOREIGN KEY (`third_image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_participant_response_image4` FOREIGN KEY (`correct_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_participant_response_image5` FOREIGN KEY (`selected_image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_training_task` FOREIGN KEY (`training_task_id`) REFERENCES `training_task` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +255,7 @@ CREATE TABLE `participant_session` (
   CONSTRAINT `FK_4A491ADC6A33B9B3` FOREIGN KEY (`gamification_type_id`) REFERENCES `gamification_type` (`id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_session_participant_session` FOREIGN KEY (`next_session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,10 +278,16 @@ CREATE TABLE `training_task` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `training_step` int(11) NOT NULL,
   `help_text` text,
-  `image_served_id` int(11) DEFAULT NULL,
+  `first_image` int(11) DEFAULT NULL,
+  `second_image` int(11) DEFAULT NULL,
+  `third_image` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_training_task_image1_idx` (`image_served_id`),
-  CONSTRAINT `fk_training_task_image1` FOREIGN KEY (`image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_training_task_image1_idx` (`first_image`),
+  KEY `fk_training_task_image2_idx` (`second_image`),
+  KEY `fk_training_task_image3_idx` (`third_image`),
+  CONSTRAINT `fk_training_task_image1` FOREIGN KEY (`first_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_training_task_image2` FOREIGN KEY (`second_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_training_task_image3` FOREIGN KEY (`third_image`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -281,7 +297,7 @@ CREATE TABLE `training_task` (
 
 LOCK TABLES `training_task` WRITE;
 /*!40000 ALTER TABLE `training_task` DISABLE KEYS */;
-INSERT INTO `training_task` VALUES (1,1,'aaaaaa',6),(2,2,NULL,18),(3,3,NULL,21),(4,4,NULL,33);
+INSERT INTO `training_task` VALUES (1,1,'aaaaaa',6,11,12),(2,2,NULL,18,7,20),(3,3,NULL,21,24,19),(4,4,NULL,33,34,32);
 /*!40000 ALTER TABLE `training_task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -294,4 +310,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-12 14:59:40
+-- Dump completed on 2017-03-07 11:38:26

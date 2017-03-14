@@ -4,6 +4,7 @@
 
   <script src="{{ asset('bundles/app/js/lib.js') }}"></script>
   <script src="{{ asset('bundles/app/js/tasks.js') }}"></script>
+  <script src="{{ asset('bundles/app/js/form_spinner.js') }}"></script>
 {% endblock %}
 
 
@@ -37,6 +38,9 @@
           </div>
           <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
             <strong>Respuesta Correcta:</strong>{{images.text}}
+          </div>
+           <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
+            <strong>Respuesta:</strong>{{images.text}}
           </div>
            <img class="hidden marked-image" src="{{ images.markedBowshockImage }}"/>
            <p class="answerValue hidden">{{images.correct}}</p>

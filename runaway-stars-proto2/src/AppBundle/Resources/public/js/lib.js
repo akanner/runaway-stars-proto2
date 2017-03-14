@@ -69,17 +69,25 @@
 
     function showResponse(starContainer,userAnswer,trainingMode)
     {
-
-        var isCorrect = isUserAnswerCorrect(starContainer,userAnswer);
-        if(isCorrect)
+        if(userAnswer=="2")
         {
-
-            $("#answerTextRight").removeClass("hidden");
+            //the user answered "no estoy seguro"
+            $("#answerTextDontKnow").removeClass("hidden");
         }
         else
         {
-            $("#answerTextWrong").removeClass("hidden");
+             var isCorrect = isUserAnswerCorrect(starContainer,userAnswer);
+            if(isCorrect)
+            {
+
+                $("#answerTextRight").removeClass("hidden");
+            }
+            else
+            {
+                $("#answerTextWrong").removeClass("hidden");
+            }
         }
+       
         //chage the src of the image to the marked up one
         if(isThereARunawayStarInTheImage(starContainer))
         {

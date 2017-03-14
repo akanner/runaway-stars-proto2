@@ -1,6 +1,22 @@
 {% extends 'task/index.html.twig' %}
 
 {% block training_js %}
+    <script type="text/javascript">
+      $( ".answerBtn" ).on( "click", function( event ) {
+          event.preventDefault();
+          var btnValue = $(this).val();
+            $.blockUI({ message: $('#throbber') });
+
+               setTimeout( function () {
+                  //adds the buttons value to the form
+                  var input = $("<input>")
+                   .attr("type", "hidden")
+                   .attr("name", "answer").val(btnValue);
+                  $( "#runaway-stars-form" ).append(input);
+                  $( "#runaway-stars-form" ).submit();
+               }, 1000);
+      })
+    </script>
 {% endblock %}
 
 {% block submit_buttons %}

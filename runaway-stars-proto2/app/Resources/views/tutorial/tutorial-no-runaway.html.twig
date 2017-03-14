@@ -1,0 +1,83 @@
+{% extends 'task/index.html.twig' %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/app/js/intro.js') }}"></script>
+    <script type="text/javascript">
+		 introJs().setOptions({
+          nextLabel: 'Siguiente',
+          prevLabel: 'Atras',
+          skipLabel: 'Cerrar',
+          doneLabel: 'Cerrar'})
+		 .start();
+
+
+		//wrongAnswerBtn click handler
+		$(".wrongAnswerBtn").on("click",function(){
+			$("#answerTextWrong").removeClass("hidden");
+            introJs().exit();
+		});
+		//rightAnswerBtn click handler
+		$(".rightAnswerBtn").on("click",function(){
+			//hides the wrong answer text
+			$("#answerTextWrong").addClass("hidden");
+			//shows the right answer text
+			$("#answerTextRight").removeClass("hidden");
+			//shows the submit button
+			$("#submit-button").removeClass('hidden');
+			$("#submit-button").prop('disabled',false);
+			//hides the other buttons
+			$(".answerBtn").addClass('hidden');
+            introJs().exit();
+		});
+
+	
+    </script>
+{% endblock %}
+
+
+{% block custom_stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/introjs.css') }}">
+{% endblock %}
+
+
+{% block submit_buttons %}
+  <div class="col-md-2 col-md-offset-5" data-intro='Respond&eacute; para continuar' data-step="2">
+		<button type="button" id="yesBtn" class="btn btn-lg btn-success wrongAnswerBtn answerBtn">Si</button>
+		<button type="button" id="noBtn" class="btn btn-lg btn-danger rightAnswerBtn answerBtn"  name="answer" value="0">No</button>
+		<button type="button" id="dontKnowBtn" class="btn btn-lg btn-warning wrongAnswerBtn answerBtn" name="answer" value="2">No estoy seguro</button>
+
+		<button type="submit" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
+  </div>
+{% endblock %}
+
+{% block image%}
+    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP29201-rgb.jpg') }}" data-intro='En esta imagen no hay una runaway star, ya que no vemos ningun arco de color alrededor de ella, sino, m&aacute;s bien, un fondo de color rojo' data-step="1"/>
+{% endblock %}
+
+{% block training_response %}
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3  answer">
+          <div class="hidden alert alert-danger" role="alert"  id="answerTextWrong">
+            <strong>Respuesta Incorrecta:</strong> En la imagen no hay una runaway star, hac&eacute; click en "No"
+          </div>
+          <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
+            <strong>Respuesta Correcta:</strong> Buen trabajo!
+          </div>
+       </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+{% block points %}
+{% endblock %}
+
+{% block question_number %}{% endblock %}
+
+{% block points_variables %}
+{% endblock %}
+
+{% block help_text %}{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'tutorial/tutorial-runaway.html.twig' %}
+
+    {% block custom_step_js %}
+    	<script type="text/javascript">
+    	$("#question").attr("data-step","1");
+    	$("#question").attr("data-intro","Observando la imagen en la pantalla vas a tener que indicarnos si en la dicha imagen aparece una estrella runaway o no.");
+
+    	</script>
+
+    {% endblock %}
+
+{% block image%}
+    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}" data-intro='Encerrada en el circulo rojo, hay una estrella, no cualquier estrella sino que esta estrella es una estrella runaway, la podemos identificar por el arco de color rojo que esta junto a ella.' data-step="2"/>
+    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP88652-rgb_m.jpg') }}"/>
+{% endblock %}
+
+{% block submit_buttons %}
+  <div class="col-md-2 col-md-offset-5" data-intro='Seleccionando estas opciones, podes indicar si en la imagen vez una runaway star' data-step="3">
+		<button type="button" id="yesBtn" class="btn btn-lg btn-success rightAnswerBtn answerBtn" name="answer" value="1" data-intro="En este caso, ya te dijimos la respuesta, hac&eacute; click en aqu&iacute;" data-step="4">Si</button>
+		<button type="button" id="noBtn" class="btn btn-lg btn-danger wrongAnswerBtn answerBtn"  name="answer" value="0">No</button>
+		<button type="button" id="dontKnowBtn" class="btn btn-lg btn-warning wrongAnswerBtn answerBtn" name="answer" value="2">No estoy seguro</button>
+
+		<button type="submit" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
+  </div>
+{% endblock %}

@@ -109,7 +109,7 @@ class LoginController extends BaseController
 
 
         //redirects to the home
-        return $this->redirectToTrainingTasks();
+        return $this->redirectToURL("tutorial-01");
     }
 
     private function initializeSession($request)

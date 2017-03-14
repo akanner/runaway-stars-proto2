@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/app/js/intro.js') }}"></script>
+    <script type="text/javascript">
+		 introJs().setOptions({
+          nextLabel: 'Siguiente',
+          prevLabel: 'Atras',
+          skipLabel: 'Cerrar',
+          doneLabel: 'Cerrar'})
+		 .start();
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('bundles/app/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/introjs.css') }}">
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">Diferentes paletas de colores</h3>
+                </div>
+            </div>
+	    <div class="row" data-step="1" data-intro="Es posible mostrar la misma imagen con distintos colores, dentro de este proyecto vas a encontrar imagenes con estos colores, pero tenes que recordar que el color del arco no importa sino la forma.">
+	        <div class="col-md-3 star-container">
+	            <img class="img-responsive star-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-rgb.jpg') }}"/>
+	        </div>
+	        <div class="col-md-3 star-container">
+	            <img class="img-responsive star-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-w3-Heat-pow-99.5.jpg') }}"/>
+	        </div>
+	        <div class="col-md-3 star-container">
+	            <img class="img-responsive star-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-w3-Hsv-pow-99.5.jpg') }}"/>
+	        </div>
+	        <div class="col-md-3 star-container">
+	            <img class="img-responsive star-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-w3-Cool-pow-99.5.jpg') }}"/>
+	        </div>
+	    </div>
+	    <div class="row">
+	    	<div class="col-md-2 col-md-offset-5">
+				<a href="{{post_url}}" id="submit-button" class="btn btn-lg btn-success btn-block"  data-intro="Hace click ac&aacute; para avanzar" data-step="2">Siguiente</a>
+			</div>
+	    </div>
+	</div>
+{% endblock %}

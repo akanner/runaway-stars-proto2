@@ -1,0 +1,9 @@
+{% extends 'tutorial/tutorial-runaway.html.twig' %}
+
+
+
+{% block image%}
+    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP16518-rgb.jpg') }}" data-intro='Muchas veces, el arco alrededor de una estrella no es completamente definido, lo que puede llevar a dudas, en este caso, esta es una estrella runaway' data-step="1"/>
+    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP16518-rgb_m.jpg') }}"/>
+{% endblock %}
+

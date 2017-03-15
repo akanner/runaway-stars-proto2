@@ -21,74 +21,78 @@
 	        <p>
 	        	No tenes que tener miedo de equivocarte, lo importante es participar. 
 	        </p>
+	          <a class="btn btn-primary" data-toggle="collapse" href="#runaway-information" aria-expanded="false" aria-controls="runaway-information">
+			    Saber m&aacute;s sobre las runaway stars
+			  </a>
 	        
 	      </div>
 	    </div>
 	<div class="container-fluid">
-		<div class="row">
+		<div id="runaway-information" class="collapse">
+			<div class="row"></div>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<h2>&iquest;Que es una <i>Runaway Star</i>?</h2>
+					<p class="lead">
+						Las estrellas de alta velocidad, o <i>runaway stars</i>, se mueven a decenas de km/s, perturban el medio
+						por donde se mueven y así producen diferentes tipos de estructuras que podemos
+						ver a simple vista en su entorno.
+					</p>
+					<p class="lead">
+						Estas estructuras pueden estar muy bien definidas y ser tipo arcos y verse
+						claramente separadas de la estrella, pero también pueden ser nebulosas muy
+						irregulares y/o estar mezcladas con las estrellas. Incluso, en algunos casos,
+						pueden confundirse con estructuras más grandes, pero aún así, se pueden
+						identificar.
+					</p>
+					<h2>&iquest;Como reconocerlas?</h2>
+					<p class="lead">Existen infinidad de casos distintos de <i>Runaway stars</i>, sin embargo podemos agruparlas en 2 grandes categor&iacute;as:</p>
+				</div>
+			</div>
 
-		</div>
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<h2>&iquest;Que es una <i>Runaway Star</i>?</h2>
-				<p class="lead">
-					Las estrellas de alta velocidad, o <i>runaway stars</i>, se mueven a decenas de km/s, perturban el medio
-					por donde se mueven y así producen diferentes tipos de estructuras que podemos
-					ver a simple vista en su entorno.
-				</p>
-				<p class="lead">
-					Estas estructuras pueden estar muy bien definidas y ser tipo arcos y verse
-					claramente separadas de la estrella, pero también pueden ser nebulosas muy
-					irregulares y/o estar mezcladas con las estrellas. Incluso, en algunos casos,
-					pueden confundirse con estructuras más grandes, pero aún así, se pueden
-					identificar.
-				</p>
-				<h2>&iquest;Como reconocerlas?</h2>
-				<p class="lead">Existen infinidad de casos distintos de <i>Runaway stars</i>, sin embargo podemos agruparlas en 2 grandes categor&iacute;as:</p>
-			</div>
-		</div>
+			<div class="row odd">
+				<div class="col-md-3 col-md-offset-2">
+					<img class="img-responsive thumbnail" src="{{ asset('bundles/app/images/bowshock_small.jpg') }}" alt="clear bow-shock">
+				</div>
+				<div class="col-md-5"> 
+					<h3><i>Runaway Star</i> con arco definido</h3>
 
-		<div class="row odd">
-			<div class="col-md-3 col-md-offset-2">
-				<img class="img-responsive thumbnail" src="{{ asset('bundles/app/images/bowshock_small.jpg') }}" alt="clear bow-shock">
+					<p>En la imagen de la izquierda se puede ver claramente un arco de color rojo.</p>
+					<p>Esto podr&iacute;a indicarnos la presencia de una <i>runaway star</i></p>
+				</div>
 			</div>
-			<div class="col-md-5"> 
-				<h3><i>Runaway Star</i> con arco definido</h3>
 
-				<p>En la imagen de la izquierda se puede ver claramente un arco de color rojo.</p>
-				<p>Esto podr&iacute;a indicarnos la presencia de una <i>runaway star</i></p>
+			<div class="row">
+				<div class="col-md-5 col-md-offset-2">
+					<h3><i>Runaway Star</i> con arco indefinido o nebuloso</h3>
+					<p>En la imagen de la derecha se puede ver un arco menos definido, muy parecido a una nube,tambien de color rojo.</p>
+					<p>Este arco indefinido podr&iacute;a indicarnos la presencia de una <i>runaway star</i></p>
+				</div>
+				<div class="col-md-3">
+					<img src="{{ asset('bundles/app/images/bowshock2_small.jpg') }}" alt="nebulous bow-shock" class="img-responsive thumbnail">
+				</div>
+			</div>
+
+			<div class="row odd">
+				<div class="col-md-3 col-md-offset-2">
+					<img src="{{ asset('bundles/app/images/no_bowshock_small.jpg') }}" alt="no bow-shock" class="img-responsive thumbnail">
+				</div>
+				<div class="col-md-5">
+					<h3>&iquest;Como se que no hay una <i>Runaway Star</i> en una imagen?</h3>
+					<p>En la imagen de la izquierda no vemos una figura parecida a un arco (definido o indefinido).</p>
+					<p>Sin la presencia de una de estas figuras, no podr&iacute;amos indicar que, en la imagen, exista una <i>runaway star</i></p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-offset-2">
+					<h3>&iquest;Que hago si no estoy seguro si hay una <i>runaway star</i>?</h3>
+					<p><span class="lead">No hay problema!</span><span> simplemente seleccion&aacute; la que creas que es correcta!</span></p>
+					<p>Record&aacute; que tu participaci&oacute;n nos es m&aacute;s importante que obtener las mejores respuestas</p>
+				</div>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-md-5 col-md-offset-2">
-				<h3><i>Runaway Star</i> con arco indefinido o nebuloso</h3>
-				<p>En la imagen de la derecha se puede ver un arco menos definido, muy parecido a una nube,tambien de color rojo.</p>
-				<p>Este arco indefinido podr&iacute;a indicarnos la presencia de una <i>runaway star</i></p>
-			</div>
-			<div class="col-md-3">
-				<img src="{{ asset('bundles/app/images/bowshock2_small.jpg') }}" alt="nebulous bow-shock" class="img-responsive thumbnail">
-			</div>
-		</div>
-
-		<div class="row odd">
-			<div class="col-md-3 col-md-offset-2">
-				<img src="{{ asset('bundles/app/images/no_bowshock_small.jpg') }}" alt="no bow-shock" class="img-responsive thumbnail">
-			</div>
-			<div class="col-md-5">
-				<h3>&iquest;Como se que no hay una <i>Runaway Star</i> en una imagen?</h3>
-				<p>En la imagen de la izquierda no vemos una figura parecida a un arco (definido o indefinido).</p>
-				<p>Sin la presencia de una de estas figuras, no podr&iacute;amos indicar que, en la imagen, exista una <i>runaway star</i></p>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-offset-2">
-				<h3>&iquest;Que hago si no estoy seguro si hay una <i>runaway star</i>?</h3>
-				<p><span class="lead">No hay problema!</span><span> simplemente seleccion&aacute; la que creas que es correcta!</span></p>
-				<p>Record&aacute; que tu participaci&oacute;n nos es m&aacute;s importante que obtener las mejores respuestas</p>
-			</div>
-		</div>
+		
 		<div class="row">
 			<div class="col-md-offset-2">
 				<h3>&iquest;Como hago para participar?</h3>

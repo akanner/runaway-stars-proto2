@@ -392,7 +392,7 @@ class ParticipantSession
 
             $percentage = $numberOfCorrectResponses * 100 / $numberOfResponses;
         }
-        return $percentage;
+        return round($percentage);
     }
    
 }

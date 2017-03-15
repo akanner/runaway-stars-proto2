@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
 --
--- Host: localhost    Database: raway_db
+-- Host: localhost    Database: raway_db_dev
 -- ------------------------------------------------------
 -- Server version	5.7.17-0ubuntu0.16.04.1
 
@@ -145,7 +145,7 @@ CREATE TABLE `image` (
   `is_correct` tinyint(4) NOT NULL,
   `marked_bowshock_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `image` (
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (6,'HIP2036.jpg',1,'marked/HIP2036_m.jpg'),(7,'HIP22783.jpg',1,'marked/HIP22783_m.jpg'),(8,'HIP32067.jpg',1,'marked/HIP32067_m.jpg'),(9,'HIP34536.jpg',1,'marked/HIP34536_m.jpg'),(10,'HIP82171.jpg',1,'marked/HIP82171_m.jpg'),(11,'HIP398.jpg',0,NULL),(12,'HIP505.jpg',0,NULL),(13,'HIP14969.jpg',0,NULL),(14,'HIP14969.png',0,NULL),(15,'HIP29201.jpg',0,NULL),(16,'HIP48730.jpg',0,NULL),(17,'HIP61958.jpg',0,NULL),(18,'HIP92133.jpg',0,NULL),(19,'HIP99303.jpg',0,NULL),(20,'HIP110386.jpg',0,NULL),(21,'HIP114482.jpg',0,NULL),(22,'11891.jpg',1,'marked/11891_m.jpg'),(23,'28881.jpg',1,'marked/28881_m.jpg'),(24,'29276.jpg',1,'marked/29276_m.jpg'),(25,'31766.jpg',1,'marked/31766_m.jpg'),(26,'88652.jpg',1,'marked/88652_m.jpg'),(27,'HIP16518.png',1,'marked/HIP16518_m.png'),(28,'HIP24575.png',1,'marked/HIP24575_m.jpg'),(29,'HIP25923.png',1,'marked/HIP25923_m.jpg'),(30,'HIP72510.jpg',1,'marked/HIP72510_m.jpg'),(31,'HIP77391.jpg',1,'marked/HIP77391_m.jpg'),(32,'HIP88652_alt_1.jpg',1,'marked/HIP88652_alt_1_m.jpg'),(33,'Kronberger61.jpg',0,NULL),(34,'Orion-nebula.jpg',0,NULL);
+INSERT INTO `image` VALUES (1,'bd433654-rgb.jpg',1,'marked/bd433654-rgb_m.jpg'),(2,'bd433654-w4-Cool-pow-99.5.jpg',1,NULL),(3,'bd433654-w4-Heat-pow-99.5.jpg',1,NULL),(4,'bd433654-w4-Hsv-pow-99.5.jpg',1,NULL),(5,'HIP101186-rgb.jpg',1,NULL),(6,'HIP101186-w4-Cool-pow-99.5.jpg',1,'marked/HIP101186-w4-Cool-pow-99.5_m.jpg'),(7,'HIP101186-w4-Heat-pow-99.5.jpg',1,NULL),(8,'HIP101186-w4-Hsv-pow-99.5.jpg',1,NULL),(9,'HIP114990-rgb.jpg',1,''),(10,'HIP114990-w4-Cool-pow-99.5.jpg',1,NULL),(11,'HIP114990-w4-Heat-pow-99.5.jpg',1,NULL),(12,'HIP114990-w4-Hsv-pow-99.5.jpg',1,NULL),(13,'HIP11891-rgb.jpg',1,NULL),(14,'HIP11891-w4-Cool-pow-99.5.jpg',1,NULL),(15,'HIP11891-w4-Heat-pow-99.5.jpg',1,'marked/HIP11891-w4-Heat-pow-99.5_m.jpg'),(16,'HIP11891-w4-Hsv-pow-99.5.jpg',1,NULL),(17,'HIP16518-rgb.jpg',1,NULL),(18,'HIP16518-w4-Cool-pow-99.5.jpg',1,NULL),(19,'HIP16518-w4-Heat-pow-99.5.jpg',1,NULL),(20,'HIP16518-w4-Hsv-pow-99.5.jpg',1,'marked/HIP16518-w4-Hsv-pow-99.5_m.jpg'),(21,'HIP2036-rgb.jpg',1,NULL),(22,'HIP2036-w4-Cool-pow-99.5.jpg',1,NULL),(23,'HIP2036-w4-Heat-pow-99.5.jpg',1,NULL),(24,'HIP2036-w4-Hsv-pow-99.5.jpg',1,NULL),(25,'HIP22783-rgb.jpg',1,NULL),(26,'HIP22783-w4-Cool-pow-99.5.jpg',1,NULL),(27,'HIP22783-w4-Heat-pow-99.5.jpg',1,NULL),(28,'HIP22783-w4-Hsv-pow-99.5.jpg',1,NULL),(29,'HIP24575-rgb.jpg',1,NULL),(30,'HIP24575-w4-Cool-pow-99.5.jpg',1,NULL),(31,'HIP24575-w4-Heat-pow-99.5.jpg',1,NULL),(32,'HIP24575-w4-Hsv-pow-99.5.jpg',1,NULL),(33,'HIP25923-rgb.jpg',1,NULL),(34,'HIP25923-w4-Cool-pow-99.5.jpg',1,NULL),(35,'HIP25923-w4-Heat-pow-99.5.jpg',1,NULL),(36,'HIP25923-w4-Hsv-pow-99.5.jpg',1,NULL),(37,'HIP2599-rgb.jpg',1,NULL),(38,'HIP2599-w4-Cool-pow-99.5.jpg',1,NULL),(39,'HIP2599-w4-Heat-pow-99.5.jpg',1,NULL),(40,'HIP2599-w4-Hsv-pow-99.5.jpg',1,NULL),(41,'HIP28881-rgb.jpg',1,NULL),(42,'HIP28881-w4-Cool-pow-99.5.jpg',1,NULL),(43,'HIP28881-w4-Heat-pow-99.5.jpg',1,NULL),(44,'HIP28881-w4-Hsv-pow-99.5.jpg',1,NULL),(45,'HIP29276-rgb.jpg',1,NULL),(46,'HIP29276-w4-Cool-pow-99.5.jpg',1,NULL),(47,'HIP29276-w4-Heat-pow-99.5.jpg',1,NULL),(48,'HIP29276-w4-Hsv-pow-99.5.jpg',1,NULL),(49,'HIP31766-rgb.jpg',1,NULL),(50,'HIP31766-w4-Cool-pow-99.5.jpg',1,NULL),(51,'HIP31766-w4-Heat-pow-99.5.jpg',1,NULL),(52,'HIP31766-w4-Hsv-pow-99.5.jpg',1,NULL),(53,'HIP32067-rgb.jpg',1,NULL),(54,'HIP32067-w4-Cool-pow-99.5.jpg',1,NULL),(55,'HIP32067-w4-Heat-pow-99.5.jpg',1,NULL),(56,'HIP32067-w4-Hsv-pow-99.5.jpg',1,NULL),(57,'HIP34536-rgb.jpg',1,NULL),(58,'HIP34536-w4-Cool-pow-99.5.jpg',1,NULL),(59,'HIP34536-w4-Heat-pow-99.5.jpg',1,NULL),(60,'HIP34536-w4-Hsv-pow-99.5.jpg',1,NULL),(61,'HIP38430-rgb.jpg',1,NULL),(62,'HIP38430-w4-Cool-pow-99.5.jpg',1,NULL),(63,'HIP38430-w4-Heat-pow-99.5.jpg',1,NULL),(64,'HIP38430-w4-Hsv-pow-99.5.jpg',1,NULL),(65,'HIP62322-rgb.jpg',1,NULL),(66,'HIP62322-w4-Cool-pow-99.5.jpg',1,NULL),(67,'HIP62322-w4-Heat-pow-99.5.jpg',1,NULL),(68,'HIP62322-w4-Hsv-pow-99.5.jpg',1,NULL),(69,'HIP72510-rgb.jpg',1,NULL),(70,'HIP72510-w4-Cool-pow-99.5.jpg',1,NULL),(71,'HIP72510-w4-Heat-pow-99.5.jpg',1,NULL),(72,'HIP72510-w4-Hsv-pow-99.5.jpg',1,NULL),(73,'HIP75095-rgb.jpg',1,NULL),(74,'HIP75095-w4-Cool-pow-99.5.jpg',1,NULL),(75,'HIP75095-w4-Heat-pow-99.5.jpg',1,NULL),(76,'HIP75095-w4-Hsv-pow-99.5.jpg',1,NULL),(77,'HIP77391-rgb.jpg',1,NULL),(78,'HIP77391-w4-Cool-pow-99.5.jpg',1,NULL),(79,'HIP77391-w4-Heat-pow-99.5.jpg',1,NULL),(80,'HIP77391-w4-Hsv-pow-99.5.jpg',1,NULL),(81,'HIP81377-rgb.jpg',1,NULL),(82,'HIP81377-w4-Cool-pow-99.5.jpg',1,NULL),(83,'HIP81377-w4-Heat-pow-99.5.jpg',1,NULL),(84,'HIP81377-w4-Hsv-pow-99.5.jpg',1,NULL),(85,'HIP88652-rgb.jpg',1,NULL),(86,'HIP88652-w4-Cool-pow-99.5.jpg',1,NULL),(87,'HIP88652-w4-Heat-pow-99.5.jpg',1,NULL),(88,'HIP88652-w4-Hsv-pow-99.5.jpg',1,NULL),(89,'HIP110386-rgb.jpg',0,NULL),(90,'HIP110386-w3-Cool-pow-99.5.jpg',0,NULL),(91,'HIP110386-w3-Heat-pow-99.5.jpg',0,NULL),(92,'HIP110386-w3-Hsv-pow-99.5.jpg',0,NULL),(93,'HIP110386-w4-Cool-pow-99.5.jpg',0,NULL),(94,'HIP110386-w4-Heat-pow-99.5.jpg',0,NULL),(95,'HIP110386-w4-Hsv-pow-99.5.jpg',0,NULL),(96,'HIP114482-rgb.jpg',0,NULL),(97,'HIP114482-w3-Cool-pow-99.5.jpg',0,NULL),(98,'HIP114482-w3-Heat-pow-99.5.jpg',0,NULL),(99,'HIP114482-w3-Hsv-pow-99.5.jpg',0,NULL),(100,'HIP114482-w4-Cool-pow-99.5.jpg',0,NULL),(101,'HIP114482-w4-Heat-pow-99.5.jpg',0,NULL),(102,'HIP114482-w4-Hsv-pow-99.5.jpg',0,NULL),(103,'HIP14969-rgb.jpg',0,NULL),(104,'HIP14969-w3-Cool-pow-99.5.jpg',0,NULL),(105,'HIP14969-w3-Heat-pow-99.5.jpg',0,NULL),(106,'HIP14969-w3-Hsv-pow-99.5.jpg',0,NULL),(107,'HIP14969-w4-Cool-pow-99.5.jpg',0,NULL),(108,'HIP14969-w4-Heat-pow-99.5.jpg',0,NULL),(109,'HIP14969-w4-Hsv-pow-99.5.jpg',0,NULL),(110,'HIP29201-rgb.jpg',0,NULL),(111,'HIP29201-w3-Cool-pow-99.5.jpg',0,NULL),(112,'HIP29201-w3-Heat-pow-99.5.jpg',0,NULL),(113,'HIP29201-w3-Hsv-pow-99.5.jpg',0,NULL),(114,'HIP29201-w4-Cool-pow-99.5.jpg',0,NULL),(115,'HIP29201-w4-Heat-pow-99.5.jpg',0,NULL),(116,'HIP29201-w4-Hsv-pow-99.5.jpg',0,NULL),(117,'HIP398-rgb.jpg',0,NULL),(118,'HIP398-w3-Cool-pow-99.5.jpg',0,NULL),(119,'HIP398-w3-Heat-pow-99.5.jpg',0,NULL),(120,'HIP398-w3-Hsv-pow-99.5.jpg',0,NULL),(121,'HIP398-w4-Cool-pow-99.5.jpg',0,NULL),(122,'HIP398-w4-Heat-pow-99.5.jpg',0,NULL),(123,'HIP398-w4-Hsv-pow-99.5.jpg',0,NULL),(124,'HIP48730-rgb.jpg',0,NULL),(125,'HIP48730-w3-Cool-pow-99.5.jpg',0,NULL),(126,'HIP48730-w3-Heat-pow-99.5.jpg',0,NULL),(127,'HIP48730-w3-Hsv-pow-99.5.jpg',0,NULL),(128,'HIP48730-w4-Cool-pow-99.5.jpg',0,NULL),(129,'HIP48730-w4-Heat-pow-99.5.jpg',0,NULL),(130,'HIP48730-w4-Hsv-pow-99.5.jpg',0,NULL),(131,'HIP505-rgb.jpg',0,NULL),(132,'HIP505-w3-Cool-pow-99.5.jpg',0,NULL),(133,'HIP505-w3-Heat-pow-99.5.jpg',0,NULL),(134,'HIP505-w3-Hsv-pow-99.5.jpg',0,NULL),(135,'HIP505-w4-Cool-pow-99.5.jpg',0,NULL),(136,'HIP505-w4-Heat-pow-99.5.jpg',0,NULL),(137,'HIP505-w4-Hsv-pow-99.5.jpg',0,NULL),(138,'HIP61958-rgb.jpg',0,NULL),(139,'HIP61958-w3-Cool-pow-99.5.jpg',0,NULL),(140,'HIP61958-w3-Heat-pow-99.5.jpg',0,NULL),(141,'HIP61958-w3-Hsv-pow-99.5.jpg',0,NULL),(142,'HIP61958-w4-Cool-pow-99.5.jpg',0,NULL),(143,'HIP61958-w4-Heat-pow-99.5.jpg',0,NULL),(144,'HIP61958-w4-Hsv-pow-99.5.jpg',0,NULL),(145,'HIP92133-rgb.jpg',0,NULL),(146,'HIP92133-w3-Cool-pow-99.5.jpg',0,NULL),(147,'HIP92133-w3-Heat-pow-99.5.jpg',0,NULL),(148,'HIP92133-w3-Hsv-pow-99.5.jpg',0,NULL),(149,'HIP92133-w4-Cool-pow-99.5.jpg',0,NULL),(150,'HIP92133-w4-Heat-pow-99.5.jpg',0,NULL),(151,'HIP92133-w4-Hsv-pow-99.5.jpg',0,NULL),(152,'HIP99303-rgb.jpg',0,NULL),(153,'HIP99303-w3-Cool-pow-99.5.jpg',0,NULL),(154,'HIP99303-w3-Heat-pow-99.5.jpg',0,NULL),(155,'HIP99303-w3-Hsv-pow-99.5.jpg',0,NULL),(156,'HIP99303-w4-Cool-pow-99.5.jpg',0,NULL),(157,'HIP99303-w4-Heat-pow-99.5.jpg',0,NULL),(158,'HIP99303-w4-Hsv-pow-99.5.jpg',0,NULL);
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `participant` (
   `ocupation` varchar(45) DEFAULT NULL,
   `zooniverse_username` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +208,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image1` FOREIGN KEY (`image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_training_task` FOREIGN KEY (`training_task_id`) REFERENCES `training_task` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `participant_session` (
   CONSTRAINT `FK_4A491ADC6A33B9B3` FOREIGN KEY (`gamification_type_id`) REFERENCES `gamification_type` (`id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_session_participant_session` FOREIGN KEY (`next_session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,7 +272,7 @@ CREATE TABLE `training_task` (
   PRIMARY KEY (`id`),
   KEY `fk_training_task_image1_idx` (`image_served_id`),
   CONSTRAINT `fk_training_task_image1` FOREIGN KEY (`image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +281,7 @@ CREATE TABLE `training_task` (
 
 LOCK TABLES `training_task` WRITE;
 /*!40000 ALTER TABLE `training_task` DISABLE KEYS */;
-INSERT INTO `training_task` VALUES (1,1,'aaaaaa',6),(2,2,NULL,18),(3,3,NULL,21),(4,4,NULL,33);
+INSERT INTO `training_task` VALUES (1,1,'Es una runaway star',1),(2,2,'No es una runaway star',120),(3,3,'No es una runaway star',130),(4,4,'Es una runaway star',6),(5,5,'No es una runaway star',125),(6,6,'Es una runaway star',15),(7,7,'Es una runaway star',20);
 /*!40000 ALTER TABLE `training_task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -294,4 +294,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-12 14:59:40
+-- Dump completed on 2017-03-14 22:05:10

@@ -37,7 +37,7 @@ class TutorialController extends Controller
     {
         $viewParams["post_url"]= $this->generateUrl('tutorial-04', array(), true);;
         $viewParams["show_help"] = false;
-        return $this->render("tutorial/tutorial-no-runaway.html.twig",$viewParams);
+        return $this->render("tutorial/tutorial-third.html.twig",$viewParams);
     }
 
       /**

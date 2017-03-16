@@ -74,8 +74,7 @@ class LoginController extends BaseController
             return $this->redirectToTrainingTasks();
         }
       //gets user's data
-        $userNumber         = $this->get(static::PARTICIPANT_REPO)->getParticipantNumber();
-        $username           = "usuario$userNumber"; 
+        $username           = $request->request->get("username");
         $age                = $request->request->get("age");
         $ocupation             = $request->request->get("ocupation");
 

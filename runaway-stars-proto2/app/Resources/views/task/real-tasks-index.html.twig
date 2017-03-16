@@ -1,6 +1,7 @@
 {% extends 'task/index.html.twig' %}
 
 {% block training_js %}
+    <script src="{{ asset('bundles/app/js/show-help.js') }}"></script>
     <script type="text/javascript">
       $( ".answerBtn" ).on( "click", function( event ) {
           event.preventDefault();

@@ -53,9 +53,8 @@ class TaskController extends BaseController
         $viewParams["images"] = $this->getViewImages($taskImage);
         //gets current and max steps
         $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
-        $viewParams["current_step"]  = $currentStep;
-        $viewParams["max_step"]      = $session->get(static::MAX_STEPS);
         $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
+        $viewParams["finish_url"]    = $this->generateUrl('endTasks', array(), true);
 
         //looks in the http session the view to show (with or without points)
         return $this->render("task/real-tasks-index.html.twig", $viewParams);
@@ -136,18 +135,7 @@ class TaskController extends BaseController
      */
     private function showNextTask($session)
     {
-        $tasksCompleted = $session->get(static::STEP);
-        $maxTasks       = $session->get(static::MAX_STEPS);
-
-        $userShouldRespondMoreTasks = $tasksCompleted <= $maxTasks;
-        if($userShouldRespondMoreTasks)
-        {
-            return $this->redirectToURL("taskIndex");
-        }
-        else
-        {
-            return $this->redirectToURL("endTasks");
-        }
+        return $this->redirectToURL("taskIndex");
     }
 
     

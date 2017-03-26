@@ -3,52 +3,77 @@
 {% block training_js %}
     <script src="{{ asset('bundles/app/js/show-help.js') }}"></script>
     <script type="text/javascript">
-      $( ".answerBtn" ).on( "click", function( event ) {
-          event.preventDefault();
-          var btnValue = $(this).val();
+      $( ".concreteAnswer" ).on( "click", function( event ) {
+          $("#info-extra").removeClass("hidden");
+          $(".submit-buttons").addClass("hidden");
+          $("#submit-button").removeClass('hidden');
+          $("#submit-button").prop('disabled',false);
+          var answer =  $('input[name=answer]', "#runaway-stars-form");
+          answer.val($(this).attr("value"));
+      })
+
+      $( "#submit-button" ).on( "click", function( event ) {
+          var isFormComplete= $('div.checkbox-group.required :checkbox:checked').length > 0
+          if(isFormComplete)
+          {
+
             $.blockUI({ message: $('#throbber') });
 
                setTimeout( function () {
-                  //adds the buttons value to the form
-                  var input = $("<input>")
-                   .attr("type", "hidden")
-                   .attr("name", "answer").val(btnValue);
-                  $( "#runaway-stars-form" ).append(input);
                   $( "#runaway-stars-form" ).submit();
                }, 1000);
+          }
+          else
+          {
+            alert("Debe seleccionar al menos una opción");
+          }
       })
+
     </script>
 {% endblock %}
 
 {% block submit_buttons %}
-  <div class="col-md-2 col-md-offset-5">
+  <div class="col-md-2 col-md-offset-5 submit-buttons">
       <div class="text-center">
-        <button type="submit" id="yesBtn" class="btn btn-success answerBtn" name="answer" value="1">Si</button>
-        <button type="submit" id="noBtn" class="btn btn-danger answerBtn"  name="answer" value="0">No</button>
-        <button type="submit" id="dontKnowBtn" class="btn btn-warning answerBtn" name="answer" value="2">No estoy seguro</button>
+        <button type="button" id="yesBtn" class="btn btn-success answerBtn concreteAnswer" value="1">Si</button>
+        <button type="button" id="noBtn" class="btn btn-danger answerBtn concreteAnswer" value="0">No</button>
+        <button type="button" id="dontKnowBtn" class="btn btn-warning answerBtn" value="2">No estoy seguro</button>
       </div>
     
   </div>
-  <div class="col md-1 col-me-offset-1">
+  <div class="col md-1 col-me-offset-1 submit-buttons">
       <a class="btn btn-default" href="{{finish_url}}">Terminar</a>
   </div>
+  <div class="col-md-2 col-md-offset-5">
+    <button type="button" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
+  </div>
+
+  <input type="hidden" name="answer" />
+{% endblock %}
+{% block info_extra %}
+<div id="info-extra" class="hidden">
+     <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="text-center">
+                <a>&iquest;Que imagenes te ayudaron a tomar tu decisi&oacute;n?</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="text-center checkbox-group required">
+                <input type="checkbox" class="checkbox-inline" name="usedImages[]" required="required" value="rgb"> 1
+                <input type="checkbox" name="usedImages[]" class="checkbox-inline" required="required" value="cool"> 2
+                <input type="checkbox" name="usedImages[]" class="checkbox-inline" required="required" value="heat"> 3
+                <input type="checkbox" name="usedImages[]"class="checkbox-inline" required="required" value="hsv"> 4
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
-{% block points %}
-{% endblock %}
-
-{% block points_variables %}
-{% endblock %}
-
-
-{% block training_response %}
-{% endblock %}
-
-{% block question_number %}{% endblock %}
 
 {% block help_text %}
-
-
 <!-- Modal -->
 <div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -68,3 +93,16 @@
   </div>
 </div>
 {% endblock %}
+
+
+{% block points %}
+{% endblock %}
+
+{% block points_variables %}
+{% endblock %}
+
+
+{% block training_response %}
+{% endblock %}
+
+{% block question_number %}{% endblock %}

@@ -91,15 +91,36 @@ abstract class BaseController extends Controller
         {
             $markedBowshockImage = $this->getTaskUrl($image->getMarkedBowshockImage());
         }
-        $viewImage = new \AppBundle\ViewObjects\ViewImage(
+        $rgbImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
-            $this->getTaskUrl($image->getFilePath())
+            $this->getTaskUrl($image->getRgbImagePath())
+            ,$image->getIsCorrect()
+            ,$tooltipText
+            ,$markedBowshockImage
+            );
+        $coolImage = new \AppBundle\ViewObjects\ViewImage(
+            $image->getId(),
+            $this->getTaskUrl($image->getCoolImagePath())
+            ,$image->getIsCorrect()
+            ,$tooltipText
+            ,$markedBowshockImage
+            );
+        $heatImage = new \AppBundle\ViewObjects\ViewImage(
+            $image->getId(),
+            $this->getTaskUrl($image->getHeatImagePath())
+            ,$image->getIsCorrect()
+            ,$tooltipText
+            ,$markedBowshockImage
+            );
+        $hsvImage = new \AppBundle\ViewObjects\ViewImage(
+            $image->getId(),
+            $this->getTaskUrl($image->getHsvImagePath())
             ,$image->getIsCorrect()
             ,$tooltipText
             ,$markedBowshockImage
             );
 
-        return $viewImage;
+        return array($rgbImage,$coolImage,$heatImage,$hsvImage);
     }
     /**
      * transforms a TraningTask Entity to a ViewImage

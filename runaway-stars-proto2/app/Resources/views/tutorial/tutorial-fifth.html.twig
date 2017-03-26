@@ -3,7 +3,11 @@
 
 
 {% block image%}
-    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP16518-rgb.jpg') }}" data-intro='Muchas veces, el arco alrededor de una estrella no est&aacute; completamente definido, lo que puede llevar a dudas, en este caso, est&aacute; es una runaway star' data-step="1"/>
-    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP16518-rgb_m.jpg') }}"/>
+   <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+		    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP16518-rgb.jpg') }}" data-intro='Muchas veces, el arco alrededor de una estrella no est&aacute; completamente definido, lo que puede llevar a dudas, en este caso, est&aacute; es una runaway star' data-step="1"/>
+		    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP16518-rgb_m.jpg') }}"/>
+        </div>
+    </div>
 {% endblock %}
 

@@ -3,6 +3,10 @@
 
 
 {% block image%}
-    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP11891-rgb.jpg') }}" data-intro='En esta imagen podemos ver una runaway star con un arco de color violeta, lo cual nos indica que puede haber arcos de distintos colores' data-step="1"/>
-    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-rgb_m.jpg') }}"/>
+   <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+		    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP11891-rgb.jpg') }}" data-intro='En esta imagen podemos ver una runaway star con un arco de color violeta, lo cual nos indica que puede haber arcos de distintos colores' data-step="1"/>
+		    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-rgb_m.jpg') }}"/>
+        </div>
+    </div>
 {% endblock %}

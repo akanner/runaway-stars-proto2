@@ -15,9 +15,30 @@ class Image
     /**
      * @var string
      *
-     * @ORM\Column(name="file_path", type="string", length=255, nullable=false)
+     * @ORM\Column(name="rgb_image_path", type="string", length=255, nullable=false)
      */
-    private $filePath;
+    private $rgbImagePath;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="heat_image_path", type="string", length=255, nullable=false)
+     */
+    private $heatImagePath;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cool_image_path", type="string", length=255, nullable=false)
+     */
+    private $coolImagePath;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hsv_image_path", type="string", length=255, nullable=false)
+     */
+    private $hsvImagePath;
 
     /**
      * @var boolean
@@ -71,12 +92,12 @@ class Image
     }
 
     /**
-     * Set filePath
+     * Set rgbImagePath
      *
-     * @param string $filePath
+     * @param string $rgbImagePath
      * @return Image
      */
-    public function setFilePath($filePath)
+    public function setRgbImagePath($rgbImagePath)
     {
         $this->filePath = $filePath;
 
@@ -84,13 +105,70 @@ class Image
     }
 
     /**
-     * Get filePath
+     * Get rgbImagePath
      *
      * @return string 
      */
-    public function getFilePath()
+    public function getRgbImagePath()
     {
-        return $this->filePath;
+        return $this->rgbImagePath;
+    }
+    /**
+     * Get coolImagePath
+     *
+     * @return string 
+     */
+    public function getCoolImagePath(){
+        return $this->coolImagePath;
+    }
+    /**
+     * Set coolImagePath
+     *
+     * @param string $coolImagePath
+     * @return Image
+     */
+    public function setCoolImagePath($coolImagePath){
+        $this->coolImagePath = $coolImagePath;
+
+        return $this;
+    }
+    /**
+     * Get heatImagePath
+     *
+     * @return string 
+     */
+    public function getHeatImagePath(){
+        return $this->heatImagePath;
+    }
+    /**
+     * Set heatImagePath
+     *
+     * @param string $heatImagePath
+     * @return Image
+     */
+    public function setHeatImagePath($heatImagePath){
+        $this->heatImagePath = $heatImagePath;
+
+        return $this;
+    }
+    /**
+     * Get hsvImagePath
+     *
+     * @return string 
+     */
+    public function getHsvImagePath(){
+        return $this->hsvImagePath;
+    }
+    /**
+     * Set hsvImagePath
+     *
+     * @param string $hsvImagePath
+     * @return Image
+     */
+    public function setHsvImagePath($hsvImagePath){
+        $this->hsvImagePath = $hsvImagePath;
+
+        return $this;
     }
 
     /**

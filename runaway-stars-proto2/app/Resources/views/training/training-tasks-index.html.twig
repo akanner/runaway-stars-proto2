@@ -38,16 +38,16 @@
     <div class="row">
       <div class="col-md-6 col-md-offset-3  answer">
           <div class="hidden alert alert-danger" role="alert"  id="answerTextWrong">
-            <strong>Respuesta Incorrecta:</strong>{{images.text}}
+            <strong>Respuesta Incorrecta:</strong>{{images[0].text}}
           </div>
           <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
-            <strong>Respuesta Correcta:</strong>{{images.text}}
+            <strong>Respuesta Correcta:</strong>{{images[0].text}}
           </div>
            <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
-            <strong>Respuesta:</strong>{{images.text}}
+            <strong>Respuesta:</strong>{{images[0].text}}
           </div>
-           <img class="hidden marked-image" src="{{ images.markedBowshockImage }}"/>
-           <p class="answerValue hidden">{{images.correct}}</p>
+           <img class="hidden marked-image" src="{{ images[0].markedBowshockImage }}"/>
+           <p class="answerValue hidden">{{images[0].correct}}</p>
        </div>
     </div>
 {% endblock %}

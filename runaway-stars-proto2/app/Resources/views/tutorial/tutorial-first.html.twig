@@ -10,8 +10,14 @@
     {% endblock %}
 
 {% block image%}
-    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}" data-intro='Encerrada en el circulo rojo, hay una estrella, no cualquier estrella sino que esta estrella es una runaway star, la podemos identificar por el arco de color rojo que esta junto a ella.' data-step="2"/>
-    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP88652-rgb_m.jpg') }}"/>
+   <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}" data-intro='Encerrada en el circulo rojo, hay una estrella, no cualquier estrella sino que esta estrella es una runaway star, la podemos identificar por el arco de color rojo que esta junto a ella.' data-step="2"/>
+            <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP88652-rgb_m.jpg') }}"/>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block submit_buttons %}

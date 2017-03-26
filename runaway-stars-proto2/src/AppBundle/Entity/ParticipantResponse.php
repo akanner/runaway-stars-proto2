@@ -64,6 +64,11 @@ class ParticipantResponse
      * @Gedmo\Timestampable(on="create")
      */
     private $answeredAt;
+    /**
+     * @var string
+     * @ORM\Column(name="images_used_to_respond", type="string", length=255, nullable=false)
+     */
+    private $imagesUsedToRespond;
 
 
 
@@ -193,6 +198,18 @@ class ParticipantResponse
     public function setAnsweredAt($answeredAt)
     {
         $this->answeredAt = $answeredAt;
+
+        return $this;
+    }
+
+    public function getImagesUsedToRespond()
+    {
+        return $this->imagesUsedToRespond;
+    }
+
+    public function setImagesUsedToRespond($imagesUsedToRespond)
+    {
+        $this->imagesUsedToRespond = $imagesUsedToRespond;
 
         return $this;
     }

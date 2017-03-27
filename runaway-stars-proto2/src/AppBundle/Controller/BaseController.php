@@ -86,38 +86,44 @@ abstract class BaseController extends Controller
     protected function getViewImages($image,$tooltipText=null)
     {
         //in case that $img is correct, we take the path of the "marked" version of the image
-        $markedBowshockImage= null;
+        $markedRgbImage= null;
+        $markedHeatImage= null;
+        $markedCoolImage= null;
+        $markedHsvImage= null;
         if($image->getIsCorrect())
         {
-            $markedBowshockImage = $this->getTaskUrl($image->getMarkedBowshockImage());
+            $markedRgbImage = $this->getTaskUrl($image->getMarkedRgbImage());
+            $markedHeatImage = $this->getTaskUrl($image->getMarkedHeatImage());
+            $markedCoolImage= $this->getTaskUrl($image->getMarkedCoolImage());
+            $markedHsvImage= $this->getTaskUrl($image->getMarkedHsvImage());
         }
         $rgbImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
             $this->getTaskUrl($image->getRgbImagePath())
             ,$image->getIsCorrect()
             ,$tooltipText
-            ,$markedBowshockImage
+            ,$markedRgbImage
             );
         $coolImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
             $this->getTaskUrl($image->getCoolImagePath())
             ,$image->getIsCorrect()
             ,$tooltipText
-            ,$markedBowshockImage
+            ,$markedCoolImage
             );
         $heatImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
             $this->getTaskUrl($image->getHeatImagePath())
             ,$image->getIsCorrect()
             ,$tooltipText
-            ,$markedBowshockImage
+            ,$markedHeatImage
             );
         $hsvImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
             $this->getTaskUrl($image->getHsvImagePath())
             ,$image->getIsCorrect()
             ,$tooltipText
-            ,$markedBowshockImage
+            ,$markedHsvImage
             );
 
         return array($rgbImage,$coolImage,$heatImage,$hsvImage);

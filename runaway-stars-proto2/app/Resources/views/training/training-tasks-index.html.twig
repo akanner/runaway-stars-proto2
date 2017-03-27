@@ -33,6 +33,7 @@
     <p class="hidden" id="tmode">{{training_mode}}</p>
 {% endblock %}
 
+{% block correct_image%}<img class="hidden marked-image" src="{{ images[0].markedBowshockImage }}"/>{% endblock %}
 
 {% block training_response %}
     <div class="row">
@@ -46,7 +47,7 @@
            <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
             <strong>Respuesta:</strong>{{images[0].text}}
           </div>
-           <img class="hidden marked-image" src="{{ images[0].markedBowshockImage }}"/>
+
            <p class="answerValue hidden">{{images[0].correct}}</p>
        </div>
     </div>

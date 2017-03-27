@@ -60,35 +60,137 @@ class Image
      /**
      * @var string
      *
-     * @ORM\Column(name="marked_bowshock_image", type="string", length=255, nullable=false)
+     * @ORM\Column(name="marked_rgb_image_path", type="string", length=255, nullable=false)
      */
      /*
       * this value holds a reference to an image that has the bowshock marked up, this image will be used to show the bowshock to the user
       * if this image is a false image (does not contains a bowshock) this will be null
       */
-    private $markedBowshockImage;
+    private $markedRgbImage;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="marked_cool_image_path", type="string", length=255, nullable=false)
+     */
+     /*
+      * this value holds a reference to an image that has the bowshock marked up, this image will be used to show the bowshock to the user
+      * if this image is a false image (does not contains a bowshock) this will be null
+      */
+    private $markedCoolImage;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="marked_heat_image_path", type="string", length=255, nullable=false)
+     */
+     /*
+      * this value holds a reference to an image that has the bowshock marked up, this image will be used to show the bowshock to the user
+      * if this image is a false image (does not contains a bowshock) this will be null
+      */
+    private $markedHeatImage;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="marked_hsv_image_path", type="string", length=255, nullable=false)
+     */
+     /*
+      * this value holds a reference to an image that has the bowshock marked up, this image will be used to show the bowshock to the user
+      * if this image is a false image (does not contains a bowshock) this will be null
+      */
+    private $markedHsvImage;
 
     /**
-     * Set markedBowshockImage
+     * Set markedRgbImage
      *
-     * @param string $markedBowshockImage
+     * @param string $markedRgbImage
      * @return Image
      */
-    public function setMarkedBowshockImage($markedBowshockImage)
+    public function setMarkedRgbImage($markedRgbImage)
     {
-        $this->markedBowshockImage = $markedBowshockImage;
+        $this->markedRgbImage = $markedRgbImage;
 
         return $this;
     }
 
     /**
-     * Get markedBowshockImage
+     * Get markedRgbImage
      *
      * @return string 
      */
-    public function getMarkedBowshockImage()
+    public function getMarkedRgbImage()
     {
-        return $this->markedBowshockImage;
+        return $this->markedRgbImage;
+    }
+
+    /**
+     * Set markedCoolImage
+     *
+     * @param string $markedCoolImage
+     * @return Image
+     */
+    public function setMarkedCoolImage($markedCoolImage)
+    {
+        $this->markedCoolImage = $markedCoolImage;
+
+        return $this;
+    }
+
+    /**
+     * Get markedCoolImage
+     *
+     * @return string 
+     */
+    public function getMarkedCoolImage()
+    {
+        return $this->markedCoolImage;
+    }
+
+    /**
+     * Set markedHeatImage
+     *
+     * @param string $markedHeatImage
+     * @return Image
+     */
+    public function setMarkedHeatImage($markedHeatImage)
+    {
+        $this->markedHeatImage = $markedHeatImage;
+
+        return $this;
+    }
+
+    /**
+     * Get markedHeatImage
+     *
+     * @return string 
+     */
+    public function getMarkedHeatImage()
+    {
+        return $this->markedHeatImage;
+    }
+
+    /**
+     * Set markedHsvImage
+     *
+     * @param string $markedHsvImage
+     * @return Image
+     */
+    public function setMarkedHsvImage($markedHsvImage)
+    {
+        $this->markedHsvImage = $markedHsvImage;
+
+        return $this;
+    }
+
+    /**
+     * Get markedHsvImage
+     *
+     * @return string 
+     */
+    public function getMarkedHsvImage()
+    {
+        return $this->markedHsvImage;
     }
 
     /**

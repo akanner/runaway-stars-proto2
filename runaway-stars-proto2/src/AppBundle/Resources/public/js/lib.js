@@ -91,8 +91,11 @@
         //chage the src of the image to the marked up one
         if(isThereARunawayStarInTheImage(starContainer))
         {
-            var newSrc = $(starContainer).find(".marked-image").prop("src");
-            $(starContainer).find(".star-image").prop("src",newSrc);
+            $.each(starContainer,function(x,container){
+                var newSrc = $(container).find(".marked-image").prop("src");
+                $(container).find(".star-image").prop("src",newSrc);
+            })
+            
         }
 
         //adds points

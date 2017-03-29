@@ -51,6 +51,11 @@
       $("#answerTextDontKnow").removeClass("hidden");
       toggleResponse();
     });
+
+
+    $("#helpBtn").on("click",function(){
+      introJs().start();
+    })
 	
     </script>
 {% endblock %}
@@ -62,7 +67,7 @@
 
 
 {% block submit_buttons %}
-  <div class="col-md-2 col-md-offset-5" data-intro="Respond&eacute; para continuar" data-step="3">
+  <div class="col-md-2 col-md-offset-5" data-intro="Respond&eacute; para continuar" data-step="3" data-position="top">
   	<div class="text-center">
 		<button type="button" id="yesBtn" class="btn btn-success rightAnswerBtn answerBtn" name="answer" value="1">Si</button>
 		<button type="button" id="noBtn" class="btn btn-danger wrongAnswerBtn answerBtn"  name="answer" value="0">No</button>
@@ -93,6 +98,7 @@
 
 
 {% block points %}
+<button type="button" class="btn btn-info" id="helpBtn">Mostrar Ayuda</button>
 {% endblock %}
 
 {% block question_number %}{% endblock %}

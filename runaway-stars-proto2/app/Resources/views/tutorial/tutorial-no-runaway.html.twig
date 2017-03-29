@@ -3,34 +3,57 @@
 {% block javascripts %}
     <script src="{{ asset('bundles/app/js/intro.js') }}"></script>
     <script type="text/javascript">
-		 introJs().setOptions({
+
+    function toggleResponse()
+    {
+     //shows the submit button
+      $("#submit-button").removeClass('hidden');
+      $("#submit-button").prop('disabled',false);
+      //hides the other buttons
+      $(".answerBtn").addClass('hidden');
+      introJs().exit();
+     }
+
+     introJs().setOptions({
           nextLabel: 'Siguiente',
           prevLabel: 'Atras',
           skipLabel: 'Cerrar',
           doneLabel: 'Cerrar'})
-		 .start();
+     .start();
 
 
-		//wrongAnswerBtn click handler
-		$(".wrongAnswerBtn").on("click",function(){
-			$("#answerTextWrong").removeClass("hidden");
+    //wrongAnswerBtn click handler
+    $(".wrongAnswerBtn").on("click",function(){
+      $("#answerTextWrong").removeClass("hidden");
             introJs().exit();
-		});
-		//rightAnswerBtn click handler
-		$(".rightAnswerBtn").on("click",function(){
-			//hides the wrong answer text
-			$("#answerTextWrong").addClass("hidden");
-			//shows the right answer text
-			$("#answerTextRight").removeClass("hidden");
-			//shows the submit button
-			$("#submit-button").removeClass('hidden');
-			$("#submit-button").prop('disabled',false);
-			//hides the other buttons
-			$(".answerBtn").addClass('hidden');
-            introJs().exit();
-		});
+    });
+    //rightAnswerBtn click handler
+    $(".rightAnswerBtn").on("click",function(){
+      //hides the wrong answer text
+      $("#answerTextWrong").addClass("hidden");
+      //shows the right answer text
+      $("#answerTextRight").removeClass("hidden");
+      toggleResponse();
+    });
 
-	
+     $(".dontKnowBtn").on("click",function(){
+      //hides the wrong answer text
+      $("#answerTextWrong").addClass("hidden");
+      //shows the right answer text
+      $("#answerTextDontKnow").removeClass("hidden");
+      toggleResponse();
+    });
+
+    $("#helpBtn").on("click",function(){
+      introJs().setOptions({
+          nextLabel: 'Siguiente',
+          prevLabel: 'Atras',
+          skipLabel: 'Cerrar',
+          doneLabel: 'Cerrar'})
+     .start();
+
+    })
+  
     </script>
 {% endblock %}
 
@@ -41,11 +64,11 @@
 
 
 {% block submit_buttons %}
-  <div class="col-md-2 col-md-offset-5" data-intro='Respond&eacute; para continuar' data-step="2">
+  <div class="col-md-2 col-md-offset-5" data-intro='Respond&eacute; para continuar' data-step="2" data-position="top">
   	<div class="text-center">
 		<button type="button" id="yesBtn" class="btn btn-success wrongAnswerBtn answerBtn">Si</button>
 		<button type="button" id="noBtn" class="btn btn-danger rightAnswerBtn answerBtn"  name="answer" value="0">No</button>
-		<button type="button" id="dontKnowBtn" class="btn btn-warning wrongAnswerBtn answerBtn" name="answer" value="2">No estoy seguro</button>
+		<button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn answerBtn" name="answer" value="2">No estoy seguro</button>
   	</div>
 	<button type="submit" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
   </div>
@@ -64,6 +87,9 @@
           <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
             <strong>Respuesta Correcta:</strong> Buen trabajo!
           </div>
+          <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
+            <strong>Respuesta:</strong> En este caso, es una runaway star.
+          </div>
        </div>
     </div>
 {% endblock %}
@@ -74,6 +100,7 @@
 
 
 {% block points %}
+  <button type="button" class="btn btn-info" id="helpBtn">Mostrar Ayuda</button>
 {% endblock %}
 
 {% block question_number %}{% endblock %}

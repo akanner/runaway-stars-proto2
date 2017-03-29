@@ -10,7 +10,7 @@
     {% endblock %}
 
 {% block image%}
-    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}" data-intro='Encerrada en el circulo blanco, hay una estrella, no cualquier estrella sino que esta estrella es una runaway star, la podemos identificar por la figura de color rojo con forma de medialuna o arco que esta junto a ella.' data-step="2"/>
+    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}" data-intro='Encerrada en el circulo blanco, hay una estrella, no cualquier estrella sino que esta estrella es una runaway star, la podemos identificar por la figura de color rojo con forma de medialuna o arco que esta junto a ella.' data-step="2" data-position="left"/>
     <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP88652-rgb_m.jpg') }}"/>
 {% endblock %}
 
@@ -19,7 +19,7 @@
     <div class="text-center" data-intro='Seleccionando estas opciones, podes indicar si en la imagen vez una runaway star' data-step="3" data-position="top">
         <button type="button" id="yesBtn" class="btn btn-success rightAnswerBtn answerBtn" name="answer" data-position="top" value="1" data-intro="En este caso, ya te dijimos la respuesta, hac&eacute; click en aqu&iacute;" data-step="4">Si</button>
         <button type="button" id="noBtn" class="btn btn-danger wrongAnswerBtn answerBtn"  name="answer" value="0">No</button>
-        <button type="button" id="dontKnowBtn" class="btn btn-warning wrongAnswerBtn answerBtn" name="answer" value="2">No estoy seguro</button>
+        <button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn answerBtn" name="answer" value="2">No estoy seguro</button>
 
     </div>
 	

@@ -54,7 +54,12 @@
 
 
     $("#helpBtn").on("click",function(){
-      introJs().start();
+      introJs().setOptions({
+          nextLabel: 'Siguiente',
+          prevLabel: 'Atras',
+          skipLabel: 'Cerrar',
+          doneLabel: 'Cerrar'})
+     .start();
     })
 	
     </script>

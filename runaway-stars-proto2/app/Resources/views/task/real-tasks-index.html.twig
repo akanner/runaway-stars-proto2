@@ -29,6 +29,21 @@
           }
       })
 
+      //enables submit button
+$( ".dontKnowBtn" ).on( "click", function( event ) {
+  //shows answer and help text
+          $(".submit-buttons").addClass("hidden");
+          var answer =  $('input[name=answer]', "#runaway-stars-form");
+          answer.val($(this).attr("value"));
+
+           $.blockUI({ message: $('#throbber') });
+
+         setTimeout( function () {
+            $( "#runaway-stars-form" ).submit();
+         }) 
+
+});
+
     </script>
 {% endblock %}
 
@@ -37,7 +52,7 @@
       <div class="text-center">
         <button type="button" id="yesBtn" class="btn btn-success answerBtn concreteAnswer" value="1">Si</button>
         <button type="button" id="noBtn" class="btn btn-danger answerBtn concreteAnswer" value="0">No</button>
-        <button type="button" id="dontKnowBtn" class="btn btn-warning answerBtn" value="2">No estoy seguro</button>
+        <button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn" value="2">No estoy seguro</button>
       </div>
     
   </div>

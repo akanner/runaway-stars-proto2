@@ -68,7 +68,7 @@ class TaskController extends BaseController
         //TODO use synfony's forms validations
         $userSubmission = $request->request->get("answer");
         $userRelevantImages = $request->request->get("usedImages");
-        $requestIsValid = isset($userSubmission) && isset($userRelevantImages) && UserAnswerEnum::isValidValue(intval($userSubmission));
+        $requestIsValid = isset($userSubmission)  && UserAnswerEnum::isValidValue(intval($userSubmission));
 
         //if the session has ended
         //TODO use a interceptor,filter or something to check session ending
@@ -89,7 +89,10 @@ class TaskController extends BaseController
         $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
         //sets the user's actual response and saves it in the database
         $userResponse->setParticipantAnswer($userSubmission);
-        $userResponse->setImagesUsedToRespond(implode(",",$userRelevantImages));
+        if(isset($userRelevantImages))
+        {
+            $userResponse->setImagesUsedToRespond(implode(",",$userRelevantImages));
+        }
         $em->persist($userResponse);
         $em->flush();
 

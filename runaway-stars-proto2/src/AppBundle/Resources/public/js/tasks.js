@@ -1,5 +1,5 @@
 //enables submit button
-$( ".answerBtn" ).on( "click", function( event ) {
+$( ".concreteAnswer" ).on( "click", function( event ) {
   //validates the form
   formSelector = "#runaway-stars-form";
   form          = $(formSelector);
@@ -31,4 +31,22 @@ $( ".answerBtn" ).on( "click", function( event ) {
   $(".answerBtn").addClass('hidden');
 
 });
+
+//enables submit button
+$( ".dontKnowBtn" ).on( "click", function( event ) {
+  //shows answer and help text
+  var buttonClicked    = $(this);
+    formSelector = "#runaway-stars-form";
+  var answer =  $('input[name=answer]', formSelector);
+  answer.val(buttonClicked.attr("value"));
+  starContainer    = $('.star-container');
+  showResponse(starContainer,answer.val(),isInTrainingMode());
+  //enables submit button
+  $("#submit-button").removeClass('hidden');
+  $("#submit-button").prop('disabled',false);
+  $(this).prop('disabled',true);
+  $(".answerBtn").addClass('hidden');
+
+});
+
 

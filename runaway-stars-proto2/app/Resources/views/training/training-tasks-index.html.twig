@@ -3,6 +3,7 @@
 {% block training_js %}
 
   <script src="{{ asset('bundles/app/js/lib.js') }}"></script>
+  <script src="{{ asset('bundles/app/js/crossfade.js') }}"></script>
   <script src="{{ asset('bundles/app/js/tasks.js') }}"></script>
   <script src="{{ asset('bundles/app/js/form_spinner.js') }}"></script>
   <script src="{{ asset('bundles/app/js/show-help.js') }}"></script>
@@ -33,7 +34,11 @@
     <p class="hidden" id="tmode">{{training_mode}}</p>
 {% endblock %}
 
-{% block correct_image%}<img class="hidden marked-image" src="{{ image.markedBowshockImage }}"/>{% endblock %}
+{% block single_image%}
+  <div class="col-md-3 star-container">
+      <img class="img-responsive star-image fade" src="{{ image.path }}" style="background: url({{ image.markedBowshockImage }});"/>
+  </div>
+{% endblock %}
 
 {% block training_response %}
     <div class="row">

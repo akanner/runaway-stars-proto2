@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script src="{{ asset('bundles/app/js/jquery.blockUI.min.js') }}"></script>
     {% block training_js %}{% endblock %}
 {% endblock %}
 {% block stylesheets %}

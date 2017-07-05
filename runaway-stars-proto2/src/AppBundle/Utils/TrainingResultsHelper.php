@@ -57,20 +57,24 @@ class TrainingResultsHelper
                     return $item->isTrainingResponse();
                 }
             );
-            $userInfo["timeSpent"] = end($trainAnswers)->getAnsweredAt()->getTimestamp() - $trainAnswers[0]->getAnsweredAt()->getTimestamp();
-            //stores the current user information
-            if($session == $currentSession){
-                $userInfo["current_user"] = true;
-                $currentUser = $userInfo;
+            if(count($trainAnswers) > 0)
+            {
+                $startTimestamp = $trainAnswers[0]->getAnsweredAt()->getTimestamp();
+                $endTimestamp = end($trainAnswers)->getAnsweredAt()->getTimestamp();
+                $userInfo["timeSpent"] = $endTimestamp - $startTimestamp; 
+                //stores the current user information
+                if($session == $currentSession){
+                    $userInfo["current_user"] = true;
+                    $currentUser = $userInfo;
 
+                }
+                $leadersboard[] = $userInfo;
             }
-            $leadersboard[] = $userInfo;
+           
         }
         //sorting 
         $leadersboard = static::array_orderby($leadersboard,"score",SORT_DESC,"timeSpent",SORT_ASC);
         $currentUserPos = array_search($currentUser, $leadersboard);
-
-
 
         //reducing leadersboard;
         $reducedLeaderBoard = array_slice ( $leadersboard , 0, 3);

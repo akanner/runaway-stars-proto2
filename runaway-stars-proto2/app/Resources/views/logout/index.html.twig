@@ -7,6 +7,29 @@
 </style>
 
 {% endblock %}
+{% block javascripts %}
+
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#resultModal').modal('show');
+    });
+
+    $("#resultsBtn").on("click",function(){
+        $('#resultModal').modal('hide');
+        $("#leadersModal").modal("show");
+    })
+
+    $("#leadersBackBtn").on("click",function(){
+        $('#leadersModal').modal('hide');
+        $("#resultModal").modal("show");
+    })
+
+    $("#leadersforwBtn").on("click",function(){
+        $('#leadersModal').modal('hide');
+    })
+</script>
+
+{% endblock %}
 {% block body %}
 	<div class="container">
 		<div class="row">

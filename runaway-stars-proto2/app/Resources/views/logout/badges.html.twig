@@ -25,26 +25,32 @@
 
 {% endblock %}
 
-<div class="row">
-	<div class="col-md-6" style="padding-right:20px; border-right: 1px solid #ccc;">
-		 <div class="row">
-			<div class="col-md-12">
-		    	<h3 class="text-center">&iexcl;Felicitaciones! Ganaste una insignia</h3>
-		    </div>
+
+<div id="resultModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				 <div class="row">
+					<div class="col-md-12">
+				    	<h3 class="text-center">&iexcl;Felicitaciones! Ganaste una insignia</h3>
+				    </div>
+				</div>
+				 <div class="row text-center">
+					<img class="center-block badge_img" src="{{ absolute_url(level) }}"></img>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+				    	<p class="text-center lead">{{ legend|raw }}</p>
+				    </div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="resultsBtn" class="btn btn-success">Siguiente</button>
+			</div>
 		</div>
-		 <div class="row text-center">
-			<img class="center-block badge_img" src="{{ absolute_url(level) }}"></img>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-		    	<p class="text-center lead">{{ legend|raw }}</p>
-		    </div>
-		</div>
-	</div>
-	<div class="col-md-6">
-		{% include 'logout/leadersboard.html.twig' %}
 	</div>
 </div>
+{% include 'logout/leadersboard.html.twig' %}
 
 	
 {% endblock %}

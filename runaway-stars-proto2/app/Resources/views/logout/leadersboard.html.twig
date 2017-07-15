@@ -1,39 +1,52 @@
-<h3 class="text-center">Compar&aacute; tu resultado con el resto de los participantes</h3>
-<table class="table table-condensed">
-  <thead>
-    <tr>
-        <th>Posici&oacute;n</th>
-        <th>Nombre</th>
-        <th>Respuestas correctas</th>
-        <th>Tiempo</th>
-    </tr>
-  </thead>
-  <tbody>
-  	{% for user in leadersboard %}
-    	<tr>
-  		{% if user.current_user is defined %}
-  			{% if user.pos > 3 %}
-				<tr>
-					<td colspan="4" class="text-center three-dots">...</td>
-				</tr>
-			{% endif %}
-		  	<td><p class="text-primary"># {{user.pos}}</p></td>
-            <td><p class="text-primary">{{user.username}}</p></td>
-            <td><p class="text-primary">{{user.score}}%</p></td>
-            <td><p class="text-primary">{{user.timeSpent}} segundos</p></td>
-  		{% else %}
-            <td># {{user.pos}}</td>
-            <td>{{user.username}}</td>
-            <td>{{user.score}}%</td>
-            <td>{{user.timeSpent}} segundos</td>
-        {% endif %}
-        </tr>
-	{% endfor %}
-	<tr>
-		<td colspan="4" class="text-center three-dots">...</td>
-	</tr>
-  </tbody>
-</table>
+  <div id="leadersModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <h3 class="text-center">Compar&aacute; tu resultado con el resto de los participantes</h3>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+                <th>Posici&oacute;n</th>
+                <th>Nombre</th>
+                <th>Respuestas correctas</th>
+                <th>Tiempo</th>
+            </tr>
+          </thead>
+          <tbody>
+          	{% for user in leadersboard %}
+            	<tr>
+          		{% if user.current_user is defined %}
+          			{% if user.pos > 3 %}
+        				<tr>
+        					<td colspan="4" class="text-center three-dots">...</td>
+        				</tr>
+        			{% endif %}
+        		  	<td><p class="text-primary"># {{user.pos}}</p></td>
+                    <td><p class="text-primary">{{user.username}}</p></td>
+                    <td><p class="text-primary">{{user.score}}%</p></td>
+                    <td><p class="text-primary">{{user.timeSpent}} segundos</p></td>
+          		{% else %}
+                    <td># {{user.pos}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.score}}%</td>
+                    <td>{{user.timeSpent}} segundos</td>
+                {% endif %}
+                </tr>
+        	{% endfor %}
+        	<tr>
+        		<td colspan="4" class="text-center three-dots">...</td>
+        	</tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" id="leadersBackBtn">Atras</button>
+        <button class="btn btn-success" id="leadersforwBtn">Siguiente</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% block stylesheets %}
 	<style type="text/css">
 	.three-dots {

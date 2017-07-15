@@ -20,27 +20,35 @@
 </style>
 
 {% endblock %}
-
-<div class="row row-eq-height">
-	<div class="col-md-6" style="padding-right:20px; border-right: 1px solid #ccc;">
-		 <div class="row">
-			<div class="col-md-12">
-		    	<h2 class="text-center">&iexcl;Felicitaciones!</h2>
-		    	<h3 class="text-center">Conseguiste:</h3>
-		    </div>
-		</div>
-		<div class="row text-center">
-			 <div class="numberCircle">{{points}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<h3 class="text-center">Puntos</h3>
+<div id="resultModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row row-eq-height">
+					<div class="col-md-12" style="padding-right:20px; border-right: 1px solid #ccc;">
+						 <div class="row">
+							<div class="col-md-12">
+						    	<h2 class="text-center">&iexcl;Felicitaciones!</h2>
+						    	<h3 class="text-center">Conseguiste:</h3>
+						    </div>
+						</div>
+						<div class="row text-center">
+							 <div class="numberCircle">{{points}}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="text-center">Puntos</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="resultsBtn" class="btn btn-success">Siguiente</button>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-6">
-	{% include 'logout/leadersboard.html.twig' %}
-	</div>
 </div>
+{% include 'logout/leadersboard.html.twig' %}
 
 {% endblock %}

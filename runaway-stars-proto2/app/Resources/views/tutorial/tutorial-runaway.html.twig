@@ -13,13 +13,17 @@
       //hides the other buttons
       $(".answerBtn").addClass('hidden');
       //shows the bowshock in the image
+      showBowshock();
+            
+      introJs().exit();
+     }
+
+     function showBowshock(){
       var starImages = $(".star-container");
       $.each(starImages,function(i,obj){
         var newSrc = $(obj).find(".marked-image").prop("src");
         $(obj).find(".star-image").prop("src",newSrc);
       })
-            
-      introJs().exit();
      }
 
 
@@ -34,6 +38,7 @@
 		$(".wrongAnswerBtn").on("click",function(){
 			$("#answerTextWrong").removeClass("hidden");
 			introJs().exit();
+      showBowshock();
 		});
 		//rightAnswerBtn click handler
 		$(".rightAnswerBtn").on("click",function(){

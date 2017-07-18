@@ -34,11 +34,7 @@
     <p class="hidden" id="tmode">{{training_mode}}</p>
 {% endblock %}
 
-{% block single_image%}
-  <div class="col-md-3 star-container">
-      <img class="img-responsive star-image fade" src="{{ image.path }}" style="background: url({{ image.markedBowshockImage }});"/>
-  </div>
-{% endblock %}
+{% block correct_image%}<img class="hidden marked-image" src="{{ image.markedBowshockImage }}"/>{% endblock %}
 
 {% block training_response %}
     <div class="row">

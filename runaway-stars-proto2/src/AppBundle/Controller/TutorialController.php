@@ -55,17 +55,7 @@ class TutorialController extends Controller
      */
     public function step5(Request $request)
     {
-        $viewParams["post_url"]= $this->generateUrl('tutorial-06', array(), true);;
-        $viewParams["show_help"] = false;
-        return $this->render("tutorial/tutorial-fifth.html.twig",$viewParams);
-    }
-
-     /**
-     * @Route("tutorial/6", name="tutorial-06")
-     */
-    public function step6(Request $request)
-    {
-        $viewParams["post_url"]= $this->generateUrl('trainingIndex', array(), true);
+        $viewParams["post_url"]= $this->generateUrl('trainingIndex', array(), true);;
         $viewParams["show_help"] = false;
         return $this->render("tutorial/tutorial-palettes.html.twig",$viewParams);
     }

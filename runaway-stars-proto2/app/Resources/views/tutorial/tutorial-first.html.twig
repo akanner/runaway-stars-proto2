@@ -3,17 +3,31 @@
     {% block custom_step_js %}
     	<script type="text/javascript">
     	$("#question").attr("data-step","1");
-    	$("#question").attr("data-intro","Observando la imagen en la pantalla vas a tener que indicarnos si ves una figura parecida a un arco de color");
+    	$("#question").attr("data-intro","Observando la imagen en la pantalla vas a tener que indicarnos si ves una figura parecida a un arco de color alrededor de una estrella");
+        $()
         
 
     	</script>
 
     {% endblock %}
 
+    {% block custom_step_style %}
+    <style type="text/css">
+    .bowpoint {
+        position:absolute;
+        top:48%!important;
+        left: 75%!important;
+    }
+    </style>
+
+     {% endblock %}
+
 {% block image%}
    <div class="row">
-        <div class="col-md-4 col-md-offset-4 star-container">
-            <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}" data-intro='En esta imagen vemos un arco de color rojo,alrededor de una estrella, durante las siguientes imagenes vas a tener que decirnos si ves un arco parecido a este.' data-step="2" data-position="left"/>
+        <div class="col-md-4 col-md-offset-4 star-container" data-step="2" data-intro="Hola! soy una estrella! y alrededor mio tengo un arco de color" data-highlightClass="transparent-overlay" data-tooltipClass="starpoint" data-position="left">
+            <div>
+                <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP88652-rgb.jpg') }}"  data-step="3" data-intro="Soy un arco!" data-position="right" data-highlightClass="transparent-overlay" data-tooltipClass="bowpoint"/>
+            </div>
             <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP88652-rgb_m.gif') }}"/>
         </div>
     </div>
@@ -21,8 +35,8 @@
 
 {% block submit_buttons %}
   <div class="col-md-2 col-md-offset-5">
-    <div class="text-center" data-intro='Seleccionando estas opciones, podes indicar si en la imagen vez un arco o no' data-step="3" data-position="top">
-        <button type="button" id="yesBtn" class="btn btn-success rightAnswerBtn answerBtn" name="answer" data-position="top" value="1" data-intro="En este caso, ya te dijimos la respuesta, hac&eacute; click en aqu&iacute;" data-step="4">Si</button>
+    <div class="text-center">
+        <button type="button" id="yesBtn" class="btn btn-success rightAnswerBtn answerBtn" name="answer" data-position="top" value="1" data-intro="En este caso, ya te dijimos la respuesta, &iquest;Qu&eacute; facil no?" data-step="4">Si</button>
         <button type="button" id="noBtn" class="btn btn-danger wrongAnswerBtn answerBtn"  name="answer" value="0">No</button>
         <button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn answerBtn" name="answer" value="2">No estoy seguro</button>
 

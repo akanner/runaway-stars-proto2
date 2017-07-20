@@ -1,11 +1,24 @@
 {% extends 'tutorial/tutorial-runaway.html.twig' %}
 
+{% block custom_step_style %}
+<style type="text/css">
 
+.bowpoint {
+    position:absolute;
+    top:48%!important;
+    left: 75%!important;
+}
+.transparent-overlay{
+    opacity: 0;
+}
+</style>
+
+ {% endblock %}
 
 {% block image%}
    <div class="row">
         <div class="col-md-4 col-md-offset-4 star-container">
-		    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP11891-rgb.jpg') }}" data-intro='En esta imagen vemos un arco de color violeta, lo cual nos dice que lo importante no es el color sino la forma' data-step="1" data-position="left"/>
+		    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP11891-rgb.jpg') }}" data-intro='Hola! soy un arco de color violeta, pero no somos racistas, no importa el color, sigo siendo un arco!' data-step="1" data-position="right" data-highlightClass="transparent-overlay" data-tooltipClass="bowpoint"/>
 		    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP11891-rgb_m.gif') }}"/>
         </div>
     </div>

@@ -1,12 +1,13 @@
-{% extends 'tutorial/tutorial-no-runaway.html.twig' %}
+{% extends 'tutorial/tutorial-runaway.html.twig' %}
 
 
 
 {% block image%}
    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-    		<img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP61958-rgb.jpg') }}" data-intro='DELETE THIS STEP' data-step="1" data-position="left"/>
-    	</div>
+        <div class="col-md-4 col-md-offset-4 star-container">
+		    <img class="img-responsive star-image" src="{{asset('bundles/app/images/tutorial/HIP16518-rgb.jpg') }}" data-intro='Muchas veces, el arco no est&aacute; completamente definido, lo que puede llevar a dudas. En estos casos es posible optar por la opcion de "no estoy seguro"' data-step="1" data-position="left"/>
+		    <img class="hidden marked-image" src="{{ asset('bundles/app/images/tutorial/HIP16518-rgb_m.gif') }}"/>
+        </div>
     </div>
 {% endblock %}
 

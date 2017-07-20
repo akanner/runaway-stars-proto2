@@ -59,11 +59,12 @@
 
 {% block custom_stylesheets %}
         <link rel="stylesheet" href="{{ asset('bundles/app/css/introjs.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/custom-intro.css') }}">
 {% endblock %}
 
 
 {% block submit_buttons %}
-  <div class="col-md-2 col-md-offset-5" data-intro='Respond&eacute; para continuar' data-step="2" data-position="top">
+  <div class="col-md-2 col-md-offset-5">
   	<div class="text-center">
 		<button type="button" id="yesBtn" class="btn btn-success wrongAnswerBtn answerBtn">Si</button>
 		<button type="button" id="noBtn" class="btn btn-danger rightAnswerBtn answerBtn"  name="answer" value="0">No</button>
@@ -81,13 +82,13 @@
     <div class="row">
       <div class="col-md-6 col-md-offset-3  answer">
           <div class="hidden alert alert-danger" role="alert"  id="answerTextWrong">
-            <strong>Respuesta Incorrecta:</strong> En la imagen no hay una runaway star, hac&eacute; click en "No"
+            <strong>Paf! Te equivocaste!</strong> ...Creo que yo no veo ningun arco.
           </div>
           <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
-            <strong>Respuesta Correcta:</strong> Buen trabajo!
+            <strong>Viva!</strong> Lo hiciste bien! En la im&aacute;gen no hay ningun arco.
           </div>
           <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
-            <strong>Respuesta:</strong> En este caso, no podemos asegurar que sea una runaway star.
+            <strong>No estabas segur@?</strong> En este caso, no hay ningun arco en la im&aacute;gen.
           </div>
        </div>
     </div>

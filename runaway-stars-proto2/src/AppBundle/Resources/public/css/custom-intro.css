@@ -1,0 +1,9 @@
+    .starpoint {
+        position:absolute;
+        top:46%!important;
+        left: 1%;
+
+    }
+    .transparent-overlay{
+        opacity: 0;
+    }

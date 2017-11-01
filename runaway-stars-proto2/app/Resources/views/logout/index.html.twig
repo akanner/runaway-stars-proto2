@@ -34,16 +34,13 @@
 	<div class="container">
 		<div class="row">
             <div class="col-md-12">
-                <h2 class="text-center">Ya podes encontrar runaway stars de verdad</h2>
-
+            	<h1 class="text-center">&iquest;Qu&eacute; tan confiado te sent&iacute;s para encontrar arcos de colores?</h1>
             </div>
 
         </div>
         {% block result %}{% endblock %}
         <form id="submitTraining" method="POST" action="{{post_url}}" class="form">
-            <div class="row text-center">
-                <p class="text-center">&iquest;Qu&eacute; tan confiado te sent&iacute;s para detectar estrellas fugitivas?</p>
-            </div>
+
             <div class="row text-center">
                 <label class="radio-inline">
                     <input type="radio" name="confidence" value="1" required="required">1

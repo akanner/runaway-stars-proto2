@@ -2,8 +2,17 @@
         position:absolute;
         top:46%!important;
         left: 1%;
+        
+        text-align: justify;
+    	text-justify: inter-word;
 
     }
     .transparent-overlay{
         opacity: 0;
+    }
+    .transparent-tooltip
+    {
+    	opacity: 0.80!important;
+        text-align: justify;
+        text-justify: inter-word;
     }

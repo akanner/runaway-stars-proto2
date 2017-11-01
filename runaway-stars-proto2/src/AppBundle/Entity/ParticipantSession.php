@@ -394,5 +394,12 @@ class ParticipantSession
         }
         return round($percentage);
     }
+
+    public function getTimeInSecondsFromTheBeginning(){
+        $startedAt = $this->startedAt->getTimestamp();
+        $now = time();
+
+        return $now - $startedAt;
+    }
    
 }

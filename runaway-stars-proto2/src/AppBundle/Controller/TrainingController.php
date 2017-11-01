@@ -67,6 +67,7 @@ class TrainingController extends BaseController
         //gets the images's paths and passes them to the view
         $viewParams["images"] = $this->getTrainingImage($trainingStep);
         $viewParams["points"] = $userSession->getTotalPoints();
+
         //gets current and max steps
         $viewParams["current_step"]  = $currentStep;
         $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
@@ -74,6 +75,12 @@ class TrainingController extends BaseController
         $viewParams["training_mode"] = true;
         $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);
         //looks in the http session the view to show (with or without points)
+        //user session info
+        $viewParams["total_responses"] = $userSession->getNumberOfResponses();
+        $viewParams["total_correct_responses"] = $userSession->getNumberOfCorrectResponses();
+        $viewParams["correct_percentage"] = $userSession->getPercentageOfCorrectTasks();
+        $viewParams["total_time"] = $userSession->getTimeInSecondsFromTheBeginning();
+
         return $this->render($session->get(static::POINTS_VIEW_SESSION_KEY), $viewParams);
     }
 

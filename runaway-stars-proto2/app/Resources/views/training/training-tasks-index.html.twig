@@ -32,19 +32,21 @@
         <p id="incorrect-points">{{incorrect_points}}</p>
     </div>
     <p class="hidden" id="tmode">{{training_mode}}</p>
-    <div class="row">
-      <div class="col-md-3">
-        <span>puntos: {{points}}</span>
-      </div>
-       <div class="col-md-3">
-        <span>Pregunta {{current_step}}/{{max_step}}</span>
-      </div>
-      <div class="col-md-3">
-        <span>Preguntas correctas: {{total_correct_responses}}/{{total_responses}} ({{correct_percentage}} %)</span>
-      </div>
-      <div class="col-md-3">
-        <span>Tiempo total: {{total_time}} segundos</span>
-      </div>
+    {% if show_user_session %}
+      <div class="row">
+        <div class="col-md-3">
+          <span>puntos: {{points}}</span>
+        </div>
+         <div class="col-md-3">
+          <span>Pregunta {{current_step}}/{{max_step}}</span>
+        </div>
+        <div class="col-md-3">
+          <span>Preguntas correctas: {{total_correct_responses}}/{{total_responses}} ({{correct_percentage}} %)</span>
+        </div>
+        <div class="col-md-3">
+          <span>Tiempo total: {{total_time}} segundos</span>
+        </div>
+      {% endif %}
 
 
    

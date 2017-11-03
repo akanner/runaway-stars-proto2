@@ -108,6 +108,11 @@ class AppParameterRepository extends EntityRepository
 		return intval($percentage);
 	}
 
+	public function getShowDebugUserSession(){
+		$debugUserSession = $this->findOneByKey("SHOW_USER_SESSION")->getValue();
+		return boolval($debugUserSession);
+	}
+
 	public function getBadgesExpertBadge()
 	{
 		return $this->findOneByKey("BADGES_EXPERT_BADGE")->getValue();

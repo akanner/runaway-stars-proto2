@@ -76,6 +76,7 @@ class TrainingController extends BaseController
         $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);
         //looks in the http session the view to show (with or without points)
         //user session info
+        $viewParams["show_user_session"] = $this->get(static::PARAM_REPO)->getShowDebugUserSession();
         $viewParams["total_responses"] = $userSession->getNumberOfResponses();
         $viewParams["total_correct_responses"] = $userSession->getNumberOfCorrectResponses();
         $viewParams["correct_percentage"] = $userSession->getPercentageOfCorrectTasks();

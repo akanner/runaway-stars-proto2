@@ -49,17 +49,25 @@ class Participant
      */
     private $session;
 
-    
 
-    public static function createWithNameAgeAndOcupation($username,$age,$ocupation)
-        {
+
+    public static function createWithNameAgeAndOcupation($username, $age, $ocupation)
+    {
             $participant = new Participant();
             $participant->setName($username);
             $participant->setAge($age);
             $participant->setOcupation($ocupation);
 
             return $participant;
-        }
+    }
+
+    public static function createWithName($username)
+    {
+        $participant = new Participant();
+        $participant->setName($username);
+
+        return $participant;
+    }
 
     /**
      * Set name
@@ -77,7 +85,7 @@ class Participant
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -100,7 +108,7 @@ class Participant
     /**
      * Get age
      *
-     * @return integer 
+     * @return integer
      */
     public function getAge()
     {
@@ -123,7 +131,7 @@ class Participant
     /**
      * Get ocupation
      *
-     * @return string 
+     * @return string
      */
     public function getOcupation()
     {
@@ -133,7 +141,7 @@ class Participant
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -156,7 +164,7 @@ class Participant
     /**
      * Get session
      *
-     * @return \AppBundle\Entity\ParticipantSession 
+     * @return \AppBundle\Entity\ParticipantSession
      */
     public function getSession()
     {

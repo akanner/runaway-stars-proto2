@@ -55,6 +55,11 @@ services:
     factory_method: getRepository
     arguments:
       - AppBundle\Entity\Participant
+  gamificationTypesService:
+    class: AppBundle\Services\GamificationTypesService
+    arguments:
+      $participantSessionRepository: "@participantSessionRepository"
+      $gamificationTypeRepository: "@gamificationTypeRepository"
 
     #doctrine extensions
     gedmo.listener.timestampable:

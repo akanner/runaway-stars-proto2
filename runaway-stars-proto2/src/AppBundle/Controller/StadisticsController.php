@@ -13,7 +13,7 @@ use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
 use AppBundle\Utils\TrainingResultsHelper;
 
-//view objects 
+//view objects
 use AppBundle\ViewObjects\ViewImage;
 
 use AppBundle\Utils\GamificationTypes;
@@ -21,7 +21,7 @@ use AppBundle\Utils\GamificationTypes;
 class StadisticsController extends BaseController
 {
 
-	 /**
+     /**
      * @Route("stadistics/", name="stadistics")
      */
     public function indexAction(Request $request)
@@ -29,8 +29,7 @@ class StadisticsController extends BaseController
         //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
 
-        if(!$isUserLogged)
-        {
+        if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
 
@@ -41,7 +40,7 @@ class StadisticsController extends BaseController
 
         $session = $request->getSession();
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        $userPercentile = TrainingResultsHelper::calculatePercentile($userSession,$participantSessionRepo);
+        $userPercentile = TrainingResultsHelper::calculatePercentile($userSession, $participantSessionRepo);
 
 
         $userSession->setPercentile($userPercentile);
@@ -53,34 +52,31 @@ class StadisticsController extends BaseController
         $em->flush();
 
         //gets the stadistics of the training
-        $gamificationType = $this->getGamificationType($session); 
-        $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$userSession->getPercentageOfCorrectTasks(),$paramRepo);
+        $gamificationType = $this->getGamificationType($session);
+        $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType, $userSession->getPercentageOfCorrectTasks(), $paramRepo);
         $viewName = $this->getGamificationTypeView($gamificationType);
-        $leaderboard = TrainingResultsHelper::getLeadersboard($participantSessionRepo->findAll(),$userSession);
+        $leaderboard = TrainingResultsHelper::getLeadersboard($participantSessionRepo->findAll(), $userSession);
 
         $viewParams = [];
-        $viewParams["back_url"]      = $this->generateUrl('logInUser', array("gamification" => $gamificationType), true);
         $viewParams["post_url"]      = $this->generateUrl('endTraining', array(), true);
         $viewParams["points"]        = $userSession->getTotalPoints();
-        $viewParams["gamType"]       = $gamificationType;   
+        $viewParams["gamType"]       = $gamificationType;
         $viewParams["level"]         = $gamificationResult["level"];
         $viewParams["legend"]        = $gamificationResult["legend"];
         $viewParams["leadersboard"]   = $leaderboard;
-        $viewParams["percentile"]    = round($userPercentile,2);
-        return $this->render($viewName,$viewParams);
-
+        $viewParams["percentile"]    = round($userPercentile, 2);
+        return $this->render($viewName, $viewParams);
     }
 
      /**
      * @Route("stadistics/submit", name="endTraining")
      */
-     public function endTraining(Request $request)
-     {
+    public function endTraining(Request $request)
+    {
         //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
 
-        if(!$isUserLogged)
-        {
+        if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
         $httpSession = $request->getSession();
@@ -95,16 +91,12 @@ class StadisticsController extends BaseController
         $em->flush();
         //redirect to the training or to the real tasks
         $userChoice = $request->request->get("user_choice");
-        if($userChoice=="true")
-        {
+        if ($userChoice=="true") {
             return $this->beginRealTasks($httpSession);
-        }
-        else
-        {
+        } else {
             return $this->repeatTraining($httpSession);
         }
-
-     }
+    }
 
      /**
       * gets the template for the selected gamification type
@@ -136,8 +128,8 @@ class StadisticsController extends BaseController
     private function beginRealTasks($httpSession)
     {
         //sets the max number of tasks in the session
-        $httpSession->set(static::STEP,1);
-        $httpSession->set(static::MAX_STEPS,$this->getMaxNumberOfQuestions());
+        $httpSession->set(static::STEP, 1);
+        $httpSession->set(static::MAX_STEPS, $this->getMaxNumberOfQuestions());
 
         return $this->redirectToURL("taskIndex");
     }
@@ -150,7 +142,7 @@ class StadisticsController extends BaseController
         //gets the participant session from the http session
         $participantSessionEntity = $this->deserializeParticipantSessionEntityFromHttpSession($httpSession);
         //creates a new participant session
-        $newUserSession = $this->createParticipantSession($httpSession->getId(),$participantSessionEntity->getParticipant(),$participantSessionEntity->getGamificationType());
+        $newUserSession = $this->createParticipantSession($httpSession->getId(), $participantSessionEntity->getParticipant(), $participantSessionEntity->getGamificationType());
         //links the old session to the new session
         $participantSessionEntity->setNextSession($newUserSession);
         //saves the entities to the database
@@ -160,9 +152,9 @@ class StadisticsController extends BaseController
         $entityManager->flush();
         //flush it before serializing it!!!
         //sets the new session in the http session
-        $this->serializeParticipantSessionIntoHttpSession($httpSession,$newUserSession);
-        //resets the training 
-        $httpSession->set(static::TRAINING_STEP,1);
+        $this->serializeParticipantSessionIntoHttpSession($httpSession, $newUserSession);
+        //resets the training
+        $httpSession->set(static::TRAINING_STEP, 1);
         //redirects
         return $this->redirectToTrainingTasks();
     }
@@ -174,46 +166,40 @@ class StadisticsController extends BaseController
         return $paramRepo->getMaxNumberOfQuestions();
     }
 
-    
 
-    private function getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType,$percentajeOfCorrectness,$paramRepo)
+
+    private function getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType, $percentajeOfCorrectness, $paramRepo)
     {
         $gamificationResult = [];
-        if(GamificationTypes::GAMIFICATION_BADGES == $gamificationType)
-        {
-            $gamificationResult = $this->getBadgesResult($percentajeOfCorrectness,$paramRepo);
-        }
-        else
-        {
-            $gamificationResult = $this->getLevelsResult($percentajeOfCorrectness,$paramRepo);
+        if (GamificationTypes::GAMIFICATION_BADGES == $gamificationType) {
+            $gamificationResult = $this->getBadgesResult($percentajeOfCorrectness, $paramRepo);
+        } else {
+            $gamificationResult = $this->getLevelsResult($percentajeOfCorrectness, $paramRepo);
         }
 
         return $gamificationResult;
     }
 
-    private function getLevelsResult($percentajeOfCorrectness,$paramRepository)
+    private function getLevelsResult($percentajeOfCorrectness, $paramRepository)
     {
         $intermediatePercentajeOfCorrectness = $paramRepository->getMinimumPercentageIntermediateLevel();
         $expertPercentajeOfCorrectness = $paramRepository->getMinimumPercentageExpertLevel();
         $gamificationResult = [];
         $gamificationResult["level"] = $paramRepository->getLevelsBeginnerText();
         $gamificationResult["legend"]= $paramRepository->getLevelsBeginnerLegend();
-        if($percentajeOfCorrectness >= $intermediatePercentajeOfCorrectness)
-        {
+        if ($percentajeOfCorrectness >= $intermediatePercentajeOfCorrectness) {
             $gamificationResult["level"] = $paramRepository->getLevelsIntermediateText();
             $gamificationResult["legend"]= $paramRepository->getLevelsIntermediateLegend();
         }
-        if($percentajeOfCorrectness >= $expertPercentajeOfCorrectness)
-        {
+        if ($percentajeOfCorrectness >= $expertPercentajeOfCorrectness) {
             $gamificationResult["level"] = $paramRepository->getLevelsExpertText();
             $gamificationResult["legend"]= $paramRepository->getLevelsExpertLegend();
         }
 
         return $gamificationResult;
-
     }
 
-    private function getBadgesResult($percentajeOfCorrectness,$paramRepository)
+    private function getBadgesResult($percentajeOfCorrectness, $paramRepository)
     {
         //migrate this to DATABASE!!!
         $intermediatePercentajeOfCorrectness = $paramRepository->getMinimumPercentageIntermediateLevel();
@@ -225,23 +211,18 @@ class StadisticsController extends BaseController
         $gamificationResult["level"] = $this->getImageUrl($badge);
         $gamificationResult["legend"]= $paramRepository->getBadgesBeginnerLegend();
         //gets the values for the second level
-        if($percentajeOfCorrectness >= $intermediatePercentajeOfCorrectness)
-        {
+        if ($percentajeOfCorrectness >= $intermediatePercentajeOfCorrectness) {
             $badge = $paramRepository->getBadgesIntermediateBadge();
             $gamificationResult["level"] = $this->getImageUrl($badge);
             $gamificationResult["legend"]= $paramRepository->getBadgesIntermediateLegend();
         }
         //gets the values for the third level
-        if($percentajeOfCorrectness >= $expertPercentajeOfCorrectness)
-        {
+        if ($percentajeOfCorrectness >= $expertPercentajeOfCorrectness) {
             $badge = $paramRepository->getBadgesExpertBadge();
             $gamificationResult["level"] = $this->getImageUrl($badge);
             $gamificationResult["legend"]= $paramRepository->getBadgesExpertLegend();
         }
 
         return $gamificationResult;
-
     }
-
-
 }

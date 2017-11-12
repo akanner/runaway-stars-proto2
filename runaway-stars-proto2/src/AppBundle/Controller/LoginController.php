@@ -20,81 +20,47 @@ class LoginController extends BaseController
 
     const PARTICIPANT_REPO = "participantRepository";
 
-    /**
-     * registers user's information
-     *
-     */
+
      /**
-     * @Route("intro/", name="logInUser")
-     */
-    public function logInUser(Request $request)
+      * @Route("/", name="homepage")
+      */
+    public function index(Request $request)
     {
-
-        //gets the type of gamification depending of an initial parameter in the URL
-        $gamificationType = $request->query->get("gamification");
-        if(!GamificationTypes::isAValidGamificationType($gamificationType))
-        {
-            $gamificationType = GamificationTypes::GAMIFICATION_BADGES;
-        }
-        $session = $request->getSession();
-        $session->set(static::GAMIFICATION_KEY,$gamificationType);
-
-
-        $postUrl = $this->generateUrl('logInUserResponse', array(), true);
+        $postUrl = $this->generateUrl('login', array(), true);
         $viewParams = array();
         $viewParams["post_url"] = $postUrl;
-        //sets the twig block called "points"
-        //this is done here to avoid asking to the database in each step of the training
-        //we show the user's points depending if the gamification type is "points" or not
-        //to show the points we have defined two twig templates: 1)training/points.html.twig and 2)training/no-points/no-points.html.twig
-        //both templates extend task/index.html
-        $gTypeRepo = $this->get(static::GAMIFICATION_REPO);
-        $gType = $gTypeRepo->findOneByName($gamificationType);
-        $session->set(static::POINTS_VIEW_SESSION_KEY,$gType->getPointsView());
-        return $this->render('login/index.html.twig',$viewParams);
+
+        return $this->render('login/index.html.twig', $viewParams);
     }
 
-    /**
-     * registers user's information
-     *
-     */
      /**
-     * @Route("login/response", name="logInUserResponse")
+     * @Route("login/", name="login")
      */
-    public function logInUserResponse(Request $request)
+    public function login(Request $request)
     {
         //TODO use a interceptor,filter or something to check session ending
         //-------------------------------------------------------------------
 
         //if the user is already logged, we redirect it to the home page
         $isUserLogged = $this->isUserLogged($request);
-        if($isUserLogged)
-        {
+        if ($isUserLogged) {
             //redirects to the home
             return $this->redirectToTrainingTasks();
         }
-      //gets user's data
-        $username           = $this->get(static::PARTICIPANT_REPO)->getNextParticipantName();
-        $age                = $request->request->get("age");
-        $ocupation             = $request->request->get("ocupation");
 
-        if($username==NULL || $age==NULL || $ocupation==NULL)
-        {
-            return $this->redirectToDefault();
-        }
         //-------------------------------------------------------------------
-        //stores user's name in the session
-
-        $session = $this->initializeSession($request);
-
         //$zooniverseUser     = $request->request->get("zooniverse_username");
-        $gamificationType   = $session->get(static::GAMIFICATION_KEY);
-        //gets gamificationType entity
-        $gamificationEntity = $this->get(static::GAMIFICATION_REPO)->findOneByName($gamificationType);
+        //balance the quantity of games using the different gamification types
+        $gamificationService=$this->get(static::GAMIFICATION_SERVICE);
+        //the gamification type can be forced with a query param, if null the service will look for a valid gamification type
+        $gamificationTypeName = $request->query->get("gamification");
+        $gamificationType = $gamificationService->getGamificationTypeByNameOrRandom($gamificationTypeName);
         //creates user and session in the database
-        $participant        = Participant::createWithNameAgeAndOcupation($username,$age,$ocupation);
+        $username = $this->get(static::PARTICIPANT_REPO)->getNextParticipantName();
+        $participant = Participant::createWithName($username);
+        $session = $request->getSession();
         //$participant->setZooniverseUsername($zooniverseUser);
-        $userSession = $this->createParticipantSession($session->getId(),$participant,$gamificationEntity);
+        $userSession = $this->createParticipantSession($session->getId(), $participant, $gamificationType);
 
         $em = $this->getEntityManager();
         $em->persist($participant);
@@ -103,7 +69,7 @@ class LoginController extends BaseController
         //flush it before serializing it!!!
 
         //serializes the session into the http session
-        $this->serializeParticipantSessionIntoHttpSession($session,$userSession);
+        $this->initializeSession($request, $gamificationType, $userSession);
         //persists the ParticipantSession
 
 
@@ -111,17 +77,30 @@ class LoginController extends BaseController
         return $this->redirectToURL("tutorial-01");
     }
 
-    private function initializeSession($request)
+    /**
+     * registers user's information
+     *
+     */
+    private function initializeSession($request, $gamificationType, $userSessionEntity)
     {
         $session = $request->getSession();
-        $username = $request->request->get("username");
-        $session->set("username",$username);
-        $session->set("logged",true);
+        if (!$session->get(static::GAMIFICATION_KEY)) {
+            $session->set(static::GAMIFICATION_KEY, $gamificationType->getName());
+          //sets the twig block called "points"
+          //this is done here to avoid asking to the database in each step of the training
+          //we show the user's points depending if the gamification type is "points" or not
+          //to show the points we have defined two twig templates: 1)training/points.html.twig and 2)training/no-points/no-points.html.twig
+          //both templates extend task/index.html
+            $session->set(static::POINTS_VIEW_SESSION_KEY, $gamificationType->getPointsView());
+        }
+
+        $this->serializeParticipantSessionIntoHttpSession($session, $userSessionEntity);
+
         //sets the max number of tasks in the session
         $maxNumberOfTask = $this->getMaxNumberOfTrainingQuestions();
-        $session->set(static::TRAINING_STEP,1);
-        $session->set(static::TRAINING_MAX_STEPS,$maxNumberOfTask);
-
+        $session->set(static::TRAINING_STEP, 1);
+        $session->set(static::TRAINING_MAX_STEPS, $maxNumberOfTask);
+        $session->set("logged", true);
         return $session;
     }
 

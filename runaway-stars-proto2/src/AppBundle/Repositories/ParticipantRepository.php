@@ -24,9 +24,13 @@ class ParticipantRepository extends EntityRepository
 
     public function getNextParticipantName()
     {
-         $name = "participant";
-         $name = $name+$this->getParticipantNumber();
+         $name = "usuario";
+         $name = $name . $this->getParticipantNumber();
 
          return $name;
+    }
+
+    public function getNewParticipant()
+    {
     }
 }

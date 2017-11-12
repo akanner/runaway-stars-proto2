@@ -13,7 +13,7 @@ use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
 use AppBundle\ViewObjects\ParticipantResponseSerialized;
 
-//view objects 
+//view objects
 use AppBundle\ViewObjects\ViewImage;
 
 abstract class BaseController extends Controller
@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
 
     const POINTS_VIEW_SESSION_KEY   = "points-view";
 
-    const GAMIFICATION_KEY          = "gamification-type"; 
+    const GAMIFICATION_KEY          = "gamification-type";
 
     const PARAM_REPO                = "paramsRepository";
 
@@ -50,10 +50,12 @@ abstract class BaseController extends Controller
 
     const IMAGES_REPO               = "imagesRepository";
 
-	protected function getEntityManager()
-	{
-		return $this->get("doctrine.orm.default_entity_manager");
-	}
+    const GAMIFICATION_SERVICE = "gamificationTypesService";
+
+    protected function getEntityManager()
+    {
+        return $this->get("doctrine.orm.default_entity_manager");
+    }
 
      /**
      * checks if the participant is logged
@@ -83,15 +85,14 @@ abstract class BaseController extends Controller
     /**
      * transforms all Images Entities to DTO AppBundle\ViewObjects\ViewImage
      */
-    protected function getViewImages($image,$tooltipText=null)
+    protected function getViewImages($image, $tooltipText = null)
     {
         //in case that $img is correct, we take the path of the "marked" version of the image
         $markedRgbImage= null;
         $markedHeatImage= null;
         $markedCoolImage= null;
         $markedHsvImage= null;
-        if($image->getIsCorrect())
-        {
+        if ($image->getIsCorrect()) {
             $markedRgbImage = $this->getTaskUrl($image->getMarkedRgbImage());
             $markedHeatImage = $this->getTaskUrl($image->getMarkedHeatImage());
             $markedCoolImage= $this->getTaskUrl($image->getMarkedCoolImage());
@@ -99,31 +100,19 @@ abstract class BaseController extends Controller
         }
         $rgbImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
-            $this->getTaskUrl($image->getRgbImagePath())
-            ,$image->getIsCorrect()
-            ,$tooltipText
-            ,$markedRgbImage
+            $this->getTaskUrl($image->getRgbImagePath()), $image->getIsCorrect(), $tooltipText, $markedRgbImage
             );
         $coolImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
-            $this->getTaskUrl($image->getCoolImagePath())
-            ,$image->getIsCorrect()
-            ,$tooltipText
-            ,$markedCoolImage
+            $this->getTaskUrl($image->getCoolImagePath()), $image->getIsCorrect(), $tooltipText, $markedCoolImage
             );
         $heatImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
-            $this->getTaskUrl($image->getHeatImagePath())
-            ,$image->getIsCorrect()
-            ,$tooltipText
-            ,$markedHeatImage
+            $this->getTaskUrl($image->getHeatImagePath()), $image->getIsCorrect(), $tooltipText, $markedHeatImage
             );
         $hsvImage = new \AppBundle\ViewObjects\ViewImage(
             $image->getId(),
-            $this->getTaskUrl($image->getHsvImagePath())
-            ,$image->getIsCorrect()
-            ,$tooltipText
-            ,$markedHsvImage
+            $this->getTaskUrl($image->getHsvImagePath()), $image->getIsCorrect(), $tooltipText, $markedHsvImage
             );
 
         return array($rgbImage,$coolImage,$heatImage,$hsvImage);
@@ -131,13 +120,13 @@ abstract class BaseController extends Controller
     /**
      * transforms a TraningTask Entity to a ViewImage
      *
-     * @param AppBundle\Entity\TrainingTask 
+     * @param AppBundle\Entity\TrainingTask
      *
      * @return ViewImage
      */
     protected function getTrainingImage($trainingTask)
     {
-        return $this->getViewImages($trainingTask->getImageServed(),$trainingTask->getHelpText());
+        return $this->getViewImages($trainingTask->getImageServed(), $trainingTask->getHelpText());
     }
 
     /**
@@ -166,10 +155,10 @@ abstract class BaseController extends Controller
      *
      * @return null
      */
-    protected function serializeEntityIntoSession($session,$key,$entity)
+    protected function serializeEntityIntoSession($session, $key, $entity)
     {
         $entityId = $entity->getId();
-        $session->set($key,$entityId);
+        $session->set($key, $entityId);
     }
 
     /**
@@ -181,7 +170,7 @@ abstract class BaseController extends Controller
      *
      * @return mixed Deserialized Entity
      */
-    protected function deserializeEntityFromSession($session,$key,$entityRepo)
+    protected function deserializeEntityFromSession($session, $key, $entityRepo)
     {
         $entityId = $session->get($key);
         $entity   = $entityRepo->findOneById($entityId);
@@ -200,7 +189,7 @@ abstract class BaseController extends Controller
     {
         $entityRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
 
-        return $this->deserializeEntityFromSession($session,static::USER_SESSION_SESSION_KEY,$entityRepo);
+        return $this->deserializeEntityFromSession($session, static::USER_SESSION_SESSION_KEY, $entityRepo);
     }
 
     /**
@@ -210,9 +199,9 @@ abstract class BaseController extends Controller
      *
      * @return null
      */
-    protected function serializeParticipantSessionIntoHttpSession($httpSession,$participantSessionEntity)
+    protected function serializeParticipantSessionIntoHttpSession($httpSession, $participantSessionEntity)
     {
-        $this->serializeEntityIntoSession($httpSession,static::USER_SESSION_SESSION_KEY,$participantSessionEntity);
+        $this->serializeEntityIntoSession($httpSession, static::USER_SESSION_SESSION_KEY, $participantSessionEntity);
     }
 
     /**
@@ -223,11 +212,11 @@ abstract class BaseController extends Controller
      *
      * @return null
      */
-    protected function serializeResponseIntoHttpSession($httpSession,$participantResponse)
+    protected function serializeResponseIntoHttpSession($httpSession, $participantResponse)
     {
          $em = $this->getEntityManager();
          $em->detach($participantResponse);
-         $httpSession->set(static::USER_RESPONSE_SESSION_KEY,$participantResponse);
+         $httpSession->set(static::USER_RESPONSE_SESSION_KEY, $participantResponse);
     }
     /**
      * Deserializes a AppBundle\Entity\ParticipantResponse instance from the http session
@@ -240,10 +229,10 @@ abstract class BaseController extends Controller
     {
         //gets images and participant session repositories
         $em = $this->getEntityManager();
-        //gets ParticipantResponseSerialized 
+        //gets ParticipantResponseSerialized
         $responseSerialized = $session->get(static::USER_RESPONSE_SESSION_KEY);
         $response = $em->merge($responseSerialized);
-     
+
         return $response;
     }
 
@@ -258,9 +247,9 @@ abstract class BaseController extends Controller
         return $this->redirectToURL("stadistics");
     }
 
-    protected function redirectToLogin($params=array())
+    protected function redirectToLogin($params = array())
     {
-        return $this->redirectToURL("logInUser",$params);
+        return $this->redirectToURL("logInUser", $params);
     }
 
     protected function redirectToDefault()
@@ -268,22 +257,21 @@ abstract class BaseController extends Controller
         return $this->redirectToURL("homepage");
     }
 
-    protected function redirectToURL($routeName,$params=array())
+    protected function redirectToURL($routeName, $params = array())
     {
-        return $this->redirect($this->generateUrl($routeName, $params,true));
+        return $this->redirect($this->generateUrl($routeName, $params, true));
     }
 
     protected function redirectToTasks()
     {
         return $this->redirectToURL("taskIndex");
-
     }
 
     /*----------------OBjects creation ---------------------*/
-    protected function createParticipantSession($httpSessionId,$participantEntity,$gamificationTypEntity)
+    protected function createParticipantSession($httpSessionId, $participantEntity, $gamificationTypEntity)
     {
-        
-        $participantSession = ParticipantSession::createWith($httpSessionId,new \Datetime("now"),$participantEntity,$gamificationTypEntity);
+
+        $participantSession = ParticipantSession::createWith($httpSessionId, new \Datetime("now"), $participantEntity, $gamificationTypEntity);
         $participantEntity->setSession($participantSession);
         return $participantSession;
     }

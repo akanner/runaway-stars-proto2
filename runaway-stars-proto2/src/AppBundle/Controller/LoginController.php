@@ -1,5 +1,5 @@
 <?php
-    
+
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -74,7 +74,7 @@ class LoginController extends BaseController
             return $this->redirectToTrainingTasks();
         }
       //gets user's data
-        $username           = $request->request->get("username");
+        $username           = $this->get(static::PARTICIPANT_REPO)->getNextParticipantName();
         $age                = $request->request->get("age");
         $ocupation             = $request->request->get("ocupation");
 
@@ -86,7 +86,7 @@ class LoginController extends BaseController
         //stores user's name in the session
 
         $session = $this->initializeSession($request);
-      
+
         //$zooniverseUser     = $request->request->get("zooniverse_username");
         $gamificationType   = $session->get(static::GAMIFICATION_KEY);
         //gets gamificationType entity

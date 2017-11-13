@@ -11,19 +11,38 @@
         <div class="jumbotron">
 	      <div class="container">
 	        <h1>Ayudanos a analizar Runaway Stars buscando arcos de colores</h1>
-	        <p>
-	        	Estamos interesados en analizar estrellas denominadas <i>runaway stars</i>, en particular, queremos saber si alrededor de estas estrellas existen arcos de colores, nuestra forma de analisis es por medio de la observaci&oacute;n de miles de imagenes correspondientes a miles de estrellas. Esta gran cantidad de im&aacute;genes hace que nuestro trabajo sea muy largo y agotador!
-	        <p>
-	        	Por eso te pedimos tu ayuda, para ayudarnos, te vamos a mostrar varias series de im&aacute;genes y  deber&aacute;s intentar reconocer cualed de ellas contienen arcos de colores.
-	        </p>
-	        <p> Las primeras series servir&aacute;n de entrenamiento, y te vamos a decir si acertaste o no. Sin embargo, luego de este entrenamiento, vas a tener que detectar arcos de color por tu cuenta y no te vamos a decir si tu respuesta es correcta o no, esto nos ayudara a evaluar diferentes formas de entrenamiento para proyectos de ciencia ciudadana.
-	        </p>
-	        <p>
-	        	No tenes que tener miedo de equivocarte, lo importante es participar.
-	        </p>
-	          <a class="btn btn-primary" data-toggle="collapse" href="#runaway-information" aria-expanded="false" aria-controls="runaway-information">
-			    Saber m&aacute;s sobre las runaway stars
-			  </a>
+					<div class="row">
+						<div class="col-sm-6">
+								<img class="img-responsive star-image" src="{{asset('bundles/app/images/raway-chopped.jpg') }}"/>
+						</div>
+						<div class="col-sm-6">
+							<p class="text-justify">
+							 Estamos interesados en analizar estrellas denominadas <i>runaway stars</i>, en particular, queremos saber si alrededor de estas estrellas existen arcos de colores, nuestra forma de analisis es por medio de la observaci&oacute;n de miles de imagenes correspondientes a miles de estrellas. Esta gran cantidad de im&aacute;genes hace que nuestro trabajo sea muy largo y agotador!
+							<p class="text-justify">
+							 Por eso te pedimos tu ayuda, para ayudarnos, te vamos a mostrar varias series de im&aacute;genes y  deber&aacute;s intentar reconocer cuales de ellas contienen arcos de colores.
+							</p>
+						 <!-- <p> Las primeras series servir&aacute;n de entrenamiento, y te vamos a decir si acertaste o no. Sin embargo, luego de este entrenamiento, vas a tener que detectar arcos de color por tu cuenta y no te vamos a decir si tu respuesta es correcta o no, esto nos ayudara a evaluar diferentes formas de entrenamiento para proyectos de ciencia ciudadana.
+						 </p> -->
+							<p class="text-justify">
+							 No tenes que tener miedo de equivocarte, lo importante es participar.
+							</p>
+
+								  <div class="row">
+								  	<div class="col-md-6">
+								  		<form method="POST" action="{{post_url}}" class="form">
+												<button type="submit" class="btn btn-success btn-xlarge"><strong>Comenzar!</strong></button>
+											</form>
+								  	</div>
+										<div class="col-md-4">
+											<a class="btn btn-primary" data-toggle="collapse" href="#runaway-information" aria-expanded="false" aria-controls="runaway-information">
+										 Saber m&aacute;s sobre las runaway stars
+										</a>
+										</div>
+								 </div>
+						</div>
+
+						</div>
+
 
 	      </div>
 	    </div>
@@ -90,24 +109,5 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-md-offset-2">
-				<h3>&iquest;Como hago para participar?</h3>
-
-				<p>Simplemente complet&aacute; el siguiente formulario para comenzar!</p>
-			</div>
-		</div>
-		<div class="init-form">
-			<form method="POST" action="{{post_url}}" class="form">
-				  <div class="form-group row">
-				  	<div class="col-md-offset-3">
-				  		<button type="submit" class="btn btn-primary">Comenzar!</button>
-				  	</div>
-
-				 </div>
-			</form>
-		</div>
-	</div>
 
 {% endblock %}

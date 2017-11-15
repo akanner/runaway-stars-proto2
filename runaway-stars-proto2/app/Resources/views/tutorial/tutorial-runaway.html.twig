@@ -14,7 +14,7 @@
       $(".answerBtn").addClass('hidden');
       //shows the bowshock in the image
       showBowshock();
-            
+
       introJs().exit();
      }
 
@@ -66,7 +66,7 @@
           doneLabel: 'Cerrar'})
      .start();
     })
-	
+
     </script>
 {% endblock %}
 
@@ -92,14 +92,14 @@
 {% block training_response %}
     <div class="row">
       <div class="col-md-6 col-md-offset-3  answer">
-          <div class="hidden alert alert-danger" role="alert"  id="answerTextWrong">
-            <strong>Paf! Te equivocaste!</strong> En la imagen hay un arco de color, &iquest;Ahora lo podes ver?
+          <div class="hidden" role="alert"  id="answerTextWrong">
+            <p class="text-feedback"><strong>Paf! Te equivocaste!</strong> En la imagen hay un arco de color, &iquest;Ahora lo podes ver?</p>
           </div>
-          <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
-            <strong>Excelente!</strong> Buen trabajo!
+          <div class="hidden" role="alert"  id="answerTextRight">
+            <p class="text-feedback"><strong>Excelente!</strong> Buen trabajo!</p>
           </div>
-          <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
-            <strong>No estabas segur@?</strong> &iquest;Ahora pod&eacute;s ver el arco?
+          <div class="hidden" role="alert"  id="answerTextDontKnow">
+            <p class="text-feedback"><strong>No estabas segur@?</strong> &iquest;Ahora pod&eacute;s ver el arco?</p>
           </div>
        </div>
     </div>

@@ -19,11 +19,11 @@
                 {% block points %}{% endblock %}
             </div>
         </div>
-        <form id="runaway-stars-form" class="well" action="{{post_url}}" method="POST">
+        <form id="runaway-stars-form" class="well background-well top-buffer-small" action="{{post_url}}" method="POST">
             <div>
                 <div class="row">
                     <div class="col-md-12">
-                        {% block task_title %}<h3 class="text-center" id="question">En las siguientes im&aacute;genes, &iquest;Ves un arco de color?</h3> {% endblock %}
+                        {% block task_title %}<h3 class="text-center text-white" id="question">En las siguientes im&aacute;genes, &iquest;Ves un arco de color?</h3> {% endblock %}
                     </div>
                 </div>
                 {% block image%}
@@ -35,16 +35,16 @@
                         </div>
                     {% endfor %}
                     </div>
-                    <div>
+                    <div class="row bottom-buffer-large">
                         {% for i in 1..4 %}
-                            <div class="col-md-3 text-center"><a>{{i}}</a></div>
+                            <div class="col-md-3 text-center"><a class="text-white">{{i}}</a></div>
                         {% endfor %}
                     </div>
                 {% endblock %}
             </div>
             {% block training_response %}{% endblock %}
             {% block info_extra %}{% endblock %}
-           
+
 
             <div class="row">
                 {% block submit_buttons %}{% endblock %}

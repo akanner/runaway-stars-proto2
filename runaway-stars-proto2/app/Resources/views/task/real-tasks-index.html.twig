@@ -40,7 +40,7 @@ $( ".dontKnowBtn" ).on( "click", function( event ) {
 
          setTimeout( function () {
             $( "#runaway-stars-form" ).submit();
-         }) 
+         })
 
 });
 
@@ -54,7 +54,7 @@ $( ".dontKnowBtn" ).on( "click", function( event ) {
         <button type="button" id="noBtn" class="btn btn-danger answerBtn concreteAnswer" value="0">No</button>
         <button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn" value="2">No estoy seguro</button>
       </div>
-    
+
   </div>
   <div class="col md-1 col-me-offset-1 submit-buttons">
       <a class="btn btn-default" href="{{finish_url}}">Finalizar</a>
@@ -69,18 +69,19 @@ $( ".dontKnowBtn" ).on( "click", function( event ) {
 <div id="info-extra" class="hidden">
      <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <div class="text-center">
-                <a>&iquest;Que imagenes te ayudaron a tomar tu decisi&oacute;n?</a>
+            <div class="text-center text-feedback">
+                <p>&iquest;Que imagenes te ayudaron a tomar tu decisi&oacute;n?</p>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row"></div>
+    <div class="row bottom-buffer-small">
         <div class="col-md-4 col-md-offset-4">
             <div class="text-center checkbox-group required">
-                <input type="checkbox" class="checkbox-inline" name="usedImages[]" required="required" value="rgb"> 1
-                <input type="checkbox" name="usedImages[]" class="checkbox-inline" required="required" value="cool"> 2
-                <input type="checkbox" name="usedImages[]" class="checkbox-inline" required="required" value="heat"> 3
-                <input type="checkbox" name="usedImages[]"class="checkbox-inline" required="required" value="hsv"> 4
+                <input type="checkbox" class="checkbox-inline" name="usedImages[]" required="required" value="rgb"> <span class="text-white">1</span>
+                <input type="checkbox" name="usedImages[]" class="checkbox-inline" required="required" value="cool"> <span class="text-white">2</span>
+                <input type="checkbox" name="usedImages[]" class="checkbox-inline" required="required" value="heat"> <span class="text-white">3</span>
+                <input type="checkbox" name="usedImages[]"class="checkbox-inline" required="required" value="hsv"> <span class="text-white">4</span>
             </div>
         </div>
     </div>

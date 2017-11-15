@@ -11,3 +11,35 @@ body {
        -moz-border-radius: 8px;
             border-radius: 8px;
 }
+
+.background-well {
+	 background-image: url("../images/background.jpg");
+	 background-color: #cccccc;
+}
+
+.text-white{
+	color : white;
+}
+
+.text-feedback{
+	color: white;
+	text-align: center;
+	font-size:large;
+}
+
+.bottom-buffer-large{
+	 margin-bottom:5%;
+}
+
+.bottom-buffer-small{
+	margin-bottom:1%;
+}
+
+.top-buffer-small{
+	margin-top:1%;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}

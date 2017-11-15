@@ -52,7 +52,7 @@
           doneLabel: 'Cerrar'})
      .start();
     })
-	
+
     </script>
 {% endblock %}
 
@@ -75,20 +75,20 @@
 {% endblock %}
 
 {% block image%}
-   
+
 {% endblock %}
 
 {% block training_response %}
     <div class="row">
       <div class="col-md-6 col-md-offset-3  answer">
-          <div class="hidden alert alert-danger" role="alert"  id="answerTextWrong">
-            <strong>Paf! Te equivocaste!</strong> ...Creo que yo no veo ningun arco.
+          <div class="hidden" role="alert"  id="answerTextWrong">
+            <p class="text-feedback"><strong>Paf! Te equivocaste!</strong> ...Creo que yo no veo ningun arco.</p>
           </div>
-          <div class="hidden alert alert-success" role="alert"  id="answerTextRight">
-            <strong>Viva!</strong> Lo hiciste bien! En la imagen no hay ningun arco.
+          <div class="hidden" role="alert"  id="answerTextRight">
+            <p class="text-feedback"><strong>Viva!</strong> Lo hiciste bien! En la imagen no hay ningun arco.</p>
           </div>
-          <div class="hidden alert alert-info" role="alert"  id="answerTextDontKnow">
-            <strong>No estabas segur@?</strong> En este caso, no hay ningun arco en la imagen.
+          <div class="hidden" role="alert"  id="answerTextDontKnow">
+            <p class="text-feedback"><strong>No estabas segur@?</strong> En este caso, no hay ningun arco en la imagen.</p>
           </div>
        </div>
     </div>

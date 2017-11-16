@@ -18,7 +18,6 @@ use AppBundle\ViewObjects\ViewImage;
 use AppBundle\Utils\GamificationTypes;
 use AppBundle\Utils\UserAnswerEnum;
 
-
 class TrainingController extends BaseController
 {
 
@@ -40,8 +39,7 @@ class TrainingController extends BaseController
         //TODO use a interceptor,filter or something to check session ending
         //-------------------------------------------------------------------
         $isUserLogged = $this->isUserLogged($request);
-        if(!$isUserLogged)
-        {
+        if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
            //creates and saves the user response in the session, when the user answer us, it will be save in the db
@@ -50,12 +48,12 @@ class TrainingController extends BaseController
         $trainingStepNumber = $session->get(static::TRAINING_STEP);
         $trainingStep = $this->getTrainingTask($trainingStepNumber);
 
-     
+
         //this should be injected, to do this, that controller should be declared as a service
         $em = $this->getEntityManager();
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        $participantResponse = ParticipantTrainingResponse::createFromSessionAndTrainingTask($userSession,$trainingStep);
-        $this->serializeResponseIntoHttpSession($session,$participantResponse);
+        $participantResponse = ParticipantTrainingResponse::createFromSessionAndTrainingTask($userSession, $trainingStep);
+        $this->serializeResponseIntoHttpSession($session, $participantResponse);
 
         $currentStep = $session->get(static::TRAINING_STEP);
         //builds view's parameters
@@ -103,8 +101,7 @@ class TrainingController extends BaseController
         //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
 
-        if(!$isUserLogged || !$requestIsValid)
-        {
+        if (!$isUserLogged || !$requestIsValid) {
             return $this->redirectToIndex();
         }
         $session = $request->getSession();
@@ -118,7 +115,7 @@ class TrainingController extends BaseController
         //add points
         $points = $this->assignPoints($userResponse);
         //although it was fun dealing with entities and the session, this experiment has to stop! haha
-        $this->sumPoints($em,$session,$points);
+        $this->sumPoints($em, $session, $points);
         //handles the training mode
 
         //sets the user's actual response and saves it in the database
@@ -137,13 +134,13 @@ class TrainingController extends BaseController
      * The Experiment with the entities in the session has gone too far :P
      *
      */
-    private function sumPoints($em,$session,$points)
+    private function sumPoints($em, $session, $points)
     {
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         $userSession->sumPoints($points);
         $em->persist($userSession);
         $em->flush();
-        $this->serializeParticipantSessionIntoHttpSession($session,$userSession);
+        $this->serializeParticipantSessionIntoHttpSession($session, $userSession);
     }
 
     private function getTrainingTask($trainingStepNumber)
@@ -163,8 +160,7 @@ class TrainingController extends BaseController
     {
         $pointsRepository = $this->get(static::POINTS_REPO);
         $points = $pointsRepository->getPointsForIncorrectAnswer();
-        if($userResponse->isCorrect())
-        {
+        if ($userResponse->isCorrect()) {
             $points = $pointsRepository->getPointsForCorrectAnswer();
         }
         return $points;
@@ -173,8 +169,9 @@ class TrainingController extends BaseController
     private function advanceNextStep($session)
     {
         $currentStep = $session->get(static::TRAINING_STEP);
-        $nextStep    = $currentStep + 1;
-        $session->set(static::TRAINING_STEP,$nextStep);
+        $nextStep = $currentStep+1;
+
+        $session->set(static::TRAINING_STEP, $nextStep);
     }
 
 
@@ -188,12 +185,9 @@ class TrainingController extends BaseController
         $maxTasks       = $session->get(static::TRAINING_MAX_STEPS);
 
         $userShouldRespondMoreTasks = $tasksCompleted <= $maxTasks;
-        if($userShouldRespondMoreTasks)
-        {
+        if ($userShouldRespondMoreTasks) {
             return $this->redirectToIndex();
-        }
-        else
-        {
+        } else {
             return $this->redirectToStadistics();
         }
     }
@@ -202,5 +196,4 @@ class TrainingController extends BaseController
     {
         return $this->redirectToTrainingTasks();
     }
-
 }

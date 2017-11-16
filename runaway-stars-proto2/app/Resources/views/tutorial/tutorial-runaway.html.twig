@@ -79,13 +79,15 @@
 
 
 {% block submit_buttons %}
-  <div class="col-md-2 col-md-offset-5">
+  <div class="col-md-12">
   	<div class="text-center">
-		<button type="button" id="yesBtn" class="btn btn-success rightAnswerBtn answerBtn" name="answer" value="1">Si</button>
-		<button type="button" id="noBtn" class="btn btn-danger wrongAnswerBtn answerBtn"  name="answer" value="0">No</button>
-		<button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn answerBtn" name="answer" value="2">No estoy seguro</button>
+		  <button type="button" id="yesBtn" class="btn-lg btn-success rightAnswerBtn answerBtn" name="answer" value="1">Si</button>
+		  <button type="button" id="noBtn" class="btn-lg btn-danger wrongAnswerBtn answerBtn"  name="answer" value="0">No</button>
+		  <button type="button" id="dontKnowBtn" class="btn-lg btn-warning dontKnowBtn answerBtn" name="answer" value="2">No estoy seguro</button>
   	</div>
-	<button type="submit" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
+  </div>
+  <div class="col-md-2 col-md-offset-5">
+    <button type="submit" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>
   </div>
 {% endblock %}
 

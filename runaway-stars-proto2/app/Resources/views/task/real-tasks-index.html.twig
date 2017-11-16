@@ -48,16 +48,14 @@ $( ".dontKnowBtn" ).on( "click", function( event ) {
 {% endblock %}
 
 {% block submit_buttons %}
-  <div class="col-md-2 col-md-offset-5 submit-buttons">
+  <div class="col-md-12 submit-buttons">
       <div class="text-center">
-        <button type="button" id="yesBtn" class="btn btn-success answerBtn concreteAnswer" value="1">Si</button>
-        <button type="button" id="noBtn" class="btn btn-danger answerBtn concreteAnswer" value="0">No</button>
-        <button type="button" id="dontKnowBtn" class="btn btn-warning dontKnowBtn" value="2">No estoy seguro</button>
+        <button type="button" id="yesBtn" class="btn-lg btn-success answerBtn concreteAnswer" value="1">Si</button>
+        <button type="button" id="noBtn" class="btn-lg btn-danger answerBtn concreteAnswer" value="0">No</button>
+        <button type="button" id="dontKnowBtn" class="btn-lg btn-warning dontKnowBtn" value="2">No estoy seguro</button>
+        <a class="btn btn-default" href="{{finish_url}}">Finalizar</a>
       </div>
 
-  </div>
-  <div class="col md-1 col-me-offset-1 submit-buttons">
-      <a class="btn btn-default" href="{{finish_url}}">Finalizar</a>
   </div>
   <div class="col-md-2 col-md-offset-5">
     <button type="button" id="submit-button" disabled="disabled" class="hidden btn btn-lg btn-success btn-block">Siguiente</button>

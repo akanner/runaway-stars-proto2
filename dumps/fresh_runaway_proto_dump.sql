@@ -178,7 +178,7 @@ CREATE TABLE `participant` (
   `ocupation` varchar(45) DEFAULT NULL,
   `zooniverse_username` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +215,7 @@ CREATE TABLE `participant_response` (
   CONSTRAINT `fk_participant_response_image1` FOREIGN KEY (`image_served_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_session` FOREIGN KEY (`session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_response_training_task` FOREIGN KEY (`training_task_id`) REFERENCES `training_task` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +252,7 @@ CREATE TABLE `participant_session` (
   CONSTRAINT `FK_4A491ADC6A33B9B3` FOREIGN KEY (`gamification_type_id`) REFERENCES `gamification_type` (`id`),
   CONSTRAINT `fk_participant_session_participant` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_participant_session_participant_session` FOREIGN KEY (`next_session_id`) REFERENCES `participant_session` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=big5;
+) ENGINE=InnoDB DEFAULT CHARSET=big5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +288,7 @@ CREATE TABLE `training_task` (
 
 LOCK TABLES `training_task` WRITE;
 /*!40000 ALTER TABLE `training_task` DISABLE KEYS */;
-INSERT INTO `training_task` VALUES (1,1,'Es una runaway star!',293),(2,2,'No es una runaway star',241),(3,3,'Es una runaway star!',298),(4,4,'Es una runaway star',284),(5,5,'No es una runaway star',268);
+INSERT INTO `training_task` VALUES (1,1,'En la imagen hay un arco!',293),(2,2,'No hay un arco en la imagen.\n',241),(3,3,'En la imagen hay un arco!',298),(4,4,'En la imagen hay un arco!',284),(5,5,'No hay un arco en la imagen.',268);
 /*!40000 ALTER TABLE `training_task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -301,4 +301,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-12 15:25:22
+-- Dump completed on 2017-11-15 21:31:10

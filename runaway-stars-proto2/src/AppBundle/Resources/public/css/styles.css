@@ -49,4 +49,9 @@
   width: 100%;
   display: block; margin-left: auto; margin-right: auto;
   margin-bottom: 10px;
+  border: 10px solid transparent;
+  -webkit-border-image: url("../images/border.png") 30 repeat; /* Safari 3.1-5 */
+  -o-border-image: url("../images/border.png") 30 repeat; /* Opera 11-12.1 */
+  border-image: url("../images/border.png") 30 repeat;
+
 }

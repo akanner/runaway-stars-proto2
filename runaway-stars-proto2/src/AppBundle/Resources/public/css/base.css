@@ -14,7 +14,7 @@ body {
 
 .background-well {
 	 background-image: url("../images/background.jpg");
-	 background-color: #cccccc;
+	 background-color: #007890;
 }
 
 .text-white{
@@ -22,7 +22,7 @@ body {
 }
 
 .text-feedback{
-	color: white;
+	color: #FCF4AC;
 	text-align: center;
 	font-size:large;
 }

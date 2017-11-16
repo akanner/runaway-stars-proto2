@@ -27,6 +27,10 @@ body {
 	font-size:large;
 }
 
+.text-question{
+	color: #FCF4AC;
+}
+
 .bottom-buffer-large{
 	 margin-bottom:5%;
 }

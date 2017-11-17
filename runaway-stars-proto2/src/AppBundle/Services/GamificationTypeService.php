@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Services;
 
-class GamificationTypesService
+class GamificationTypeService
 {
  /**
   * @var \AppBundle\Repositories\ParticipantSessionRepository

@@ -56,7 +56,7 @@ services:
     arguments:
       - AppBundle\Entity\Participant
   gamificationTypesService:
-    class: AppBundle\Services\GamificationTypesService
+    class: AppBundle\Services\GamificationTypeService
     arguments:
       $participantSessionRepository: "@participantSessionRepository"
       $gamificationTypeRepository: "@gamificationTypeRepository"

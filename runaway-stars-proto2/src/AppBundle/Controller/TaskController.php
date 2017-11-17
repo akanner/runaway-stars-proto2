@@ -31,8 +31,7 @@ class TaskController extends BaseController
         //TODO use a interceptor,filter or something to check session ending
         //-------------------------------------------------------------------
         $isUserLogged = $this->isUserLogged($request);
-        if(!$isUserLogged)
-        {
+        if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
            //creates and saves the user response in the session, when the user answer us, it will be save in the db
@@ -42,8 +41,8 @@ class TaskController extends BaseController
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         //gets the images's paths and passes them to the view
         $taskImage = $this->getTasksForQuestion($request);
-        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession,$taskImage);
-        $this->serializeResponseIntoHttpSession($session,$participantResponse);
+        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession, $taskImage);
+        $this->serializeResponseIntoHttpSession($session, $participantResponse);
 
         $currentStep = $session->get(static::STEP);
         //builds view's parameters
@@ -74,8 +73,7 @@ class TaskController extends BaseController
         //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
 
-        if(!$isUserLogged || !$requestIsValid)
-        {
+        if (!$isUserLogged || !$requestIsValid) {
             return $this->redirectToTasks();
         }
 
@@ -89,9 +87,8 @@ class TaskController extends BaseController
         $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
         //sets the user's actual response and saves it in the database
         $userResponse->setParticipantAnswer($userSubmission);
-        if(isset($userRelevantImages))
-        {
-            $userResponse->setImagesUsedToRespond(implode(",",$userRelevantImages));
+        if (isset($userRelevantImages)) {
+            $userResponse->setImagesUsedToRespond(implode(",", $userRelevantImages));
         }
         $em->persist($userResponse);
         $em->flush();
@@ -103,7 +100,7 @@ class TaskController extends BaseController
      */
     public function logout(Request $request)
     {
-    	$session = $request->getSession();
+        $session = $request->getSession();
         //sets the user session as finished
         $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
         $userSession->setEndedAt(new \Datetime('now'));
@@ -111,25 +108,25 @@ class TaskController extends BaseController
         $em->persist($userSession);
         $em->flush();
         //
-        $session->clear();
+        $session-> invalidate();
         $viewParams = [];
         $viewParams["back_url"] = $this->generateUrl('homepage', array(), true);
-        return $this->render("task/logout.html.twig",$viewParams);
+        return $this->render("task/logout.html.twig", $viewParams);
     }
 
-     private function getTasksForQuestion($request)
-     {
-     	//it would be better if this controller is defined as a service as well
+    private function getTasksForQuestion($request)
+    {
+        //it would be better if this controller is defined as a service as well
         //gets the image repository from the IoC container
         $imageRepository = $this->get(static::IMAGES_REPO);
         return $imageRepository->findRandomImage();
-     }
+    }
 
-     private function advanceNextStep($session)
+    private function advanceNextStep($session)
     {
         $currentStep = $session->get(static::STEP);
         $nextStep    = $currentStep + 1;
-        $session->set(static::STEP,$nextStep);
+        $session->set(static::STEP, $nextStep);
     }
 
 
@@ -141,6 +138,4 @@ class TaskController extends BaseController
     {
         return $this->redirectToURL("taskIndex");
     }
-
-    
 }

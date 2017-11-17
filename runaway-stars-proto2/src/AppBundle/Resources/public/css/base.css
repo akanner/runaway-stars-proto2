@@ -15,6 +15,7 @@ body {
 .background-well {
 	 background-image: url("../images/background.jpg");
 	 background-color: #007890;
+	 background-repeat: repeat;
 }
 
 .text-white{

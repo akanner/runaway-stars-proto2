@@ -9,7 +9,7 @@
   * `sudo apt-get install php7.0-xml`
   * `sudo apt-get install php7.0-mysql`
         
-* Create the database using the script 'fresh_runaway_multicolour_gifs_proto_dump.sql'
+* Create the database using the script 'dumps/fresh_runaway_multicolour_gifs_proto_dump.sql'
 * cd runaway-stars-proto2
 * composer install
 

@@ -9,16 +9,28 @@ use Symfony\Component\HttpFoundation\Request;
 //entities
 use AppBundle\Entity\ParticipantSession;
 use AppBundle\Entity\Participant;
+//repositories
+use AppBundle\Repositories\ParticipantRepository;
+use AppBundle\Repositories\TrainingRepository;
 
 //view objects
 use AppBundle\ViewObjects\ViewImage;
-
 use AppBundle\Utils\GamificationTypes;
+
+use AppBundle\Services\GamificationTypeService;
 
 class LoginController extends BaseController
 {
+    private $gamificationService;
+    private $participantRepository;
+    private $trainingRepository;
 
-    const PARTICIPANT_REPO = "participantRepository";
+    public function __construct(TrainingRepository $trainingRepository,ParticipantRepository $participantRepository,GamificationTypeService $gamificationService)
+    {
+        $this->gamificationService = $gamificationService;
+        $this->participantRepository = $participantRepository;
+        $this->trainingRepository = $trainingRepository;
+    }
 
 
      /**
@@ -51,12 +63,11 @@ class LoginController extends BaseController
         //-------------------------------------------------------------------
         //$zooniverseUser     = $request->request->get("zooniverse_username");
         //balance the quantity of games using the different gamification types
-        $gamificationService=$this->get(static::GAMIFICATION_SERVICE);
         //the gamification type can be forced with a query param, if null the service will look for a valid gamification type
         $gamificationTypeName = $request->query->get("gamification");
-        $gamificationType = $gamificationService->getGamificationTypeByNameOrRandom($gamificationTypeName);
+        $gamificationType = $this->gamificationService->getGamificationTypeByNameOrRandom($gamificationTypeName);
         //creates user and session in the database
-        $username = $this->get(static::PARTICIPANT_REPO)->getNextParticipantName();
+        $username = $this->participantRepository->getNextParticipantName();
         $participant = Participant::createWithName($username);
         $session = $request->getSession();
         //$participant->setZooniverseUsername($zooniverseUser);
@@ -106,8 +117,7 @@ class LoginController extends BaseController
 
     private function getMaxNumberOfTrainingQuestions()
     {
-        $trainingRepository = $this->get(static::TRAINING_REPO);
-        $numberOfTrainingTasks = $trainingRepository->getMaxNumberOfQuestions();
+        $numberOfTrainingTasks = $this->trainingRepository->getMaxNumberOfQuestions();
         return $numberOfTrainingTasks;
     }
 

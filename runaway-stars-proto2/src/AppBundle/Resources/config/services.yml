@@ -4,67 +4,59 @@ parameters:
 #    parameter_name: value
 
 services:
+  # default configuration for services in *this* file
+  _defaults:
+      autowire: true
+      autoconfigure: true
+      public: false
+
+  # makes classes in src/AppBundle available to be used as services
+  AppBundle\:
+      resource: '../../*'
+      # you can exclude directories or files
+      # but if a service is unused, it's removed anyway
+      exclude: '../../{Entity}'
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-  imagesRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
+#repositories
+  AppBundle\Repositories\ImageRepository:
+    factory: doctrine.orm.entity_manager:getRepository
     factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\Image
-  pointsRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\AnswerPoints
-  trainingRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\TrainingTask
-  paramsRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\AppParameter
-  gamificationTypeRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\GamificationType
-  participantSessionRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\ParticipantSession
-  participantResponseRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\ParticipantResponse
-  participantRepository:
-    class: Doctrine\ORM\EntityRepository
-    factory_service: doctrine.orm.default_entity_manager
-    factory_method: getRepository
-    arguments:
-      - AppBundle\Entity\Participant
-  gamificationTypesService:
-    class: AppBundle\Services\GamificationTypeService
-    arguments:
-      $participantSessionRepository: "@participantSessionRepository"
-      $gamificationTypeRepository: "@gamificationTypeRepository"
+    arguments: [AppBundle\Entity\Image]  
 
-    #doctrine extensions
-    gedmo.listener.timestampable:
-        class: Gedmo\Timestampable\TimestampableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
+  AppBundle\Repositories\GamificationTypeRepository:
+    factory: 'doctrine.orm.entity_manager:getRepository'
+    arguments: [AppBundle\Entity\GamificationType]
+
+  AppBundle\repositories\AnswerPointsRepository:
+    factory: doctrine.orm.entity_manager:getRepository
+    arguments: [AppBundle\Entity\AnswerPoints]
+
+  AppBundle\repositories\ParticipantRepository:
+    factory: doctrine.orm.entity_manager:getRepository
+    arguments: [AppBundle\Entity\Participant]
+
+  AppBundle\repositories\ParticipantResponseRepository:
+    factory: doctrine.orm.entity_manager:getRepository
+    arguments: [AppBundle\Entity\ParticipantResponse]
+
+  AppBundle\repositories\TrainingRepository:
+    factory: doctrine.orm.entity_manager:getRepository
+    arguments: [AppBundle\Entity\TrainingTask]
+
+  AppBundle\repositories\ParticipantSessionRepository:
+    factory: doctrine.orm.entity_manager:getRepository
+    arguments: [AppBundle\Entity\ParticipantSession]
+
+  AppBundle\repostories\AppParameterRepository:
+    factory: doctrine.orm.entity_manager:getRepository
+    arguments: [AppBundle\Entity\AppParameter]
+
+  #doctrine extensions
+  gedmo.listener.timestampable:
+      class: Gedmo\Timestampable\TimestampableListener
+      tags:
+          - { name: doctrine.event_subscriber, connection: default }
+      calls:
+          - [ setAnnotationReader, [ "@annotation_reader" ] ]

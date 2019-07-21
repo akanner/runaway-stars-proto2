@@ -37,21 +37,6 @@ abstract class BaseController extends Controller
     const POINTS_VIEW_SESSION_KEY   = "points-view";
 
     const GAMIFICATION_KEY          = "gamification-type";
-
-    const PARAM_REPO                = "paramsRepository";
-
-    const GAMIFICATION_REPO         = "gamificationTypeRepository";
-
-    const PARTICIPANT_SESSION_REPO  = "participantSessionRepository";
-
-    const PARTICIPANT_RESPONSE_SESSION_REPO = "participantResponseRepository";
-
-    const TRAINING_REPO             = "trainingRepository";
-
-    const IMAGES_REPO               = "imagesRepository";
-
-    const GAMIFICATION_SERVICE = "gamificationTypesService";
-
     protected function getEntityManager()
     {
         return $this->get("doctrine.orm.default_entity_manager");

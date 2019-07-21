@@ -9,27 +9,32 @@ use Symfony\Component\HttpFoundation\Request;
 //entities
 use AppBundle\Entity\ParticipantSession;
 use AppBundle\Entity\Participant;
-//repositories
-use AppBundle\Repositories\ParticipantRepository;
-use AppBundle\Repositories\TrainingRepository;
 
 //view objects
 use AppBundle\ViewObjects\ViewImage;
 use AppBundle\Utils\GamificationTypes;
 
 use AppBundle\Services\GamificationTypeService;
+use AppBundle\Services\SessionService;
+use AppBundle\Services\TrainingService;
 
 class LoginController extends BaseController
 {
     private $gamificationService;
-    private $participantRepository;
-    private $trainingRepository;
+    /**
+     * @var SessionService
+     */
+    private $sessionService;
+    /**
+     * @var TrainingService
+     */
+    private $trainingService;
 
-    public function __construct(TrainingRepository $trainingRepository,ParticipantRepository $participantRepository,GamificationTypeService $gamificationService)
+    public function __construct(TrainingService $trainingService,SessionService $sessionService,GamificationTypeService $gamificationService)
     {
         $this->gamificationService = $gamificationService;
-        $this->participantRepository = $participantRepository;
-        $this->trainingRepository = $trainingRepository;
+        $this->sessionService = $sessionService;
+        $this->trainingService = $trainingService;
     }
 
 
@@ -59,30 +64,16 @@ class LoginController extends BaseController
             //redirects to the home
             return $this->redirectToTrainingTasks();
         }
-
         //-------------------------------------------------------------------
-        //$zooniverseUser     = $request->request->get("zooniverse_username");
         //balance the quantity of games using the different gamification types
         //the gamification type can be forced with a query param, if null the service will look for a valid gamification type
         $gamificationTypeName = $request->query->get("gamification");
         $gamificationType = $this->gamificationService->getGamificationTypeByNameOrRandom($gamificationTypeName);
         //creates user and session in the database
-        $username = $this->participantRepository->getNextParticipantName();
-        $participant = Participant::createWithName($username);
         $session = $request->getSession();
-        $userSession = $this->createParticipantSession($session->getId(), $participant, $gamificationType);
-
-        $em = $this->getEntityManager();
-        $em->persist($participant);
-        $em->persist($userSession);
-        $em->flush();
-        //flush it before serializing it!!!
-
+        $userSession = $this->sessionService->createAndPersistParticipantAndSession(null,$session->getId(),$gamificationType);
         //serializes the session into the http session
         $this->initializeSession($request, $gamificationType, $userSession);
-        //persists the ParticipantSession
-
-
         //redirects to the home
         return $this->redirectToURL("tutorial-01");
     }
@@ -103,23 +94,12 @@ class LoginController extends BaseController
           //both templates extend task/index.html
             $session->set(static::POINTS_VIEW_SESSION_KEY, $gamificationType->getPointsView());
         }
-
         $this->serializeParticipantSessionIntoHttpSession($session, $userSessionEntity);
-
         //sets the max number of tasks in the session
-        $maxNumberOfTask = $this->getMaxNumberOfTrainingQuestions();
+        $maxNumberOfTask = $this->trainingService->getMaxNumberOfTrainingQuestions();
         $session->set(static::TRAINING_STEP, 1);
         $session->set(static::TRAINING_MAX_STEPS, $maxNumberOfTask);
         $session->set("logged", true);
         return $session;
     }
-
-    private function getMaxNumberOfTrainingQuestions()
-    {
-        $numberOfTrainingTasks = $this->trainingRepository->getMaxNumberOfQuestions();
-        return $numberOfTrainingTasks;
-    }
-
-
-    /* -------------------------- session management --------------------------*/
 }

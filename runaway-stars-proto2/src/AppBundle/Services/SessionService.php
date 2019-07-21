@@ -50,6 +50,13 @@ class SessionService{
         return $userSession;
     }
 
+    public function endSession($userSession)
+    {
+        $userSession->setEndedAt(new \Datetime('now'));
+        $this->em->persist($userSession);
+        $this->em->flush();
+    }
+
     public function getById($entityId)
     {
         return $this->sessionRepository->findOneById($entityId);

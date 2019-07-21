@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Services\TrainingService;
 use AppBundle\Services\SessionService;
+use AppBundle\Utils\ImagesViewsHelper;
 //entities
 use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantTrainingResponse;
@@ -30,11 +31,16 @@ class TrainingController extends BaseController
      * @var SessionService
      */
     private $sessionService;
-
-    public function __construct(SessionService $partisipantSessionService,TrainingService $trainingService)
+    /**
+     * @var ImagesViewsHelper
+     */
+    private $imagesViewsHelper;
+    public function __construct(SessionService $partisipantSessionService,TrainingService $trainingService,
+    ImagesViewsHelper $imagesViewsHelper)
     {
         $this->trainingService = $trainingService;
         $this->sessionService = $partisipantSessionService;
+        $this->imagesViewsHelper = $imagesViewsHelper;
     }
 
     /**
@@ -160,5 +166,10 @@ class TrainingController extends BaseController
     private function redirectToIndex()
     {
         return $this->redirectToTrainingTasks();
+    }
+
+    protected function getTrainingImage($trainingTask)
+    {
+        return $this->imagesViewsHelper->getViewImages($trainingTask->getImageServed(), $trainingTask->getHelpText());
     }
 }

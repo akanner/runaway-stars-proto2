@@ -15,58 +15,23 @@ class GamificationTypeService
 
     function __construct(\AppBundle\Repositories\ParticipantSessionRepository $participantSessionRepository, \AppBundle\Repositories\GamificationTypeRepository $gamificationTypeRepository)
     {
-        $this->setParticipantSessionRepository($participantSessionRepository);
-        $this->setGamificationTypeRepository($gamificationTypeRepository);
-    }
-
-    /**
-     * Get the value of Participant Session Repository
-     *
-     * @return ParticipantSessionRepository
-     */
-    public function getParticipantSessionRepository()
-    {
-        return $this->participantSessionRepository;
-    }
-
-    /**
-     * Set the value of Participant Session Repository
-     *
-     * @param ParticipantSessionRepository participantSessionRepository
-     *
-     * @return self
-     */
-    public function setParticipantSessionRepository(\AppBundle\Repositories\ParticipantSessionRepository $participantSessionRepository)
-    {
         $this->participantSessionRepository = $participantSessionRepository;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of Gamification Type Repository
-     *
-     * @return GamificationTypeRepository
-     */
-    public function getGamificationTypeRepository()
-    {
-        return $this->gamificationTypeRepository;
-    }
-
-    /**
-     * Set the value of Gamification Type Repository
-     *
-     * @param GamificationTypeRepository gamificationTypeRepository
-     *
-     * @return self
-     */
-    public function setGamificationTypeRepository(\AppBundle\Repositories\GamificationTypeRepository $gamificationTypeRepository)
-    {
         $this->gamificationTypeRepository = $gamificationTypeRepository;
-
-        return $this;
     }
 
+ /**
+      * gets the template for the selected gamification type
+      *
+      * @param string Gamification type name
+      *
+      */
+      public function getGamificationTypeView($gamificationType)
+      {
+          //gets the gamification type
+          $gType = $this->gamificationTypeRepository->findOneByName($gamificationType);
+  
+          return $gType->getStadisticsView();
+      }
 
     public function getGamificationTypeByNameOrRandom($gamificationTypeName)
     {

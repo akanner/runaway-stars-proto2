@@ -12,6 +12,7 @@ use AppBundle\Entity\ParticipantSession;
 
 use AppBundle\Services\SessionService;
 use AppBundle\Services\TasksService;
+use AppBundle\Utils\ImagesViewsHelper;
 
 //view objects
 use AppBundle\ViewObjects\ViewImage;
@@ -33,10 +34,16 @@ class TaskController extends BaseController
     */
     private $taskService;
 
-    public function __construct(SessionService $sessionService,TasksService $taskService)
+    /**
+     * @var ImagesViewsHelper
+     */
+    private $imagesViewsHelper;
+
+    public function __construct(SessionService $sessionService,TasksService $taskService,ImagesViewsHelper $imagesViewsHelper)
     {
         $this->sessionService = $sessionService;
         $this->taskService = $taskService;
+        $this->imagesViewsHelper = $imagesViewsHelper;
     }
 
      /**
@@ -133,7 +140,7 @@ class TaskController extends BaseController
         $currentStep = $session->get(static::STEP);
         $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
         //gets the images's paths and passes them to the view
-        $viewParams["images"] = $this->getViewImages($taskImage);
+        $viewParams["images"] = $this->imagesViewsHelper->getViewImages($taskImage);
         $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
         $viewParams["finish_url"]    = $this->generateUrl('endTasks', array(), true);
 

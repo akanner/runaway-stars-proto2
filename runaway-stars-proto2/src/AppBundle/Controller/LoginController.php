@@ -70,7 +70,6 @@ class LoginController extends BaseController
         $username = $this->participantRepository->getNextParticipantName();
         $participant = Participant::createWithName($username);
         $session = $request->getSession();
-        //$participant->setZooniverseUsername($zooniverseUser);
         $userSession = $this->createParticipantSession($session->getId(), $participant, $gamificationType);
 
         $em = $this->getEntityManager();

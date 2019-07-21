@@ -12,6 +12,11 @@ use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
 use AppBundle\Utils\TrainingResultsHelper;
+//repositories
+use AppBundle\repositories\ParticipantSessionRepository;
+use AppBundle\repositories\AppParameterRepository;
+use AppBundle\repositories\GamificationTypeRepository;
+
 
 //view objects
 use AppBundle\ViewObjects\ViewImage;
@@ -20,7 +25,25 @@ use AppBundle\Utils\GamificationTypes;
 
 class StadisticsController extends BaseController
 {
+    /**
+     * @var ParticipantSessionRepository $participantSessionRepository
+     */
+    private $participantSessionRepository;
+    /**
+     * @var AppParameterRepository
+     */
+    private $parametersRepository;
+    /**
+     * @var GamificationTypeRepository
+     */
+    private $gamificationTypeRepository;
 
+    public function __construct(ParticipantSessionRepository $participantSessionRepo,AppParameterRepository $parametersRepository,GamificationTypeRepository $gamificationTypeRepository)
+    {
+        $this->participantSessionRepository = $participantSessionRepo;
+        $this->parametersRepository = $parametersRepository;
+        $this->gamificationTypeRepository = $gamificationTypeRepository;
+    }
      /**
      * @Route("stadistics/", name="stadistics")
      */
@@ -32,30 +55,23 @@ class StadisticsController extends BaseController
         if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
-
-        //this should be injected, to do this, this controller should be declared as a service
-        $participantSessionRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
-        $paramRepo = $this->get(static::PARAM_REPO);
+    
         //calculates percentile TODO: this could be a lot faster if it is calculated using a stored procedure
 
         $session = $request->getSession();
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        $userPercentile = TrainingResultsHelper::calculatePercentile($userSession, $participantSessionRepo);
-
-
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
+        $userPercentile = TrainingResultsHelper::calculatePercentile($userSession, $this->participantSessionRepository);
         $userSession->setPercentile($userPercentile);
 
         $em = $this->getEntityManager();
         $em->persist($userSession);
-
-
         $em->flush();
-
         //gets the stadistics of the training
         $gamificationType = $this->getGamificationType($session);
-        $gamificationResult = $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType, $userSession->getPercentageOfCorrectTasks(), $paramRepo);
+        $gamificationResult = 
+            $this->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType, $userSession->getPercentageOfCorrectTasks(), $this->parametersRepository);
         $viewName = $this->getGamificationTypeView($gamificationType);
-        $leaderboard = TrainingResultsHelper::getLeadersboard($participantSessionRepo->findAll(), $userSession);
+        $leaderboard = TrainingResultsHelper::getLeadersboard($this->participantSessionRepository->findAll(), $userSession);
 
         $viewParams = [];
         $viewParams["post_url"]      = $this->generateUrl('endTraining', array(), true);
@@ -80,7 +96,7 @@ class StadisticsController extends BaseController
             return $this->redirectToDefault();
         }
         $httpSession = $request->getSession();
-        $participantSessionEntity = $this->deserializeParticipantSessionEntityFromHttpSession($httpSession);
+        $participantSessionEntity = $this->deserializeParticipantSessionEntityFromHttpSession($httpSession,$this->participantSessionRepository);
 
         //saves the user's confidence
         $confidence = $request->request->get("confidence");
@@ -106,10 +122,8 @@ class StadisticsController extends BaseController
       */
     private function getGamificationTypeView($gamificationType)
     {
-        $gTypeRepo = $this->get(static::GAMIFICATION_REPO);
-
         //gets the gamification type
-        $gType = $gTypeRepo->findOneByName($gamificationType);
+        $gType = $this->gamificationTypeRepository->findOneByName($gamificationType);
 
         return $gType->getStadisticsView();
     }
@@ -140,7 +154,7 @@ class StadisticsController extends BaseController
     private function repeatTraining($httpSession)
     {
         //gets the participant session from the http session
-        $participantSessionEntity = $this->deserializeParticipantSessionEntityFromHttpSession($httpSession);
+        $participantSessionEntity = $this->deserializeParticipantSessionEntityFromHttpSession($httpSession,$this->participantSessionRepository);
         //creates a new participant session
         $newUserSession = $this->createParticipantSession($httpSession->getId(), $participantSessionEntity->getParticipant(), $participantSessionEntity->getGamificationType());
         //links the old session to the new session
@@ -162,8 +176,7 @@ class StadisticsController extends BaseController
 
     private function getMaxNumberOfQuestions()
     {
-        $paramRepo = $this->get(static::PARAM_REPO);
-        return $paramRepo->getMaxNumberOfQuestions();
+        return $this->parametersRepository->getMaxNumberOfQuestions();
     }
 
 

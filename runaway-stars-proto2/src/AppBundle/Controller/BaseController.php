@@ -77,7 +77,7 @@ abstract class BaseController extends Controller
      */
     protected function getImageUrl($imageName)
     {
-        $assetsHelper = $this->get('templating.helper.assets');
+        $assetsHelper = $this->get('assets.packages');
         $urlImage = $assetsHelper->getUrl("bundles/app/images/$imageName");
         return $urlImage;
     }
@@ -139,7 +139,7 @@ abstract class BaseController extends Controller
      */
     protected function getTaskUrl($imageName)
     {
-        $assetsHelper = $this->get('templating.helper.assets');
+        $assetsHelper = $this->get('assets.packages');
         $urlImage = $assetsHelper->getUrl("bundles/app/images/tasks/$imageName");
         return $urlImage;
     }
@@ -181,14 +181,13 @@ abstract class BaseController extends Controller
     /**
      * Deserializes a participantSession Entity from the http session
      *
-     * @param Session   $session    Http session
+     * @param Session                       $session    Http session
+     * @param ParticipantSessionRepository  $entityRepo ParticipantSessionRepository
      *
      * @return AppBundle\Entity\ParticipantSession deserialized entity
      */
-    protected function deserializeParticipantSessionEntityFromHttpSession($session)
+    protected function deserializeParticipantSessionEntityFromHttpSession($session,$entityRepo)
     {
-        $entityRepo = $this->get(static::PARTICIPANT_SESSION_REPO);
-
         return $this->deserializeEntityFromSession($session, static::USER_SESSION_SESSION_KEY, $entityRepo);
     }
 

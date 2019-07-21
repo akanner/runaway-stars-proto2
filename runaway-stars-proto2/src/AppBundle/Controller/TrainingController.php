@@ -6,8 +6,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+//repositories
+use AppBundle\repositories\ParticipantSessionRepository;
+use AppBundle\repositories\TrainingRepository;
+use AppBundle\repositories\AnswerPointsRepository;
+use AppBundle\repositories\AppParameterRepository;
 //entities
-
 use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantTrainingResponse;
 use AppBundle\Entity\ParticipantSession;
@@ -20,15 +24,19 @@ use AppBundle\Utils\UserAnswerEnum;
 
 class TrainingController extends BaseController
 {
+    private $participantSessionRepository;
+    private $trainingRepository;
+    private $pointsRepository;
+    private $parametersRepository;
 
-
-    /**
-     * TODO inject it into a variable
-     */
-
-
-    const POINTS_REPO               = "pointsRepository";
-
+    public function __construct(ParticipantSessionRepository $participantSessionRepository,TrainingRepository $trainingRepository,
+    AnswerPointsRepository $pointsRepository, AppParameterRepository $parametersRepository)
+    {
+        $this->participantSessionRepository = $participantSessionRepository;
+        $this->trainingRepository = $trainingRepository;
+        $this->pointsRepository = $pointsRepository;
+        $this->parametersRepository = $parametersRepository;
+    }
 
     /**
      * @Route("training/", name="trainingIndex")
@@ -51,7 +59,7 @@ class TrainingController extends BaseController
 
         //this should be injected, to do this, that controller should be declared as a service
         $em = $this->getEntityManager();
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
         $participantResponse = ParticipantTrainingResponse::createFromSessionAndTrainingTask($userSession, $trainingStep);
         $this->serializeResponseIntoHttpSession($session, $participantResponse);
 
@@ -59,7 +67,7 @@ class TrainingController extends BaseController
         //builds view's parameters
         $viewParams = array();
         //answer points
-        $pointsRepository = $this->get(static::POINTS_REPO);
+        $pointsRepository = $this->pointsRepository;
         $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
         $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
         //gets the images's paths and passes them to the view
@@ -74,7 +82,7 @@ class TrainingController extends BaseController
         $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);
         //looks in the http session the view to show (with or without points)
         //user session info
-        $viewParams["show_user_session"] = $this->get(static::PARAM_REPO)->getShowDebugUserSession();
+        $viewParams["show_user_session"] = $this->parametersRepository->getShowDebugUserSession();
         $viewParams["total_responses"] = $userSession->getNumberOfResponses();
         $viewParams["total_correct_responses"] = $userSession->getNumberOfCorrectResponses();
         $viewParams["correct_percentage"] = $userSession->getPercentageOfCorrectTasks();
@@ -82,11 +90,6 @@ class TrainingController extends BaseController
 
         return $this->render($session->get(static::POINTS_VIEW_SESSION_KEY), $viewParams);
     }
-
-
-
-
-
 
     /**
      * @Route("training/processResponse", name="processTrainingResponse")
@@ -136,7 +139,7 @@ class TrainingController extends BaseController
      */
     private function sumPoints($em, $session, $points)
     {
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
         $userSession->sumPoints($points);
         $em->persist($userSession);
         $em->flush();
@@ -145,7 +148,7 @@ class TrainingController extends BaseController
 
     private function getTrainingTask($trainingStepNumber)
     {
-        $trainingRepo = $this->get(static::TRAINING_REPO);
+        $trainingRepo = $this->trainingRepository;
         return $trainingRepo->findOneByTrainingStep($trainingStepNumber);
     }
     /**
@@ -158,7 +161,7 @@ class TrainingController extends BaseController
      */
     private function assignPoints($userResponse)
     {
-        $pointsRepository = $this->get(static::POINTS_REPO);
+        $pointsRepository = $this->pointsRepository;
         $points = $pointsRepository->getPointsForIncorrectAnswer();
         if ($userResponse->isCorrect()) {
             $points = $pointsRepository->getPointsForCorrectAnswer();

@@ -49,7 +49,7 @@ services:
     factory: doctrine.orm.entity_manager:getRepository
     arguments: [AppBundle\Entity\ParticipantSession]
 
-  AppBundle\repostories\AppParameterRepository:
+  AppBundle\repositories\AppParameterRepository:
     factory: doctrine.orm.entity_manager:getRepository
     arguments: [AppBundle\Entity\AppParameter]
 

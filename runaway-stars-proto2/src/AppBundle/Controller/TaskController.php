@@ -10,6 +10,10 @@ use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
 
+//repositories
+use AppBundle\repositories\ParticipantSessionRepository;
+use AppBundle\repositories\ImageRepository;
+
 //view objects
 use AppBundle\ViewObjects\ViewImage;
 
@@ -21,6 +25,21 @@ class TaskController extends BaseController
     const STEP                      = "task-number";
 
     const MAX_STEPS                 = "max-tasks";
+
+    /**
+     * @var ParticipantSessionRepository $participantSessionRepository
+     */
+    private $participantSessionRepository;
+    /**
+     * @var ImageRepository $imageRepository
+     */
+    private $imageRepository;
+
+    public function __construct(ParticipantSessionRepository $participantSessionRepo,ImageRepository $imageRepository)
+    {
+        $this->participantSessionRepository = $participantSessionRepo;
+        $this->imageRepository = $imageRepository;
+    }
 
      /**
      * @Route("task/", name="taskIndex")
@@ -38,7 +57,7 @@ class TaskController extends BaseController
         $session = $request->getSession();
         //this should be injected, to do this, that controller should be declared as a service
         $em = $this->getEntityManager();
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
         //gets the images's paths and passes them to the view
         $taskImage = $this->getTasksForQuestion($request);
         $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession, $taskImage);
@@ -77,7 +96,6 @@ class TaskController extends BaseController
             return $this->redirectToTasks();
         }
 
-        $imageRepository =$this->get(static::IMAGES_REPO);
         $session = $request->getSession();
         $this->advanceNextStep($session);
         //this should be injected, to do this, this controller should be declared as a service
@@ -102,7 +120,7 @@ class TaskController extends BaseController
     {
         $session = $request->getSession();
         //sets the user session as finished
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
+        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
         $userSession->setEndedAt(new \Datetime('now'));
         $em = $this->getEntityManager();
         $em->persist($userSession);
@@ -116,10 +134,7 @@ class TaskController extends BaseController
 
     private function getTasksForQuestion($request)
     {
-        //it would be better if this controller is defined as a service as well
-        //gets the image repository from the IoC container
-        $imageRepository = $this->get(static::IMAGES_REPO);
-        return $imageRepository->findRandomImage();
+        return $this->imageRepository->findRandomImage();
     }
 
     private function advanceNextStep($session)

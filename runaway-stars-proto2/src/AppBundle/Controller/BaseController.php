@@ -73,23 +73,6 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Deserializes pre-persisted entities from the session
-     *
-     * @param Session                           $session    Http session
-     * @param string                            $key        Session key
-     * @param Doctrine\ORM\EntityRepository     $entityRepo entity to be deserialized's repository
-     *
-     * @return mixed Deserialized Entity
-     */
-    protected function deserializeEntityFromSession($session, $key, $entityRepo)
-    {
-        $entityId = $session->get($key);
-        $entity   = $entityRepo->findOneById($entityId);
-
-        return $entity;
-    }
-
-    /**
      * gets the entity's id saved in the session
      *
      * @param Session                           $session    Http session
@@ -103,18 +86,6 @@ abstract class BaseController extends Controller
         return $session->get($key);
     }
     //-------------------------------------------------------------------------------------------
-    /**
-     * Deserializes a participantSession Entity from the http session
-     *
-     * @param Session                       $session    Http session
-     * @param ParticipantSessionRepository  $entityRepo ParticipantSessionRepository
-     *
-     * @return AppBundle\Entity\ParticipantSession deserialized entity
-     */
-    protected function deserializeParticipantSessionEntityFromHttpSession($session,$entityRepo)
-    {
-        return $this->deserializeEntityFromSession($session, static::USER_SESSION_SESSION_KEY, $entityRepo);
-    }
 
     protected function getUserSessionIdFromSession($session)
     {
@@ -128,7 +99,7 @@ abstract class BaseController extends Controller
      *
      * @return null
      */
-    protected function serializeParticipantSessionIntoHttpSession($httpSession, $participantSessionEntity)
+    protected function saveParticipantSessionIdInHttpSession($httpSession, $participantSessionEntity)
     {
         $this->serializeEntityIntoSession($httpSession, static::USER_SESSION_SESSION_KEY, $participantSessionEntity);
     }
@@ -147,17 +118,7 @@ abstract class BaseController extends Controller
     {
          $this->serializeEntityIntoSession($httpSession, static::USER_RESPONSE_SESSION_KEY, $participantResponse);
     }
-    /**
-     * Deserializes a AppBundle\Entity\ParticipantResponse instance from the http session
-     *
-     * @param Session   $session    http session
-     *
-     * @return AppBundle\Entity\ParticipantResponse deserialized instance
-     */
-    protected function deserializeParticipantResponseFromHttpSession($session,$entityRepo)
-    {
-        return $this->deserializeEntityFromSession($session, static::USER_RESPONSE_SESSION_KEY, $entityRepo);
-    }
+
 
     protected function getParticipantResponseIdFromSession($session)
     {
@@ -193,14 +154,5 @@ abstract class BaseController extends Controller
     protected function redirectToTasks()
     {
         return $this->redirectToURL("taskIndex");
-    }
-
-    /*----------------OBjects creation ---------------------*/
-    protected function createParticipantSession($httpSessionId, $participantEntity, $gamificationTypEntity)
-    {
-
-        $participantSession = ParticipantSession::createWith($httpSessionId, new \Datetime("now"), $participantEntity, $gamificationTypEntity);
-        $participantEntity->setSession($participantSession);
-        return $participantSession;
     }
 }

@@ -93,7 +93,7 @@ class LoginController extends BaseController
           //both templates extend task/index.html
             $session->set(static::POINTS_VIEW_SESSION_KEY, $gamificationType->getPointsView());
         }
-        $this->serializeParticipantSessionIntoHttpSession($session, $userSessionEntity);
+        $this->saveParticipantSessionIdInHttpSession($session, $userSessionEntity);
         //sets the max number of tasks in the session
         $maxNumberOfTask = $this->trainingService->getMaxNumberOfTrainingQuestions();
         $session->set(static::TRAINING_STEP, 1);

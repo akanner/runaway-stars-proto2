@@ -13,6 +13,7 @@ use AppBundle\Entity\ParticipantSession;
 //repositories
 use AppBundle\repositories\ParticipantSessionRepository;
 use AppBundle\repositories\ImageRepository;
+use AppBundle\Repositories\ParticipantResponseRepository;
 
 //view objects
 use AppBundle\ViewObjects\ViewImage;
@@ -34,11 +35,17 @@ class TaskController extends BaseController
      * @var ImageRepository $imageRepository
      */
     private $imageRepository;
+    /**
+     * @var ResponseRepository;
+     */
+    private $responseRepository;
 
-    public function __construct(ParticipantSessionRepository $participantSessionRepo,ImageRepository $imageRepository)
+    public function __construct(ParticipantSessionRepository $participantSessionRepo,
+        ImageRepository $imageRepository,ParticipantResponseRepository $responseRepository)
     {
         $this->participantSessionRepository = $participantSessionRepo;
         $this->imageRepository = $imageRepository;
+        $this->responseRepository = $responseRepository;
     }
 
      /**
@@ -61,7 +68,9 @@ class TaskController extends BaseController
         //gets the images's paths and passes them to the view
         $taskImage = $this->getTasksForQuestion($request);
         $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession, $taskImage);
-        $this->serializeResponseIntoHttpSession($session, $participantResponse);
+        $em->persist($participantResponse);
+        $em->flush();
+        $this->saveResponseIdToHttpSession($session, $participantResponse);
 
         $currentStep = $session->get(static::STEP);
         //builds view's parameters
@@ -102,7 +111,7 @@ class TaskController extends BaseController
         $em = $this->getEntityManager();
 
         //gets the user response previously stored in the session, remember, this user response was not really answered yet
-        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
+        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session,$this->responseRepository);
         //sets the user's actual response and saves it in the database
         $userResponse->setParticipantAnswer($userSubmission);
         if (isset($userRelevantImages)) {

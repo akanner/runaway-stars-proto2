@@ -7,6 +7,7 @@ use AppBundle\Entity\ParticipantSession;
 use AppBundle\Entity\Participant;
 //repositories
 use AppBundle\Repositories\ParticipantRepository;
+use AppBundle\Repositories\ParticipantSessionRepository;
 
 class SessionService{
     /**
@@ -17,11 +18,17 @@ class SessionService{
      * @var ParticipantRepository
      */
     private $participantRepository;
+    /**
+     * @var ParticipantSessionRepository
+     */
+    private $sessionRepository;
 
-    public function __construct(EntityManager $entityManager,ParticipantRepository $participantRepository)
+    public function __construct(EntityManager $entityManager,ParticipantRepository $participantRepository,
+        ParticipantSessionRepository $participantSessionRepository)
     {
         $this->em = $entityManager;
         $this->participantRepository = $participantRepository;
+        $this->sessionRepository = $participantSessionRepository;
     }
     /**
      * @return ParticipantSession
@@ -41,6 +48,11 @@ class SessionService{
         $this->em->flush();
 
         return $userSession;
+    }
+
+    public function getById($entityId)
+    {
+        return $this->sessionRepository->findOneById($entityId);
     }
 
     private function createParticipantSession($httpSessionId, $participantEntity, $gamificationTypEntity)

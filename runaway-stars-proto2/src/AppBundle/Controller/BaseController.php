@@ -164,6 +164,20 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * gets the entity's id saved in the session
+     *
+     * @param Session                           $session    Http session
+     * @param string                            $key        Session key
+     * @param Doctrine\ORM\EntityRepository     $entityRepo entity to be deserialized's repository
+     *
+     * @return mixed Deserialized Entity
+     */
+    protected function getEntityIdFromSession($session, $key)
+    {
+        return $session->get($key);
+    }
+    //-------------------------------------------------------------------------------------------
+    /**
      * Deserializes a participantSession Entity from the http session
      *
      * @param Session                       $session    Http session
@@ -174,6 +188,11 @@ abstract class BaseController extends Controller
     protected function deserializeParticipantSessionEntityFromHttpSession($session,$entityRepo)
     {
         return $this->deserializeEntityFromSession($session, static::USER_SESSION_SESSION_KEY, $entityRepo);
+    }
+
+    protected function getUserSessionIdFromSession($session)
+    {
+        return $this->getEntityIdFromSession($session,static::USER_SESSION_SESSION_KEY);
     }
 
     /**
@@ -188,6 +207,8 @@ abstract class BaseController extends Controller
         $this->serializeEntityIntoSession($httpSession, static::USER_SESSION_SESSION_KEY, $participantSessionEntity);
     }
 
+    //-------------------------------------------------------------------------------------------
+
     /**
      * Serializes a AppBundle\Entity\ParticipantResponse instance into the http session
      *
@@ -196,11 +217,9 @@ abstract class BaseController extends Controller
      *
      * @return null
      */
-    protected function serializeResponseIntoHttpSession($httpSession, $participantResponse)
+    protected function saveResponseIdToHttpSession($httpSession, $participantResponse)
     {
-         $em = $this->getEntityManager();
-         $em->detach($participantResponse);
-         $httpSession->set(static::USER_RESPONSE_SESSION_KEY, $participantResponse);
+         $this->serializeEntityIntoSession($httpSession, static::USER_RESPONSE_SESSION_KEY, $participantResponse);
     }
     /**
      * Deserializes a AppBundle\Entity\ParticipantResponse instance from the http session
@@ -209,15 +228,14 @@ abstract class BaseController extends Controller
      *
      * @return AppBundle\Entity\ParticipantResponse deserialized instance
      */
-    protected function deserializeParticipantResponseFromHttpSession($session)
+    protected function deserializeParticipantResponseFromHttpSession($session,$entityRepo)
     {
-        //gets images and participant session repositories
-        $em = $this->getEntityManager();
-        //gets ParticipantResponseSerialized
-        $responseSerialized = $session->get(static::USER_RESPONSE_SESSION_KEY);
-        $response = $em->merge($responseSerialized);
+        return $this->deserializeEntityFromSession($session, static::USER_RESPONSE_SESSION_KEY, $entityRepo);
+    }
 
-        return $response;
+    protected function getParticipantResponseIdFromSession($session)
+    {
+        return $this->getEntityIdFromSession($session,static::USER_RESPONSE_SESSION_KEY);
     }
 
     /*--------------------------------redirects to pages---------------------------------*/

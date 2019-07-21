@@ -6,11 +6,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-//repositories
-use AppBundle\repositories\ParticipantSessionRepository;
-use AppBundle\repositories\TrainingRepository;
-use AppBundle\repositories\AnswerPointsRepository;
-use AppBundle\repositories\AppParameterRepository;
+
+use AppBundle\Services\TrainingService;
+use AppBundle\Services\SessionService;
 //entities
 use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantTrainingResponse;
@@ -24,18 +22,19 @@ use AppBundle\Utils\UserAnswerEnum;
 
 class TrainingController extends BaseController
 {
-    private $participantSessionRepository;
-    private $trainingRepository;
-    private $pointsRepository;
-    private $parametersRepository;
+    /**
+     * @var TrainingService 
+     */
+    private $trainingService;
+    /**
+     * @var SessionService
+     */
+    private $sessionService;
 
-    public function __construct(ParticipantSessionRepository $participantSessionRepository,TrainingRepository $trainingRepository,
-    AnswerPointsRepository $pointsRepository, AppParameterRepository $parametersRepository)
+    public function __construct(SessionService $partisipantSessionService,TrainingService $trainingService)
     {
-        $this->participantSessionRepository = $participantSessionRepository;
-        $this->trainingRepository = $trainingRepository;
-        $this->pointsRepository = $pointsRepository;
-        $this->parametersRepository = $parametersRepository;
+        $this->trainingService = $trainingService;
+        $this->sessionService = $partisipantSessionService;
     }
 
     /**
@@ -50,44 +49,20 @@ class TrainingController extends BaseController
         if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
-           //creates and saves the user response in the session, when the user answer us, it will be save in the db
+        //creates and saves the user response in the session, when the user answer us, it will be save in the db
         $session = $request->getSession();
-        //get the images
+        //gets the training task
         $trainingStepNumber = $session->get(static::TRAINING_STEP);
-        $trainingStep = $this->getTrainingTask($trainingStepNumber);
+        $trainingTask = $this->trainingService->getTrainingTask($trainingStepNumber);
 
+        //crates the new resopnse
+        $userSession = $this->getUserSession($session);
+        $participantResponse = $this->trainingService->createAndPersistNewTrainingResponse($userSession, $trainingTask);
+        $this->saveResponseIdToHttpSession($session, $participantResponse);
 
-        //this should be injected, to do this, that controller should be declared as a service
-        $em = $this->getEntityManager();
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
-        $participantResponse = ParticipantTrainingResponse::createFromSessionAndTrainingTask($userSession, $trainingStep);
-        $this->serializeResponseIntoHttpSession($session, $participantResponse);
-
-        $currentStep = $session->get(static::TRAINING_STEP);
         //builds view's parameters
-        $viewParams = array();
-        //answer points
-        $pointsRepository = $this->pointsRepository;
-        $viewParams['correct_points']   = $pointsRepository->getPointsForCorrectAnswer();
-        $viewParams['incorrect_points'] = $pointsRepository->getPointsForIncorrectAnswer();
-        //gets the images's paths and passes them to the view
-        $viewParams["images"] = $this->getTrainingImage($trainingStep);
-        $viewParams["points"] = $userSession->getTotalPoints();
-
-        //gets current and max steps
-        $viewParams["current_step"]  = $currentStep;
-        $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
-        $viewParams["max_step"]      = $session->get(static::TRAINING_MAX_STEPS);
-        $viewParams["training_mode"] = true;
-        $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);
-        //looks in the http session the view to show (with or without points)
-        //user session info
-        $viewParams["show_user_session"] = $this->parametersRepository->getShowDebugUserSession();
-        $viewParams["total_responses"] = $userSession->getNumberOfResponses();
-        $viewParams["total_correct_responses"] = $userSession->getNumberOfCorrectResponses();
-        $viewParams["correct_percentage"] = $userSession->getPercentageOfCorrectTasks();
-        $viewParams["total_time"] = $userSession->getTimeInSecondsFromTheBeginning();
-
+        $currentStep = $session->get(static::TRAINING_STEP);
+        $viewParams = $this->populateView($userSession,$trainingTask,$currentStep,$session->get(static::TRAINING_MAX_STEPS));
         return $this->render($session->get(static::POINTS_VIEW_SESSION_KEY), $viewParams);
     }
 
@@ -99,74 +74,62 @@ class TrainingController extends BaseController
         //TODO use synfony's forms validations
         $userSubmission = $request->request->get("answer");
         $requestIsValid = isset($userSubmission) && UserAnswerEnum::isValidValue(intval($userSubmission));
-
         //if the session has ended
         //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
-
         if (!$isUserLogged || !$requestIsValid) {
             return $this->redirectToIndex();
         }
+        //gets the user response previously stored in the session, 
+        //remember, this user response was not really answered yet
         $session = $request->getSession();
-
+        $this->saveUserAnswer($session,$userSubmission);
+        
         $this->advanceNextStep($session);
-        //gets the user response previously stored in the session, remember, this user response was not really answered yet
-        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
-        $userResponse->setParticipantAnswer($userSubmission);
-        //this should be injected, to do this, this controller should be declared as a service
-        $em = $this->getEntityManager();
-        //add points
-        $points = $this->assignPoints($userResponse);
-        //although it was fun dealing with entities and the session, this experiment has to stop! haha
-        $this->sumPoints($em, $session, $points);
-        //handles the training mode
-
-        //sets the user's actual response and saves it in the database
-
-        $userResponse->setPointsEarned($points);
-
-        $em->persist($userResponse);
-        $em->flush();
-
         return $this->showNextTask($session);
     }
 
-
-    /**
-     * adds points to the user
-     * The Experiment with the entities in the session has gone too far :P
-     *
-     */
-    private function sumPoints($em, $session, $points)
+    private function populateView($userSession,$trainingTask,$currentStep,$trainingMaxSteps)
     {
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session,$this->participantSessionRepository);
-        $userSession->sumPoints($points);
-        $em->persist($userSession);
-        $em->flush();
-        $this->serializeParticipantSessionIntoHttpSession($session, $userSession);
+        $viewParams = array();
+        //answer points
+        $viewParams['correct_points']   = $this->trainingService->getPointsForCorrectAnswer();
+        $viewParams['incorrect_points'] = $this->trainingService->getPointsForIncorrectAnswer();
+        //gets the images's paths and passes them to the view
+        $viewParams["images"] = $this->getTrainingImage($trainingTask);
+        $viewParams["points"] = $userSession->getTotalPoints();
+
+        //gets current and max steps
+        $viewParams["current_step"]  = $currentStep;
+        $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
+        $viewParams["max_step"]      = $trainingMaxSteps;
+        $viewParams["training_mode"] = true;
+        $viewParams["post_url"]      = $this->generateUrl('processTrainingResponse', array(), true);
+        //looks in the http session the view to show (with or without points)
+        //user session info
+        $viewParams["show_user_session"] = $this->trainingService->getShowDebugUserSession();
+        $viewParams["total_responses"] = $userSession->getNumberOfResponses();
+        $viewParams["total_correct_responses"] = $userSession->getNumberOfCorrectResponses();
+        $viewParams["correct_percentage"] = $userSession->getPercentageOfCorrectTasks();
+        $viewParams["total_time"] = $userSession->getTimeInSecondsFromTheBeginning();
+
+        return $viewParams;
     }
 
-    private function getTrainingTask($trainingStepNumber)
+    private function saveUserAnswer($session,$userSubmission)
     {
-        $trainingRepo = $this->trainingRepository;
-        return $trainingRepo->findOneByTrainingStep($trainingStepNumber);
+        $userResponseId = $this->getParticipantResponseIdFromSession($session);
+        $userResponse = $this->trainingService->getTrainingResponseById($userResponseId);
+        $userResponse->setParticipantAnswer($userSubmission);
+        //add points
+        $userSession = $this-> getUserSession($session);
+        $this->trainingService->assignPoints($userResponse,$userSession);
     }
-    /**
-     * assigns points to the user's response
-     *
-     * @param
-     *
-     * @return int points given to the user
-     *
-     */
-    private function assignPoints($userResponse)
+
+    private function getUserSession($session)
     {
-        $pointsRepository = $this->pointsRepository;
-        $points = $pointsRepository->getPointsForIncorrectAnswer();
-        if ($userResponse->isCorrect()) {
-            $points = $pointsRepository->getPointsForCorrectAnswer();
-        }
-        return $points;
+        $userSessionId = $this->getUserSessionIdFromSession($session);
+        return $this->sessionService->getById($userSessionId);
     }
 
     private function advanceNextStep($session)
@@ -176,7 +139,6 @@ class TrainingController extends BaseController
 
         $session->set(static::TRAINING_STEP, $nextStep);
     }
-
 
     /**
      * shows the next task or ends the questionaire depending of the number of task completed and the max of tasks defined

@@ -57,7 +57,6 @@ class LoginController extends BaseController
     {
         //TODO use a interceptor,filter or something to check session ending
         //-------------------------------------------------------------------
-
         //if the user is already logged, we redirect it to the home page
         $isUserLogged = $this->isUserLogged($request);
         if ($isUserLogged) {

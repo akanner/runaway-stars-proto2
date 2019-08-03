@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Services;
 
+use AppBundle\Repositories\ParticipantSessionRepository;
+use \AppBundle\Repositories\GamificationTypeRepository;
 class GamificationTypeService
 {
  /**
@@ -13,7 +15,7 @@ class GamificationTypeService
     private $gamificationTypeRepository;
 
 
-    function __construct(\AppBundle\Repositories\ParticipantSessionRepository $participantSessionRepository, \AppBundle\Repositories\GamificationTypeRepository $gamificationTypeRepository)
+    public function __construct(ParticipantSessionRepository $participantSessionRepository, GamificationTypeRepository  $gamificationTypeRepository)
     {
         $this->participantSessionRepository = $participantSessionRepository;
         $this->gamificationTypeRepository = $gamificationTypeRepository;

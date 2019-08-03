@@ -1,0 +1,7 @@
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM participant;
+DELETE FROM participant_response;
+DELETE FROM participant_session; 
+SET FOREIGN_KEY_CHECKS=1;
+SET SQL_SAFE_UPDATES = 1;

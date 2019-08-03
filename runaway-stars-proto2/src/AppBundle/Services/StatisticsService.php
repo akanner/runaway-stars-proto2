@@ -117,7 +117,7 @@ class StatisticsService{
         return $reducedLeaderBoard;
     }
 
-    public function getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType, $percentajeOfCorrectness)
+    public function getResult($gamificationType, $percentajeOfCorrectness)
     {
         $gamificationResult = [];
         if (GamificationTypes::GAMIFICATION_BADGES == $gamificationType) {

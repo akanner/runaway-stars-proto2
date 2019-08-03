@@ -11,7 +11,7 @@ class ParticipantTrainingResponse extends ParticipantResponse
 {
 
     /**
-     * @var \AppBundle\Entity\Image
+     * @var \AppBundle\Entity\TrainingTask
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TrainingTask")
      * @ORM\JoinColumns({

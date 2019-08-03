@@ -61,7 +61,7 @@ class StadisticsController extends BaseController
         //gets the stadistics of the training
         $gamificationType = $session->get(static::GAMIFICATION_KEY);
         $gamificationResult = 
-            $this->statisticsService->getResultForGamificationStatusAndPercentajeOfCorrectness($gamificationType, 
+            $this->statisticsService->getResult($gamificationType, 
             $userSession->getPercentageOfCorrectTasks());
         $leaderboard = $this->statisticsService->getLeadersboard($userSession);
         $viewName = $this->gamificationTypeService->getGamificationTypeView($gamificationType);

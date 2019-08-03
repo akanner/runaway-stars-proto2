@@ -29,10 +29,6 @@ services:
     factory: 'doctrine.orm.entity_manager:getRepository'
     arguments: [AppBundle\Entity\GamificationType]
 
-  AppBundle\repositories\AnswerPointsRepository:
-    factory: doctrine.orm.entity_manager:getRepository
-    arguments: [AppBundle\Entity\AnswerPoints]
-
   AppBundle\repositories\ParticipantRepository:
     factory: doctrine.orm.entity_manager:getRepository
     arguments: [AppBundle\Entity\Participant]

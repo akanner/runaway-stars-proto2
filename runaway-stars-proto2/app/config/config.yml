@@ -72,7 +72,6 @@ swiftmailer:
 easy_admin:
     entities:
         - AppBundle\Entity\AppParameter
-        - AppBundle\Entity\AnswerPoints
         - AppBundle\Entity\Image
         - AppBundle\Entity\Participant
         - AppBundle\Entity\ParticipantResponse

@@ -1,5 +1,5 @@
 {
-    "name": "akanner/runaway.stars.proto2",
+    "name": "akanner/runaway.stars.proto",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -13,7 +13,7 @@
     },
     "require": {
         "php": ">=5.3.9",
-        "symfony/symfony": "2.8.*",
+        "symfony/symfony": "3.4.*",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/swiftmailer-bundle": "~2.3",
@@ -28,7 +28,8 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7"
+        "symfony/phpunit-bridge": "~2.7",
+        "symfony/web-server-bundle": "3.4.*"
     },
     "scripts": {
         "post-install-cmd": [
@@ -54,6 +55,8 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
+        "symfony-var-dir": "var",
+        "symfony-bin-dir": "bin",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"

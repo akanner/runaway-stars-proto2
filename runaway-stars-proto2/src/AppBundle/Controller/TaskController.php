@@ -10,6 +10,10 @@ use AppBundle\Entity\Participant;
 use AppBundle\Entity\ParticipantResponse;
 use AppBundle\Entity\ParticipantSession;
 
+use AppBundle\Services\SessionService;
+use AppBundle\Services\TasksService;
+use AppBundle\Utils\ImagesViewsHelper;
+
 //view objects
 use AppBundle\ViewObjects\ViewImage;
 
@@ -21,6 +25,26 @@ class TaskController extends BaseController
     const STEP                      = "task-number";
 
     const MAX_STEPS                 = "max-tasks";
+    /**
+     * @var SessionService
+     */
+    private $sessionService;
+    /**
+    * @var TaskService
+    */
+    private $taskService;
+
+    /**
+     * @var ImagesViewsHelper
+     */
+    private $imagesViewsHelper;
+
+    public function __construct(SessionService $sessionService,TasksService $taskService,ImagesViewsHelper $imagesViewsHelper)
+    {
+        $this->sessionService = $sessionService;
+        $this->taskService = $taskService;
+        $this->imagesViewsHelper = $imagesViewsHelper;
+    }
 
      /**
      * @Route("task/", name="taskIndex")
@@ -34,28 +58,13 @@ class TaskController extends BaseController
         if (!$isUserLogged) {
             return $this->redirectToDefault();
         }
-           //creates and saves the user response in the session, when the user answer us, it will be save in the db
         $session = $request->getSession();
-        //this should be injected, to do this, that controller should be declared as a service
-        $em = $this->getEntityManager();
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        //gets the images's paths and passes them to the view
-        $taskImage = $this->getTasksForQuestion($request);
-        $participantResponse = ParticipantResponse::createFromSessionAndImages($userSession, $taskImage);
-        $this->serializeResponseIntoHttpSession($session, $participantResponse);
-
-        $currentStep = $session->get(static::STEP);
-        //builds view's parameters
-        $viewParams = array();
-        //answer points
-
-        $viewParams["images"] = $this->getViewImages($taskImage);
-        //gets current and max steps
-        $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
-        $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
-        $viewParams["finish_url"]    = $this->generateUrl('endTasks', array(), true);
-
-        //looks in the http session the view to show (with or without points)
+        $userSession = $this->getUserSession($session);
+        //creates and saves the user response in the session, when the user answer us, it will be save in the db
+        $participantResponse = $this->taskService->createNewTaskForSession($userSession);
+        $this->saveResponseIdToHttpSession($session, $participantResponse);
+        
+        $viewParams = $this->populateView($session,$participantResponse->getImageServed());
         return $this->render("task/real-tasks-index.html.twig", $viewParams);
     }
 
@@ -64,62 +73,55 @@ class TaskController extends BaseController
      */
     public function processResponse(Request $request)
     {
-        //TODO use synfony's forms validations
-        $userSubmission = $request->request->get("answer");
-        $userRelevantImages = $request->request->get("usedImages");
-        $requestIsValid = isset($userSubmission)  && UserAnswerEnum::isValidValue(intval($userSubmission));
-
         //if the session has ended
         //TODO use a interceptor,filter or something to check session ending
         $isUserLogged = $this->isUserLogged($request);
 
-        if (!$isUserLogged || !$requestIsValid) {
+        if (!$isUserLogged) {
             return $this->redirectToTasks();
         }
-
-        $imageRepository =$this->get(static::IMAGES_REPO);
+        //TODO use symfony's forms validations
         $session = $request->getSession();
-        $this->advanceNextStep($session);
-        //this should be injected, to do this, this controller should be declared as a service
-        $em = $this->getEntityManager();
-
-        //gets the user response previously stored in the session, remember, this user response was not really answered yet
-        $userResponse = $this->deserializeParticipantResponseFromHttpSession($session);
-        //sets the user's actual response and saves it in the database
-        $userResponse->setParticipantAnswer($userSubmission);
-        if (isset($userRelevantImages)) {
-            $userResponse->setImagesUsedToRespond(implode(",", $userRelevantImages));
+        $userSubmission = $request->request->get("answer");
+        $userRelevantImages = $request->request->get("usedImages");
+        $requestIsValid = isset($userSubmission)  && UserAnswerEnum::isValidValue(intval($userSubmission));
+        if(!$requestIsValid) {
+            return $this->redirectToTasks();
         }
-        $em->persist($userResponse);
-        $em->flush();
-
-        return $this->showNextTask($session);
+        //gets the user response previously stored in the session, remember, this user response was not really answered yet
+        $this->saveUserAnswer($session,$userSubmission,$userRelevantImages);
+        
+        return $this->advanceNextStep($session);
     }
     /**
+     * 
      * @Route("task/logout", name="endTasks")
      */
     public function logout(Request $request)
     {
         $session = $request->getSession();
         //sets the user session as finished
-        $userSession = $this->deserializeParticipantSessionEntityFromHttpSession($session);
-        $userSession->setEndedAt(new \Datetime('now'));
-        $em = $this->getEntityManager();
-        $em->persist($userSession);
-        $em->flush();
-        //
+        $userSession = $this->getUserSession($session);
+        $this->sessionService->endSession($userSession);
+        //deletes the last task because it was not answered
+        $userResponseId = $this->getParticipantResponseIdFromSession($session);
+        $this->taskService->deleteTaskWithId($userResponseId);
         $session-> invalidate();
         $viewParams = [];
         $viewParams["back_url"] = $this->generateUrl('homepage', array(), true);
         return $this->render("task/logout.html.twig", $viewParams);
     }
 
-    private function getTasksForQuestion($request)
+    private function getUserSession($session)
     {
-        //it would be better if this controller is defined as a service as well
-        //gets the image repository from the IoC container
-        $imageRepository = $this->get(static::IMAGES_REPO);
-        return $imageRepository->findRandomImage();
+        $userSessionId = $this->getUserSessionIdFromSession($session);
+        return $this->sessionService->getById($userSessionId);
+    }
+
+    private function saveUserAnswer($session,$userSubmission,$userRelevantImages)
+    {
+        $userResponseId = $this->getParticipantResponseIdFromSession($session);
+        $userResponse = $this->taskService->saveTaskWithId($userResponseId,$userSubmission,$userRelevantImages);
     }
 
     private function advanceNextStep($session)
@@ -127,15 +129,22 @@ class TaskController extends BaseController
         $currentStep = $session->get(static::STEP);
         $nextStep    = $currentStep + 1;
         $session->set(static::STEP, $nextStep);
-    }
 
-
-    /**
-     * shows the next task or ends the questionaire depending of the number of task completed and the max of tasks defined
-     *
-     */
-    private function showNextTask($session)
-    {
         return $this->redirectToURL("taskIndex");
     }
+
+    private function populateView($session,$taskImage)
+    {
+        //builds view's parameters
+        $viewParams = array();
+        $currentStep = $session->get(static::STEP);
+        $currentStep==1 ? $viewParams["show_help"]="true" : $viewParams["show_help"] = "";
+        //gets the images's paths and passes them to the view
+        $viewParams["images"] = $this->imagesViewsHelper->getViewImages($taskImage);
+        $viewParams["post_url"]      = $this->generateUrl('processResponse', array(), true);
+        $viewParams["finish_url"]    = $this->generateUrl('endTasks', array(), true);
+
+        return $viewParams;
+    }
+
 }

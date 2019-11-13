@@ -6,8 +6,10 @@
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /app/phpunit.xml
+/var/
 /build/
 /vendor/
 /bin/
 /composer.phar
-/src/AppBundle/Entity/*~
+app/vendor
+.web-server-pid

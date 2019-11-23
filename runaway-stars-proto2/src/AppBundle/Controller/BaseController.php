@@ -39,22 +39,16 @@ abstract class BaseController extends Controller
     const POINTS_VIEW_SESSION_KEY   = "points-view";
 
     const GAMIFICATION_KEY          = "gamification-type";
-    protected function getEntityManager()
-    {
-        return $this->get("doctrine.orm.default_entity_manager");
-    }
 
      /**
      * checks if the participant is logged
      */
-    protected function isUserLogged($request)
+    protected function isUserLogged(Request $request)
     {
         $session = $request->getSession();
         $isUserLogged = $session->get("logged");
         return $isUserLogged;
     }
-
-
 
     /*-----------------session serialization/deserialization--------------------*/
     /**

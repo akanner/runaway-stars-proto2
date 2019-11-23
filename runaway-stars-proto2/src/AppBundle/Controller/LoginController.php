@@ -20,6 +20,9 @@ use AppBundle\Services\TrainingService;
 
 class LoginController extends BaseController
 {
+    /**
+     * @var GamificationTypeService
+     */
     private $gamificationService;
     /**
      * @var SessionService

@@ -4,7 +4,6 @@ namespace AppBundle\Services;
 //repositories
 use AppBundle\Repositories\TrainingRepository;
 use AppBundle\Repositories\ParticipantResponseRepository;
-use AppBundle\Repositories\AnswerPointsRepository;
 use AppBundle\Repositories\AppParameterRepository;
 
 use AppBundle\Entity\ParticipantSession;
@@ -23,11 +22,6 @@ class TrainingService{
      * @var TrainingRepository
      */
     private $trainingRepository;
-
-    /**
-     * @var AnswerPointsRepository
-     */
-    private $pointsRepository;
     /**
      * @var AppParameterRepository
      */
@@ -38,12 +32,10 @@ class TrainingService{
     private $em;
 
     public function __construct(EntityManager $entityManager,TrainingRepository $trainingRepository,
-    ParticipantResponseRepository $participantResponseRepository, 
-    AnswerPointsRepository $pointsRepository,AppParameterRepository $appParameterRepository)
+    ParticipantResponseRepository $participantResponseRepository,AppParameterRepository $appParameterRepository)
     {
         $this->trainingRepository = $trainingRepository;
         $this->responseRepository = $participantResponseRepository;
-        $this->pointsRepository = $pointsRepository;
         $this->parametersRepository = $appParameterRepository;
         $this->em = $entityManager;
     }
@@ -58,9 +50,9 @@ class TrainingService{
      */
     public function assignPoints($userResponse,$userSession)
     {
-        $points = $this->pointsRepository->getPointsForIncorrectAnswer();
+        $points = $this->getPointsForIncorrectAnswer();
         if ($userResponse->isCorrect()) {
-            $points = $this->pointsRepository->getPointsForCorrectAnswer();
+            $points = $this->getPointsForCorrectAnswer();
         }
 
         $userResponse->setPointsEarned($points);
@@ -75,12 +67,12 @@ class TrainingService{
      */
     public function getPointsForIncorrectAnswer()
     {
-        return $this->pointsRepository->getPointsForIncorrectAnswer();
+        return $this->parametersRepository->getPointsForIncorrectAnswer();
     }
 
     public function getPointsForCorrectAnswer()
     {
-        return $this->pointsRepository->getPointsForCorrectAnswer();
+        return $this->parametersRepository->getPointsForCorrectAnswer();
     }
 
     public function getShowDebugUserSession(){

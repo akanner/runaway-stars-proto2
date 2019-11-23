@@ -15,6 +15,6 @@
 
 ## Running the page
 
-* Dump the images using `php app/console assetic:dump`
-* Use the built-in server by running `php app/console server:start`
+* Dump the images using `php bin/console assetic:dump`
+* Use the built-in server by running `php bin/console server:start`
 
